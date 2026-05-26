@@ -1,0 +1,901 @@
+# Copyright (C) 2026 YIARI Dev Team
+# This file is distributed under the Proprietary.
+msgid ""
+msgstr ""
+"Project-Id-Version: YIARI Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/yiari-theme\n"
+"Last-Translator: YIARI Dev Team <dev@yiari.or.id>\n"
+"Language-Team: English <dev@yiari.or.id>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-05-25T19:32:37+00:00\n"
+"PO-Revision-Date: 2026-05-26 02:45+0700\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: yiari\n"
+
+#. Theme Name of the theme
+#: style.css
+msgid "YIARI Theme"
+msgstr "YIARI Theme"
+
+#. Theme URI of the theme
+#. Author URI of the theme
+#: style.css
+msgid "https://yiari.or.id"
+msgstr ""
+
+#. Description of the theme
+#: style.css
+msgid "Tema resmi Yayasan Inisiasi Alam Rehabilitasi Indonesia. Dibangun dengan Alpine.js dan desain custom tanpa page builder."
+msgstr "Official theme of Yayasan Inisiasi Alam Rehabilitasi Indonesia. Built with Alpine.js and a custom design without a page builder."
+
+#. Author of the theme
+#: style.css
+msgid "YIARI Dev Team"
+msgstr "YIARI Dev Team"
+
+#: functions.php:29
+msgid "Menu Utama"
+msgstr "Main Menu"
+
+#: functions.php:30
+msgid "Footer – Tentang"
+msgstr "Footer - About"
+
+#: functions.php:31
+msgid "Footer – Program"
+msgstr "Footer - Programs"
+
+#: functions.php:32
+msgid "Footer – Publikasi"
+msgstr "Footer - Publications"
+
+#: functions.php:48
+msgid "Mulai ketik untuk mencari artikel atau halaman."
+msgstr "Start typing to search for articles or pages."
+
+#. translators: %d is the minimum number of characters required before live search starts.
+#: functions.php:50
+#, php-format
+msgid "Ketik minimal %d karakter."
+msgstr "Type at least %d characters."
+
+#: functions.php:51
+msgid "Mencari..."
+msgstr "Searching..."
+
+#: functions.php:52
+msgid "Tidak ada hasil yang cocok."
+msgstr "No matching results found."
+
+#: functions.php:53
+msgid "Ketik minimal 3 karakter..."
+msgstr "Type at least 3 characters..."
+
+#: functions.php:54
+#: functions.php:97
+msgid "Artikel"
+msgstr "Article"
+
+#: functions.php:55
+#: functions.php:97
+msgid "Halaman"
+msgstr "Page"
+
+#: inc/acf-fields.php:17
+msgid "Home Page - Sections"
+msgstr "Home Page - Sections"
+
+#: inc/acf-fields.php:21
+msgid "Hero Section"
+msgstr "Hero Section"
+
+#: inc/acf-fields.php:22
+#: inc/acf-fields.php:102
+msgid "Gambar Hero"
+msgstr "Hero Image"
+
+#: inc/acf-fields.php:23
+msgid "Judul Hero"
+msgstr "Hero Title"
+
+#: inc/acf-fields.php:23
+msgid "Bersama Selamatkan Alam"
+msgstr "Together, Save Nature"
+
+#: inc/acf-fields.php:24
+msgid "Subtitle Hero"
+msgstr "Hero Subtitle"
+
+#: inc/acf-fields.php:24
+#: template-parts/sections/hero.php:4
+msgid "Bersama kita bisa menjaga satwa liar tetap hidup di alamnya"
+msgstr "Together, we can keep wildlife living in its natural habitat."
+
+#: inc/acf-fields.php:25
+msgid "Teks Tombol CTA"
+msgstr "CTA Button Text"
+
+#: inc/acf-fields.php:25
+#: inc/acf-fields.php:65
+#: inc/acf-fields.php:87
+#: template-parts/sections/donate-cta.php:4
+#: template-parts/sections/hero.php:5
+#: template-parts/sections/story.php:8
+msgid "Donasi Sekarang"
+msgstr "Donate Now"
+
+#: inc/acf-fields.php:26
+msgid "URL Tombol CTA"
+msgstr "CTA Button URL"
+
+#: inc/acf-fields.php:28
+msgid "Stats Section"
+msgstr "Stats Section"
+
+#: inc/acf-fields.php:29
+#: inc/acf-fields.php:44
+#: inc/acf-fields.php:59
+#: inc/acf-fields.php:70
+#: inc/acf-fields.php:111
+#: inc/acf-fields.php:120
+#: inc/acf-fields.php:135
+msgid "Label Atas"
+msgstr "Top Label"
+
+#: inc/acf-fields.php:29
+#: template-parts/sections/stats.php:2
+msgid "DAMPAK TERUKUR"
+msgstr "MEASURABLE IMPACT"
+
+#: inc/acf-fields.php:30
+#: inc/acf-fields.php:45
+#: inc/acf-fields.php:53
+#: inc/acf-fields.php:60
+#: inc/acf-fields.php:71
+#: inc/acf-fields.php:78
+#: inc/acf-fields.php:85
+#: inc/acf-fields.php:103
+#: inc/acf-fields.php:121
+#: inc/acf-fields.php:129
+#: inc/acf-fields.php:136
+msgid "Judul"
+msgstr "Title"
+
+#: inc/acf-fields.php:30
+#: template-parts/sections/stats.php:3
+msgid "Bukti Nyata Konservasi Kami"
+msgstr "Real Evidence of Our Conservation Work"
+
+#: inc/acf-fields.php:31
+#: inc/acf-fields.php:46
+#: inc/acf-fields.php:54
+#: inc/acf-fields.php:72
+#: inc/acf-fields.php:122
+#: inc/acf-fields.php:137
+msgid "Deskripsi"
+msgstr "Description"
+
+#: inc/acf-fields.php:33
+msgid "Item Statistik"
+msgstr "Statistic Items"
+
+#: inc/acf-fields.php:35
+msgid "Tambah Statistik"
+msgstr "Add Statistic"
+
+#: inc/acf-fields.php:37
+msgid "Angka"
+msgstr "Number"
+
+#: inc/acf-fields.php:38
+msgid "Suffix"
+msgstr "Suffix"
+
+#: inc/acf-fields.php:39
+msgid "Label"
+msgstr "Label"
+
+#: inc/acf-fields.php:43
+msgid "Krisis Section"
+msgstr "Crisis Section"
+
+#: inc/acf-fields.php:44
+#: template-parts/sections/crisis.php:2
+msgid "ANCAMAN MENDESAK"
+msgstr "URGENT THREATS"
+
+#: inc/acf-fields.php:45
+#: template-parts/sections/crisis.php:3
+msgid "3 Krisis yang Kita Hadapi Bersama"
+msgstr "3 Crises We Face Together"
+
+#: inc/acf-fields.php:48
+msgid "Kartu Krisis"
+msgstr "Crisis Cards"
+
+#: inc/acf-fields.php:50
+msgid "Tambah Kartu Krisis"
+msgstr "Add Crisis Card"
+
+#: inc/acf-fields.php:52
+#: inc/acf-fields.php:80
+#: inc/acf-fields.php:113
+msgid "Gambar"
+msgstr "Image"
+
+#: inc/acf-fields.php:58
+msgid "Story Section"
+msgstr "Story Section"
+
+#: inc/acf-fields.php:59
+#: template-parts/sections/story.php:2
+msgid "DARI LAPANGAN"
+msgstr "FROM THE FIELD"
+
+#: inc/acf-fields.php:61
+msgid "Paragraf 1"
+msgstr "Paragraph 1"
+
+#: inc/acf-fields.php:62
+msgid "Paragraf 2"
+msgstr "Paragraph 2"
+
+#: inc/acf-fields.php:63
+#: inc/acf-fields.php:87
+msgid "Tombol 1 - Teks"
+msgstr "Button 1 - Text"
+
+#: inc/acf-fields.php:63
+#: template-parts/sections/news.php:31
+#: template-parts/sections/news.php:42
+#: template-parts/sections/story.php:6
+msgid "Baca Selengkapnya"
+msgstr "Read More"
+
+#: inc/acf-fields.php:64
+#: inc/acf-fields.php:88
+msgid "Tombol 1 - URL"
+msgstr "Button 1 - URL"
+
+#: inc/acf-fields.php:65
+#: inc/acf-fields.php:89
+msgid "Tombol 2 - Teks"
+msgstr "Button 2 - Text"
+
+#: inc/acf-fields.php:66
+#: inc/acf-fields.php:90
+msgid "Tombol 2 - URL"
+msgstr "Button 2 - URL"
+
+#: inc/acf-fields.php:67
+msgid "Gambar Utama"
+msgstr "Main Image"
+
+#: inc/acf-fields.php:69
+msgid "Approach Section"
+msgstr "Approach Section"
+
+#: inc/acf-fields.php:70
+#: inc/helpers.php:176
+#: template-parts/global/footer.php:24
+#: template-parts/sections/approach.php:2
+msgid "Program"
+msgstr "Programs"
+
+#: inc/acf-fields.php:74
+msgid "Item Program"
+msgstr "Program Items"
+
+#: inc/acf-fields.php:76
+msgid "Tambah Program"
+msgstr "Add Program"
+
+#: inc/acf-fields.php:79
+msgid "Subtitle"
+msgstr "Subtitle"
+
+#: inc/acf-fields.php:84
+msgid "Donate CTA Section"
+msgstr "Donate CTA Section"
+
+#: inc/acf-fields.php:85
+#: template-parts/sections/donate-cta.php:2
+msgid "Setiap Donasi Menyelamatkan Nyawa"
+msgstr "Every Donation Saves a Life"
+
+#: inc/acf-fields.php:86
+#: inc/acf-fields.php:104
+#: inc/acf-fields.php:130
+msgid "Teks"
+msgstr "Text"
+
+#: inc/acf-fields.php:89
+#: template-parts/sections/donate-cta.php:6
+msgid "Jadi Relawan"
+msgstr "Become a Volunteer"
+
+#: inc/acf-fields.php:91
+msgid "Gambar CTA"
+msgstr "CTA Image"
+
+#: inc/acf-fields.php:97
+msgid "About Us - Sections"
+msgstr "About Us - Sections"
+
+#: inc/acf-fields.php:101
+msgid "Hero"
+msgstr "Hero"
+
+#: inc/acf-fields.php:103
+#: template-parts/sections/about-hero.php:3
+msgid ""
+"Untuk Mereka yang\n"
+"Tak Bisa Membela Diri"
+msgstr ""
+"For Those Who\n"
+"Cannot Defend Themselves"
+
+#: inc/acf-fields.php:105
+msgid "Tombol 1 Teks"
+msgstr "Button 1 Text"
+
+#: inc/acf-fields.php:105
+#: template-parts/sections/about-hero.php:5
+msgid "Lihat Program Kami"
+msgstr "View Our Programs"
+
+#: inc/acf-fields.php:106
+msgid "Tombol 1 URL"
+msgstr "Button 1 URL"
+
+#: inc/acf-fields.php:107
+msgid "Tombol 2 Teks"
+msgstr "Button 2 Text"
+
+#: inc/acf-fields.php:107
+#: template-parts/sections/about-hero.php:7
+msgid "Pelajari Lebih Lanjut"
+msgstr "Learn More"
+
+#: inc/acf-fields.php:108
+msgid "Tombol 2 URL"
+msgstr "Button 2 URL"
+
+#: inc/acf-fields.php:110
+msgid "Visi & Misi"
+msgstr "Vision & Mission"
+
+#: inc/acf-fields.php:111
+#: template-parts/sections/about-vision.php:2
+msgid "Arah Kami Bergerak"
+msgstr "Our Direction"
+
+#: inc/acf-fields.php:112
+msgid "Judul Section"
+msgstr "Section Title"
+
+#: inc/acf-fields.php:112
+msgid "Visi & Misi YIARI"
+msgstr "YIARI Vision & Mission"
+
+#: inc/acf-fields.php:114
+msgid "Label Visi"
+msgstr "Vision Label"
+
+#: inc/acf-fields.php:114
+#: template-parts/sections/about-vision.php:5
+msgid "Visi"
+msgstr "Vision"
+
+#: inc/acf-fields.php:115
+msgid "Teks Visi"
+msgstr "Vision Text"
+
+#: inc/acf-fields.php:116
+msgid "Label Misi"
+msgstr "Mission Label"
+
+#: inc/acf-fields.php:116
+#: template-parts/sections/about-vision.php:7
+msgid "Misi"
+msgstr "Mission"
+
+#: inc/acf-fields.php:117
+msgid "Teks Misi"
+msgstr "Mission Text"
+
+#: inc/acf-fields.php:119
+msgid "Timeline"
+msgstr "Timeline"
+
+#: inc/acf-fields.php:120
+#: template-parts/sections/about-timeline.php:2
+msgid "Dampak Nyata"
+msgstr "Real Impact"
+
+#: inc/acf-fields.php:121
+#: template-parts/sections/about-timeline.php:3
+msgid "Jejak Dampak YIARI"
+msgstr "YIARI Impact Journey"
+
+#: inc/acf-fields.php:124
+msgid "Item Timeline"
+msgstr "Timeline Items"
+
+#: inc/acf-fields.php:126
+msgid "Tambah Milestone"
+msgstr "Add Milestone"
+
+#: inc/acf-fields.php:128
+msgid "Tahun"
+msgstr "Year"
+
+#: inc/acf-fields.php:134
+#: inc/acf-fields.php:136
+#: template-parts/sections/about-org.php:3
+msgid "Struktur Organisasi"
+msgstr "Organizational Structure"
+
+#: inc/acf-fields.php:135
+#: template-parts/sections/about-org.php:2
+msgid "Kepemimpinan Kami"
+msgstr "Our Leadership"
+
+#: inc/acf-fields.php:139
+msgid "Kelompok Organisasi"
+msgstr "Organization Groups"
+
+#: inc/acf-fields.php:141
+msgid "Tambah Kelompok"
+msgstr "Add Group"
+
+#: inc/acf-fields.php:143
+msgid "Nama Kelompok"
+msgstr "Group Name"
+
+#: inc/acf-fields.php:145
+msgid "Anggota"
+msgstr "Members"
+
+#: inc/acf-fields.php:147
+msgid "Tambah Anggota"
+msgstr "Add Member"
+
+#: inc/acf-fields.php:149
+msgid "Foto"
+msgstr "Photo"
+
+#: inc/acf-fields.php:150
+msgid "Nama"
+msgstr "Name"
+
+#: inc/acf-fields.php:151
+msgid "Jabatan"
+msgstr "Position"
+
+#: inc/helpers.php:165
+#: template-parts/global/footer.php:23
+msgid "Tentang"
+msgstr "About"
+
+#: inc/helpers.php:168
+msgid "Tentang YIARI"
+msgstr "About YIARI"
+
+#: inc/helpers.php:169
+msgid "Lokasi Konservasi"
+msgstr "Conservation Locations"
+
+#: inc/helpers.php:170
+#: inc/helpers.php:197
+msgid "Mitra dan Pendukung"
+msgstr "Partners and Supporters"
+
+#: inc/helpers.php:171
+#: inc/helpers.php:198
+msgid "Laporan"
+msgstr "Reports"
+
+#: inc/helpers.php:179
+#: inc/helpers.php:201
+#: template-parts/sections/approach.php:8
+msgid "Konservasi Satwa"
+msgstr "Wildlife Conservation"
+
+#: inc/helpers.php:180
+#: inc/helpers.php:202
+#: template-parts/sections/approach.php:9
+msgid "Konservasi Habitat"
+msgstr "Habitat Conservation"
+
+#: inc/helpers.php:181
+msgid "Edukasi dan Penyadartahuan"
+msgstr "Education and Awareness"
+
+#: inc/helpers.php:182
+msgid "Pemberdayaan Masyarakat"
+msgstr "Community Empowerment"
+
+#: inc/helpers.php:183
+#: inc/helpers.php:205
+#: template-parts/sections/approach.php:12
+msgid "One Health"
+msgstr "One Health"
+
+#: inc/helpers.php:186
+#: inc/helpers.php:208
+msgid "Cerita"
+msgstr "Stories"
+
+#: inc/helpers.php:187
+#: template-parts/global/footer.php:25
+msgid "Publikasi"
+msgstr "Publications"
+
+#: inc/helpers.php:188
+msgid "Bergabung"
+msgstr "Get Involved"
+
+#: inc/helpers.php:195
+msgid "Tentang Kami"
+msgstr "About Us"
+
+#: inc/helpers.php:196
+msgid "Lokasi Program"
+msgstr "Program Locations"
+
+#: inc/helpers.php:203
+#: template-parts/sections/approach.php:10
+msgid "Edukasi"
+msgstr "Education"
+
+#: inc/helpers.php:204
+#: template-parts/sections/approach.php:11
+msgid "Pemberdayaan"
+msgstr "Empowerment"
+
+#: inc/helpers.php:209
+msgid "Penelitian"
+msgstr "Research"
+
+#: inc/helpers.php:210
+msgid "Buku"
+msgstr "Books"
+
+#: inc/helpers.php:211
+msgid "Materi Edukasi"
+msgstr "Educational Materials"
+
+#: inc/helpers.php:212
+msgid "Buletin"
+msgstr "Bulletin"
+
+#: inc/helpers.php:213
+msgid "Blog"
+msgstr "Blog"
+
+#: inc/helpers.php:214
+msgid "Siaran Pers"
+msgstr "Press Releases"
+
+#: inc/helpers.php:215
+msgid "Galeri"
+msgstr "Gallery"
+
+#: inc/helpers.php:424
+#: inc/helpers.php:438
+msgid "Indonesia (ID)"
+msgstr "Indonesia (ID)"
+
+#: inc/helpers.php:425
+msgid "English (EN)"
+msgstr "English (EN)"
+
+#: inc/helpers.php:426
+msgid "Español (ES)"
+msgstr "Español (ES)"
+
+#: template-parts/global/footer.php:13
+msgid "Menyelamatkan dan melestarikan satwa liar Indonesia untuk generasi mendatang."
+msgstr "Protecting and preserving Indonesia's wildlife for future generations."
+
+#: template-parts/global/footer.php:16
+#: template-parts/global/footer.php:17
+msgid "Email Anda"
+msgstr "Your Email"
+
+#: template-parts/global/footer.php:19
+msgid "Langganan"
+msgstr "Subscribe"
+
+#: template-parts/global/footer.php:29
+msgid "All Rights Reserved"
+msgstr "All Rights Reserved"
+
+#: template-parts/global/footer.php:31
+msgid "Privacy"
+msgstr "Privacy"
+
+#: template-parts/global/footer.php:32
+msgid "Terms"
+msgstr "Terms"
+
+#: template-parts/global/footer.php:37
+msgid "Instagram"
+msgstr "Instagram"
+
+#: template-parts/global/footer.php:38
+msgid "X"
+msgstr "X"
+
+#: template-parts/global/footer.php:39
+msgid "Facebook"
+msgstr "Facebook"
+
+#: template-parts/global/footer.php:40
+msgid "YouTube"
+msgstr "YouTube"
+
+#: template-parts/global/footer.php:51
+msgid "Kembali ke atas"
+msgstr "Back to Top"
+
+#: template-parts/global/header.php:39
+msgid "Search"
+msgstr "Search"
+
+#: template-parts/global/header.php:41
+#: template-parts/global/header.php:107
+msgid "Cari"
+msgstr "Search"
+
+#: template-parts/global/header.php:52
+#: template-parts/global/header.php:128
+msgid "Donasi"
+msgstr "Donate"
+
+#: template-parts/global/header.php:55
+msgid "Menu"
+msgstr "Menu"
+
+#: template-parts/sections/about-hero.php:4
+msgid "YIARI berdiri untuk memberikan perlindungan, rehabilitasi, dan kesempatan kedua bagi satwa liar Indonesia yang terancam. Dari penyelamatan darurat hingga pelepasliaran kembali ke habitat alami."
+msgstr "YIARI exists to provide protection, rehabilitation, and a second chance for threatened Indonesian wildlife, from emergency rescue to release back into their natural habitat."
+
+#: template-parts/sections/about-hero.php:14
+msgid "About YIARI"
+msgstr "About YIARI"
+
+#: template-parts/sections/about-org.php:4
+msgid "Didukung oleh pengurus dan profesional berpengalaman untuk memastikan tata kelola yang efektif dan berintegritas."
+msgstr "Supported by experienced board members and professionals to ensure effective and accountable governance."
+
+#: template-parts/sections/about-org.php:8
+msgid "Pembina Yayasan"
+msgstr "Foundation Trustees"
+
+#: template-parts/sections/about-org.php:9
+msgid "Pengawas Yayasan"
+msgstr "Foundation Supervisors"
+
+#: template-parts/sections/about-org.php:9
+msgid "Ketua Pengawas"
+msgstr "Chief Supervisor"
+
+#: template-parts/sections/about-org.php:9
+msgid "Pengawas"
+msgstr "Supervisor"
+
+#: template-parts/sections/about-timeline.php:4
+msgid "Setiap aksi yang kami lakukan menghasilkan perubahan nyata: satwa diselamatkan, dipulihkan, dan kembali ke alamnya."
+msgstr "Every action we take creates real change: wildlife is rescued, rehabilitated, and returned to the wild."
+
+#: template-parts/sections/about-timeline.php:8
+msgid "Awal Fasilitas"
+msgstr "Facility Beginnings"
+
+#: template-parts/sections/about-timeline.php:8
+msgid "Pusat rehabilitasi primata di Ciapus, Bogor didirikan khusus untuk kukang dan makaka, sekaligus menjadi pusat rehabilitasi kukang pertama di Indonesia."
+msgstr "A primate rehabilitation center in Ciapus, Bogor was established for slow lorises and macaques, becoming Indonesia's first slow loris rehabilitation center."
+
+#: template-parts/sections/about-timeline.php:9
+msgid "Status Legal"
+msgstr "Legal Status"
+
+#: template-parts/sections/about-timeline.php:9
+msgid "YIARI resmi mendapat status legal dan mulai menolong lebih banyak satwa liar Indonesia."
+msgstr "YIARI officially received legal status and began helping more Indonesian wildlife."
+
+#: template-parts/sections/about-timeline.php:10
+msgid "Ekspansi Rehabilitasi"
+msgstr "Rehabilitation Expansion"
+
+#: template-parts/sections/about-timeline.php:10
+msgid "Pusat rehabilitasi orangutan di Ketapang berdiri lengkap dengan fasilitas medis dan kawasan hutan seluas ±200 hektar."
+msgstr "An orangutan rehabilitation center in Ketapang was established with medical facilities and approximately 200 hectares of forest area."
+
+#: template-parts/sections/about-timeline.php:11
+msgid "Pusat Pembelajaran"
+msgstr "Learning Center"
+
+#: template-parts/sections/about-timeline.php:11
+msgid "Pusat pembelajaran di Kalimantan diresmikan dengan fasilitas lengkap untuk pelatihan, lokakarya, dan edukasi."
+msgstr "A learning center in Kalimantan was inaugurated with complete facilities for training, workshops, and education."
+
+#: template-parts/sections/about-vision.php:3
+msgid "Visi &amp; Misi YIARI"
+msgstr "YIARI Vision &amp; Mission"
+
+#: template-parts/sections/about-vision.php:6
+msgid "Dunia tempat manusia dan satwa hidup berdampingan dalam ekosistem yang sehat."
+msgstr "A world where humans and wildlife coexist in a healthy ecosystem."
+
+#: template-parts/sections/about-vision.php:8
+msgid "Membangun kesadaran dan kepedulian serta mengimplementasikan sistem yang efektif yang melindungi satwa dan habitatnya."
+msgstr "To build awareness and care while implementing effective systems that protect wildlife and their habitats."
+
+#: template-parts/sections/about-vision.php:16
+msgid "Orangutan dalam perawatan tim YIARI"
+msgstr "Orangutan in the care of the YIARI team"
+
+#: template-parts/sections/approach.php:3
+msgid ""
+"Pendekatan\n"
+"Konservasi yang\n"
+"Terintegrasi"
+msgstr ""
+"An Integrated\n"
+"Conservation\n"
+"Approach"
+
+#: template-parts/sections/approach.php:4
+msgid "Dari penyelamatan satwa terlantar hingga pemberdayaan masyarakat, setiap program dirancang untuk menciptakan dampak jangka panjang."
+msgstr "From rescuing displaced wildlife to empowering communities, every program is designed to create long-term impact."
+
+#: template-parts/sections/approach.php:8
+msgid "Penyelamatan dan rehabilitasi"
+msgstr "Rescue and rehabilitation"
+
+#: template-parts/sections/approach.php:9
+msgid "Restorasi ekosistem"
+msgstr "Ecosystem restoration"
+
+#: template-parts/sections/approach.php:10
+msgid "Pendidikan masyarakat"
+msgstr "Community education"
+
+#: template-parts/sections/approach.php:11
+msgid "Ekonomi berkelanjutan"
+msgstr "Sustainable livelihoods"
+
+#: template-parts/sections/approach.php:12
+msgid "Kesehatan holistik"
+msgstr "Holistic health"
+
+#: template-parts/sections/approach.php:13
+msgid "Perlindungan"
+msgstr "Protection"
+
+#: template-parts/sections/approach.php:13
+msgid "Penjagaan Satwa"
+msgstr "Wildlife protection"
+
+#: template-parts/sections/approach.php:42
+msgid "Konservasi"
+msgstr "Conservation"
+
+#: template-parts/sections/crisis.php:4
+msgid "Data lengkap dari lapangan yang menunjukkan capaian nyata dari setiap krisis dan data yang dikumpulkan kami."
+msgstr "Field data that shows the real scale of each crisis and the evidence gathered by our team."
+
+#: template-parts/sections/crisis.php:8
+msgid "Perdagangan Satwa Liar"
+msgstr "Wildlife Trafficking"
+
+#: template-parts/sections/crisis.php:8
+msgid "Ribuan satwa liar Indonesia diperdagangkan secara ilegal, merusak populasi dan keseimbangan ekosistem."
+msgstr "Thousands of Indonesian wild animals are traded illegally, damaging populations and ecosystem balance."
+
+#: template-parts/sections/crisis.php:9
+msgid "Kehilangan Habitat"
+msgstr "Habitat Loss"
+
+#: template-parts/sections/crisis.php:9
+msgid "Deforestasi besar-besaran menghilangkan jutaan hektar hutan tropis. Satwa kehilangan tempat tinggal yang alami."
+msgstr "Large-scale deforestation destroys millions of hectares of tropical forest. Wildlife loses its natural home."
+
+#: template-parts/sections/crisis.php:10
+msgid "Konflik Manusia-Satwa"
+msgstr "Human-Wildlife Conflict"
+
+#: template-parts/sections/crisis.php:10
+msgid "Perluasan wilayah manusia menimbulkan konflik menegangkan. Satwa liar terdesak akibat deforestasi."
+msgstr "The expansion of human activity creates escalating conflict. Wildlife is pushed out by deforestation."
+
+#: template-parts/sections/donate-cta.php:3
+msgid "Dari perawatan darurat hingga pelepasliaran. Dukungan Anda membuat perbedaan nyata bagi masa depan satwa Indonesia."
+msgstr "From emergency care to release back into the wild, your support makes a real difference for the future of Indonesia's wildlife."
+
+#: template-parts/sections/donate-cta.php:22
+msgid "Donasi untuk satwa"
+msgstr "Donate for wildlife"
+
+#: template-parts/sections/donate-cta.php:24
+msgid "Orangutan"
+msgstr "Orangutan"
+
+#: template-parts/sections/hero.php:3
+msgid "Bersama<br>Selamatkan Alam"
+msgstr "Together<br>Save Nature"
+
+#: template-parts/sections/news.php:2
+msgid "Berita Terkini"
+msgstr "Latest News"
+
+#: template-parts/sections/news.php:3
+msgid "Dari Lapangan"
+msgstr "From the Field"
+
+#: template-parts/sections/news.php:21
+msgid "Lihat Semua Cerita"
+msgstr "View All Stories"
+
+#: template-parts/sections/news.php:28
+#: template-parts/sections/news.php:40
+msgid "Oleh"
+msgstr "By"
+
+#: template-parts/sections/stats.php:4
+msgid "Data langsung dari lapangan yang menunjukkan dampak nyata dari setiap donasi dan dukungan Anda."
+msgstr "Direct field data showing the real impact of every donation and every form of support."
+
+#: template-parts/sections/stats.php:8
+msgid "Satwa telah diselamatkan"
+msgstr "Animals rescued"
+
+#: template-parts/sections/stats.php:9
+msgid "Hektar lahan telah direstorasi"
+msgstr "Hectares restored"
+
+#: template-parts/sections/stats.php:10
+msgid "Anak telah menerima pelatihan"
+msgstr "Children trained"
+
+#: template-parts/sections/stats.php:11
+msgid "Kelompok binaan telah didampingi"
+msgstr "Community groups supported"
+
+#: template-parts/sections/stats.php:12
+msgid "Penyuluhan lingkungan telah dilaksanakan"
+msgstr "Environmental outreach sessions conducted"
+
+#: template-parts/sections/stats.php:26
+msgid "Previous"
+msgstr "Previous"
+
+#: template-parts/sections/stats.php:29
+msgid "Next"
+msgstr "Next"
+
+#: template-parts/sections/story.php:3
+msgid "Barda: Dari Nyaris Mati ke Duta Konservasi"
+msgstr "Barda: From Near Death to a Conservation Ambassador"
+
+#: template-parts/sections/story.php:4
+msgid "Ditemukan dengan luka tembak di kepala, kehilangan penglihatan, dan trauma mental mendalam. Tim YIARI memberikan perawatan medis intensif dan rehabilitasi jangka panjang."
+msgstr "Found with a gunshot wound to the head, vision loss, and deep trauma, Barda received intensive medical care and long-term rehabilitation from the YIARI team."
+
+#: template-parts/sections/story.php:5
+msgid "Setelah berbulan-bulan perawatan, Barda kini hidup aman di pusat rehabilitasi kami. Ia menjadi simbol harapan yang menginspirasi ribuan orang untuk melindungi satwa Indonesia."
+msgstr "After months of treatment, Barda now lives safely in our rehabilitation center. He has become a symbol of hope that inspires thousands to protect Indonesia's wildlife."
+
+#. Template Name of the theme
+msgid "About Us"
+msgstr "About Us"
+
+#. Template Name of the theme
+msgid "Home"
+msgstr "Home"
