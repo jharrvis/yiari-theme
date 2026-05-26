@@ -44,7 +44,7 @@ img { max-width: 100%; height: auto; }
 .dropdown-menu-lang { min-width: 140px; }
 .dropdown-link-active { color: #395AA8 !important; font-weight: 700 !important; }
 
-.fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s ease; }
 .fade-in.visible { opacity: 1; transform: none; }
 
 .navbar { position: sticky; top: 0; z-index: 1000; background: white; border-bottom: 1px solid #f0f0f0; }
@@ -122,6 +122,11 @@ img { max-width: 100%; height: auto; }
 .btn-outline { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; background: transparent; border: 2px solid var(--color-primary); border-radius: 8px; color: var(--color-primary); font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; transition: all .2s; }
 .btn-outline:hover { background: var(--color-primary); color: white; }
 
+.link-more { display: inline-flex; align-items: center; gap: 8px; color: #395AA8; font-size: 15px; font-weight: 600; text-decoration: none; transition: gap .2s; }
+.link-more:hover { gap: 12px; }
+.location-card-link { display: inline-flex; align-items: center; gap: 7px; color: #3f63b8; font-size: 13px; font-weight: 500; text-decoration: none; transition: gap .2s ease, color .2s ease; }
+.location-card-link:hover { gap: 11px; color: #5c7bd0; }
+
 .section-label { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--color-primary); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
 .section-label::before { content: '◆'; font-size: 6px; }
 .section-label-circle::before { content: '●'; font-size: 10px; }
@@ -198,8 +203,7 @@ img { max-width: 100%; height: auto; }
 .news-title { margin-bottom: 12px; color: #111827; font-family: 'Northwoods', serif; font-size: 18px; font-weight: 700; line-height: 1.4; }
 .news-featured .news-title { font-size: 28px; }
 .news-excerpt { margin-bottom: 20px; color: #4b5563; font-size: 16px; line-height: 1.6; }
-.link-more { display: inline-flex; align-items: center; gap: 8px; color: #395AA8; font-size: 15px; font-weight: 600; text-decoration: none; transition: gap .2s; }
-.link-more:hover { gap: 12px; }
+
 
 .section-partners { padding: 64px 0; background: white; }
 .partners-layout { display: block; }
@@ -288,8 +292,7 @@ img { max-width: 100%; height: auto; }
 .location-card-body { padding-top: 14px; }
 .location-card-title { margin-bottom: 10px; color: #111827; font-family: 'Northwoods', serif; font-size: 20px; font-weight: 700; line-height: 1.28; letter-spacing: -.02em; }
 .location-card-text { margin-bottom: 14px; color: #6b7280; font-size: 15px; line-height: 1.55; }
-.location-card-link { display: inline-flex; align-items: center; gap: 7px; color: #3f63b8; font-size: 13px; font-weight: 500; text-decoration: none; transition: gap .2s ease, color .2s ease; }
-.location-card-link:hover { gap: 11px; color: #5c7bd0; }
+
 .location-section-header-secondary { margin-top: 52px; }
 
 .section-donate { padding: 0; background: #ecf2f7; overflow: hidden; }
