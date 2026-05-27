@@ -1,7 +1,7 @@
 <?php
 $hero_image    = yiari_field('hero_image');
 $hero_title    = yiari_field('hero_title', __('Bersama<br>Selamatkan Alam', 'yiari'));
-$hero_subtitle = yiari_field('hero_subtitle', __('Bersama kita bisa menjaga satwa liar tetap hidup di alamnya', 'yiari'));
+$hero_subtitle = yiari_field('hero_subtitle', __('Bersama kita bisa menjaga satwa liar tetap hidup di alamnya.', 'yiari'));
 $cta_text      = yiari_field('hero_cta_text', __('Donasi Sekarang', 'yiari'));
 $cta_url       = yiari_field('hero_cta_url', yiari_fragment_url('donate'));
 ?>
