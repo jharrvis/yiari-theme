@@ -3,7 +3,6 @@ document.addEventListener('alpine:init', () => {
   const COUNTER_THRESHOLD = 0.5;
   const COUNTER_DURATION = 1800;
   const APPROACH_IMAGE_FADE_DURATION = 150;
-  const STATS_SCROLL_DISTANCE = 276;
 
   Alpine.data('siteUI', () => ({
     mobileMenuOpen: false,
@@ -19,16 +18,23 @@ document.addEventListener('alpine:init', () => {
     minSearchChars: Number(window.yiariSearch?.minChars || 3),
     searchStrings: window.yiariSearch?.strings || {},
     scrolled: false,
+    statsActivePage: 0,
+    statsPageCount: 1,
+    statsItemsPerPage: 1,
+    statsCanScroll: false,
+    statsIsMobile: false,
 
     init() {
       this.handleScroll();
       window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+      window.addEventListener('resize', () => this.updateStatsMetrics(), { passive: true });
       document.addEventListener('click', (event) => this.handleOutsideClick(event));
       window.addEventListener('load', () => this.initLucide(), { once: true });
 
       this.initLucide();
       this.initFadeIn();
       this.initCounters();
+      this.$nextTick(() => this.initStatsCarousel());
     },
 
     get navbarStyle() {
@@ -188,10 +194,81 @@ document.addEventListener('alpine:init', () => {
         return;
       }
 
-      this.$refs.statsGrid.scrollBy({
-        left: direction === 'next' ? STATS_SCROLL_DISTANCE : -STATS_SCROLL_DISTANCE,
+      const targetPage = direction === 'next'
+        ? Math.min(this.statsActivePage + 1, this.statsPageCount - 1)
+        : Math.max(this.statsActivePage - 1, 0);
+
+      this.scrollStatsToPage(targetPage);
+    },
+
+    scrollStatsToPage(page) {
+      if (!this.$refs.statsGrid) {
+        return;
+      }
+
+      const grid = this.$refs.statsGrid;
+      const nextPage = Math.max(0, Math.min(page, this.statsPageCount - 1));
+      const card = grid.querySelector('.stat-card');
+
+      if (!card) {
+        return;
+      }
+
+      const gap = parseFloat(window.getComputedStyle(grid).columnGap || window.getComputedStyle(grid).gap || '0');
+      const cardWidth = card.getBoundingClientRect().width;
+      const step = this.statsIsMobile ? ((cardWidth + gap) * this.statsItemsPerPage) : grid.clientWidth;
+
+      grid.scrollTo({
+        left: nextPage * step,
         behavior: 'smooth'
       });
+    },
+
+    handleStatsScroll() {
+      if (!this.$refs.statsGrid || !this.statsCanScroll) {
+        return;
+      }
+
+      const grid = this.$refs.statsGrid;
+      const card = grid.querySelector('.stat-card');
+
+      if (!card) {
+        return;
+      }
+
+      const gap = parseFloat(window.getComputedStyle(grid).columnGap || window.getComputedStyle(grid).gap || '0');
+      const cardWidth = card.getBoundingClientRect().width;
+      const step = this.statsIsMobile ? ((cardWidth + gap) * this.statsItemsPerPage) : grid.clientWidth;
+
+      this.statsActivePage = Math.max(0, Math.min(this.statsPageCount - 1, Math.round(grid.scrollLeft / Math.max(step, 1))));
+    },
+
+    initStatsCarousel() {
+      this.updateStatsMetrics();
+    },
+
+    updateStatsMetrics() {
+      if (!this.$refs.statsGrid) {
+        return;
+      }
+
+      const grid = this.$refs.statsGrid;
+      const cards = Array.from(grid.querySelectorAll('.stat-card'));
+      const viewport = window.innerWidth;
+      const totalItems = cards.length;
+
+      this.statsIsMobile = viewport <= 768;
+      this.statsItemsPerPage = this.statsIsMobile ? 2 : (viewport <= 1024 ? 3 : totalItems);
+      this.statsPageCount = Math.max(1, Math.ceil(totalItems / this.statsItemsPerPage));
+      this.statsCanScroll = viewport <= 1024 && totalItems > this.statsItemsPerPage;
+
+      if (!this.statsCanScroll) {
+        this.statsActivePage = 0;
+        grid.scrollTo({ left: 0, behavior: 'auto' });
+        return;
+      }
+
+      this.handleStatsScroll();
     },
 
     initLucide() {

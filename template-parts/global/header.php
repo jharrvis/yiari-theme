@@ -52,11 +52,14 @@
       <a href="<?php echo esc_url(yiari_fragment_url('donate')); ?>" class="btn-donate" id="donate-nav-btn"><?php echo esc_html__('Donasi', 'yiari'); ?></a>
     </div>
 
-    <button class="hamburger-btn" id="hamburger" x-ref="hamburger" aria-label="<?php echo esc_attr__('Menu', 'yiari'); ?>" type="button" @click="toggleMenu()">
-      <span :class="{ 'hamburger-line-top': mobileMenuOpen }"></span>
-      <span :class="{ 'hamburger-line-middle': mobileMenuOpen }"></span>
-      <span :class="{ 'hamburger-line-bottom': mobileMenuOpen }"></span>
-    </button>
+    <div class="mobile-header-actions">
+      <a href="<?php echo esc_url(yiari_fragment_url('donate')); ?>" class="btn-donate mobile-header-donate"><?php echo esc_html__('Donasi', 'yiari'); ?></a>
+      <button class="hamburger-btn" id="hamburger" x-ref="hamburger" aria-label="<?php echo esc_attr__('Menu', 'yiari'); ?>" type="button" @click="toggleMenu()">
+        <span :class="{ 'hamburger-line-top': mobileMenuOpen }"></span>
+        <span :class="{ 'hamburger-line-middle': mobileMenuOpen }"></span>
+        <span :class="{ 'hamburger-line-bottom': mobileMenuOpen }"></span>
+      </button>
+    </div>
   </div>
 
   <div class="search-panel" id="searchPanel" x-ref="searchPanel" :class="{ open: searchOpen }">
@@ -101,31 +104,60 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu" x-ref="mobileMenu" :class="{ open: mobileMenuOpen }">
-  <div class="mobile-actions">
-    <button class="nav-icon-btn mobile-action-btn" id="mobile-search-btn" type="button" data-search-toggle @click.prevent="toggleSearch()">
-      <i data-lucide="search" class="icon-sm"></i>
-      <span class="nav-action-text"><?php echo esc_html__('Cari', 'yiari'); ?></span>
-    </button>
-
-    <div class="mobile-dropdown mobile-dropdown-half">
-      <button
-        class="nav-icon-btn lang-btn mobile-dropdown-toggle mobile-action-btn"
-        id="mobile-lang-btn"
-        type="button"
-        @click.prevent="mobileLangOpen = !mobileLangOpen"
-        :class="{ active: mobileLangOpen }"
-      >
-        <i data-lucide="globe" class="icon-sm"></i>
-        <span class="nav-action-text"><?php echo esc_html($current_language['slug']); ?> <i data-lucide="chevron-down" class="chevron lang-chevron"></i></span>
-      </button>
-      <?php yiari_render_language_switcher(true); ?>
-    </div>
-  </div>
-
   <?php yiari_render_primary_mobile_menu(); ?>
 
-  <div class="mobile-menu-divider">
-    <a href="<?php echo esc_url(yiari_fragment_url('donate')); ?>" class="btn-primary mobile-donate-btn"><?php echo esc_html__('Donasi', 'yiari'); ?></a>
+  <div class="mobile-dropdown mobile-menu-divider mobile-menu-lang-row">
+    <button
+      class="nav-link mobile-dropdown-toggle mobile-menu-row mobile-menu-row-button"
+      id="mobile-lang-btn"
+      type="button"
+      @click.prevent="mobileLangOpen = !mobileLangOpen"
+      :class="{ active: mobileLangOpen }"
+    >
+      <span class="mobile-menu-row-main">
+        <i data-lucide="globe" class="icon-sm mobile-menu-row-icon"></i>
+        <span><?php echo esc_html($current_language['label']); ?></span>
+      </span>
+      <i data-lucide="chevron-down" class="chevron submenu-chevron"></i>
+    </button>
+    <?php yiari_render_language_switcher(true); ?>
+  </div>
+
+  <div class="mobile-menu-divider mobile-search-block">
+    <div class="mobile-search-row">
+      <input
+        type="text"
+        :placeholder="searchStrings.searchPlaceholder"
+        class="mobile-search-input"
+        x-model="searchQuery"
+        @input="handleSearchInput()"
+      />
+      <button class="mobile-search-submit" type="button" @click.prevent="toggleSearch()">
+        <span><?php echo esc_html__('Cari', 'yiari'); ?></span>
+        <i data-lucide="arrow-right" class="icon-sm"></i>
+      </button>
+    </div>
+
+    <div class="mobile-search-results" x-show="searchQuery.trim().length || searchLoading || searchResults.length" x-transition.opacity.duration.150ms>
+      <div class="search-results-status" x-show="searchQuery.trim().length > 0 && searchQuery.trim().length < minSearchChars" x-text="minCharsMessage"></div>
+      <div class="search-results-status" x-show="searchLoading" x-text="searchStrings.loading"></div>
+      <div class="search-results-status" x-show="!searchLoading && searchQuery.trim().length >= minSearchChars && !searchResults.length && searchTouched" x-text="searchStrings.empty"></div>
+
+      <div class="search-results-list" x-show="searchResults.length">
+        <template x-for="item in searchResults" :key="item.id">
+          <a class="search-result-card" :href="item.url" @click="mobileMenuOpen = false">
+            <div class="search-result-thumb">
+              <img :src="item.image" :alt="item.title" loading="lazy" />
+            </div>
+            <div class="search-result-body">
+              <span class="search-result-type" x-text="item.type"></span>
+              <div class="search-result-title" x-text="item.title"></div>
+            </div>
+            <i data-lucide="arrow-right" class="search-result-icon"></i>
+          </a>
+        </template>
+      </div>
+    </div>
   </div>
 </div>
 
