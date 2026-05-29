@@ -88,11 +88,15 @@ add_action('acf/init', function () {
                 'sub_fields' => [
                     ['key' => 'field_approach_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
                     ['key' => 'field_approach_subtitle', 'label' => __('Subtitle', 'yiari'), 'name' => 'subtitle', 'type' => 'text'],
+                    ['key' => 'field_approach_details', 'label' => __('Deskripsi Detail', 'yiari'), 'name' => 'details', 'type' => 'textarea', 'rows' => 4],
+                    ['key' => 'field_approach_button_text', 'label' => __('Teks Tombol', 'yiari'), 'name' => 'button_text', 'type' => 'text', 'default_value' => __('Lihat Program', 'yiari')],
+                    ['key' => 'field_approach_button_url', 'label' => __('URL Tombol', 'yiari'), 'name' => 'button_url', 'type' => 'url'],
                     ['key' => 'field_approach_image', 'label' => __('Gambar', 'yiari'), 'name' => 'image', 'type' => 'image', 'return_format' => 'array'],
                 ],
             ],
 
             ['key' => 'field_home_donate_tab', 'label' => __('Donate CTA Section', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_home_donate_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'donate_label', 'type' => 'text', 'default_value' => __('DUKUNGAN ANDA', 'yiari')],
             ['key' => 'field_home_donate_title', 'label' => __('Judul', 'yiari'), 'name' => 'donate_title', 'type' => 'text', 'default_value' => __('Setiap Donasi Menyelamatkan Nyawa', 'yiari')],
             ['key' => 'field_home_donate_text', 'label' => __('Teks', 'yiari'), 'name' => 'donate_text', 'type' => 'textarea', 'rows' => 3],
             ['key' => 'field_home_donate_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'donate_btn1_text', 'type' => 'text', 'default_value' => __('Donasi Sekarang', 'yiari')],
