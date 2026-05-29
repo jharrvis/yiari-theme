@@ -29,6 +29,7 @@ get_template_part('template-parts/global/header');
     $hero_alt = get_post_meta(get_post_thumbnail_id($post_id), '_wp_attachment_image_alt', true) ?: get_the_title();
     $hero_caption = wp_get_attachment_caption(get_post_thumbnail_id($post_id));
     $author_name = get_the_author();
+    $author_url = get_author_posts_url((int) get_the_author_meta('ID'));
     $tag_terms = get_the_tags($post_id) ?: [];
     $display_tags = array_slice($tag_terms, 0, 3);
 
@@ -74,7 +75,7 @@ get_template_part('template-parts/global/header');
             <span class="single-post-meta-dot">&bull;</span>
             <span class="single-post-meta-item">
               <i data-lucide="pen-line" class="icon-sm"></i>
-              <span><?php echo esc_html($author_name); ?></span>
+              <a href="<?php echo esc_url($author_url); ?>" class="single-post-meta-link"><?php echo esc_html($author_name); ?></a>
             </span>
           </div>
 
@@ -102,7 +103,7 @@ get_template_part('template-parts/global/header');
           <?php if ($display_tags): ?>
             <div class="single-post-tags">
               <?php foreach ($display_tags as $tag): ?>
-                <span class="single-post-tag"><?php echo esc_html($tag->name); ?></span>
+                <a href="<?php echo esc_url(get_tag_link($tag)); ?>" class="single-post-tag"><?php echo esc_html($tag->name); ?></a>
               <?php endforeach; ?>
             </div>
           <?php endif; ?>
@@ -127,7 +128,7 @@ get_template_part('template-parts/global/header');
                     <div class="single-post-related-meta">
                       <span><?php echo esc_html(get_the_date('j F Y')); ?></span>
                       <span class="single-post-related-meta-dot">&bull;</span>
-                      <span><?php echo esc_html(get_the_author()); ?></span>
+                      <a href="<?php echo esc_url(get_author_posts_url((int) get_the_author_meta('ID'))); ?>" class="single-post-related-author"><?php echo esc_html(get_the_author()); ?></a>
                     </div>
                     <a href="<?php the_permalink(); ?>" class="single-post-related-link">
                       <span><?php echo esc_html__('Baca Selengkapnya', 'yiari'); ?></span>
