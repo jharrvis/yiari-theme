@@ -24,7 +24,7 @@ $timeline_icons = ['building-2', 'heart-handshake', 'leaf', 'graduation-cap'];
           aria-label="<?php echo esc_attr__('Previous', 'yiari'); ?>"
           type="button"
           @click="scrollTimeline('prev')"
-          :disabled="!timelineCanScroll || timelineActivePage === 0"
+          :disabled="!timelineCanScroll"
         >
           <i data-lucide="chevron-left" class="icon-md"></i>
         </button>
@@ -33,7 +33,7 @@ $timeline_icons = ['building-2', 'heart-handshake', 'leaf', 'graduation-cap'];
           aria-label="<?php echo esc_attr__('Next', 'yiari'); ?>"
           type="button"
           @click="scrollTimeline('next')"
-          :disabled="!timelineCanScroll || timelineActivePage >= timelinePageCount - 1"
+          :disabled="!timelineCanScroll"
         >
           <i data-lucide="chevron-right" class="icon-md"></i>
         </button>

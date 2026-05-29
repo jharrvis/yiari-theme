@@ -215,8 +215,9 @@ img { max-width: 100%; height: auto; }
 .stat-icon-wrap { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #dfe3ea; border-radius: 12px; background: rgba(255, 255, 255, .95); flex: 0 0 auto; }
 .stat-icon { display: block; width: 18px; height: 18px; object-fit: contain; }
 .stat-label { color: #6c707b; font-size: 16px; line-height: 1.58; letter-spacing: -.01em; }
-.stats-arrow { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: #ffffff; border: 1px solid #eceef2; border-radius: 999px; color: #6b7280; cursor: pointer; transition: color .2s, border-color .2s, background .2s, opacity .2s; }
-.stats-arrow:hover:not(:disabled) { color: #395AA8; border-color: #cfd7ea; background: #f8faff; }
+.stats-arrow { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: #ffffff; border: 1px solid #e8ebf0; border-radius: 12px; color: #9ca3af; cursor: pointer; box-shadow: none; transition: color .2s, border-color .2s, background .2s, opacity .2s; }
+.stats-arrow:hover:not(:disabled),
+.stats-arrow:active:not(:disabled) { color: #395AA8; border-color: #d7dce5; background: #f3f4f6; box-shadow: none; }
 .stats-arrow:disabled { opacity: .45; cursor: default; }
 .stats-indicators { display: none; align-items: center; justify-content: center; gap: 6px; margin-top: 16px; }
 .stats-indicator-btn { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 10px; padding: 0; background: transparent; border: 0; cursor: pointer; }

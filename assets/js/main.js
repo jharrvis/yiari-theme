@@ -287,10 +287,12 @@ document.addEventListener('alpine:init', () => {
         return;
       }
 
+      const currentPage = this.getNearestTimelinePage();
       const targetPage = direction === 'next'
-        ? Math.min(this.timelineActivePage + 1, this.timelinePageCount - 1)
-        : Math.max(this.timelineActivePage - 1, 0);
+        ? (currentPage + 1) % this.timelinePageCount
+        : (currentPage - 1 + this.timelinePageCount) % this.timelinePageCount;
 
+      this.timelineActivePage = targetPage;
       this.scrollTimelineToPage(targetPage);
     },
 
@@ -301,18 +303,14 @@ document.addEventListener('alpine:init', () => {
 
       const grid = this.$refs.timelineGrid;
       const nextPage = Math.max(0, Math.min(page, this.timelinePageCount - 1));
-      const card = grid.querySelector('.about-timeline-item');
+      const pageOffsets = this.getTimelinePageOffsets();
 
-      if (!card) {
+      if (!pageOffsets.length) {
         return;
       }
 
-      const gap = parseFloat(window.getComputedStyle(grid).columnGap || window.getComputedStyle(grid).gap || '0');
-      const cardWidth = card.getBoundingClientRect().width;
-      const step = this.timelineIsMobile ? ((cardWidth + gap) * this.timelineItemsPerPage) : grid.clientWidth;
-
       grid.scrollTo({
-        left: nextPage * step,
+        left: pageOffsets[nextPage] ?? 0,
         behavior: 'smooth'
       });
     },
@@ -322,18 +320,7 @@ document.addEventListener('alpine:init', () => {
         return;
       }
 
-      const grid = this.$refs.timelineGrid;
-      const card = grid.querySelector('.about-timeline-item');
-
-      if (!card) {
-        return;
-      }
-
-      const gap = parseFloat(window.getComputedStyle(grid).columnGap || window.getComputedStyle(grid).gap || '0');
-      const cardWidth = card.getBoundingClientRect().width;
-      const step = this.timelineIsMobile ? ((cardWidth + gap) * this.timelineItemsPerPage) : grid.clientWidth;
-
-      this.timelineActivePage = Math.max(0, Math.min(this.timelinePageCount - 1, Math.round(grid.scrollLeft / Math.max(step, 1))));
+      this.timelineActivePage = this.getNearestTimelinePage();
     },
 
     initTimelineCarousel() {
@@ -362,6 +349,52 @@ document.addEventListener('alpine:init', () => {
       }
 
       this.handleTimelineScroll();
+    },
+
+    getNearestTimelinePage() {
+      if (!this.$refs.timelineGrid) {
+        return 0;
+      }
+
+      const grid = this.$refs.timelineGrid;
+      const pageOffsets = this.getTimelinePageOffsets();
+
+      if (!pageOffsets.length) {
+        return 0;
+      }
+
+      let nearestPage = 0;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      pageOffsets.forEach((offset, index) => {
+        const distance = Math.abs(grid.scrollLeft - offset);
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestPage = index;
+        }
+      });
+
+      return Math.max(0, Math.min(this.timelinePageCount - 1, nearestPage));
+    },
+
+    getTimelinePageOffsets() {
+      if (!this.$refs.timelineGrid) {
+        return [];
+      }
+
+      const grid = this.$refs.timelineGrid;
+      const cards = Array.from(grid.querySelectorAll('.about-timeline-item'));
+
+      if (!cards.length) {
+        return [];
+      }
+
+      const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
+
+      return cards
+        .filter((_, index) => index % this.timelineItemsPerPage === 0)
+        .map((card) => Math.min(card.offsetLeft, maxScroll));
     },
 
     initLucide() {
