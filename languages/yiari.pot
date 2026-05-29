@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: YIARI Theme 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/yiari-theme\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/yiari\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-25T19:32:37+00:00\n"
+"POT-Creation-Date: 2026-05-29T09:16:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yiari\n"
@@ -92,7 +92,7 @@ msgid "Hero Section"
 msgstr ""
 
 #: inc/acf-fields.php:22
-#: inc/acf-fields.php:102
+#: inc/acf-fields.php:117
 msgid "Gambar Hero"
 msgstr ""
 
@@ -109,7 +109,6 @@ msgid "Subtitle Hero"
 msgstr ""
 
 #: inc/acf-fields.php:24
-#: template-parts/sections/hero.php:4
 msgid "Bersama kita bisa menjaga satwa liar tetap hidup di alamnya"
 msgstr ""
 
@@ -119,8 +118,8 @@ msgstr ""
 
 #: inc/acf-fields.php:25
 #: inc/acf-fields.php:65
-#: inc/acf-fields.php:87
-#: template-parts/sections/donate-cta.php:4
+#: inc/acf-fields.php:102
+#: template-parts/sections/donate-cta.php:5
 #: template-parts/sections/hero.php:5
 #: template-parts/sections/story.php:8
 msgid "Donasi Sekarang"
@@ -137,10 +136,11 @@ msgstr ""
 #: inc/acf-fields.php:29
 #: inc/acf-fields.php:44
 #: inc/acf-fields.php:59
-#: inc/acf-fields.php:70
-#: inc/acf-fields.php:111
-#: inc/acf-fields.php:120
+#: inc/acf-fields.php:81
+#: inc/acf-fields.php:99
+#: inc/acf-fields.php:126
 #: inc/acf-fields.php:135
+#: inc/acf-fields.php:150
 msgid "Label Atas"
 msgstr ""
 
@@ -153,13 +153,13 @@ msgstr ""
 #: inc/acf-fields.php:45
 #: inc/acf-fields.php:53
 #: inc/acf-fields.php:60
-#: inc/acf-fields.php:71
-#: inc/acf-fields.php:78
-#: inc/acf-fields.php:85
-#: inc/acf-fields.php:103
-#: inc/acf-fields.php:121
-#: inc/acf-fields.php:129
+#: inc/acf-fields.php:82
+#: inc/acf-fields.php:89
+#: inc/acf-fields.php:100
+#: inc/acf-fields.php:118
 #: inc/acf-fields.php:136
+#: inc/acf-fields.php:144
+#: inc/acf-fields.php:151
 msgid "Judul"
 msgstr ""
 
@@ -171,9 +171,9 @@ msgstr ""
 #: inc/acf-fields.php:31
 #: inc/acf-fields.php:46
 #: inc/acf-fields.php:54
-#: inc/acf-fields.php:72
-#: inc/acf-fields.php:122
+#: inc/acf-fields.php:83
 #: inc/acf-fields.php:137
+#: inc/acf-fields.php:152
 msgid "Deskripsi"
 msgstr ""
 
@@ -220,8 +220,8 @@ msgid "Tambah Kartu Krisis"
 msgstr ""
 
 #: inc/acf-fields.php:52
-#: inc/acf-fields.php:80
-#: inc/acf-fields.php:113
+#: inc/acf-fields.php:94
+#: inc/acf-fields.php:128
 msgid "Gambar"
 msgstr ""
 
@@ -243,238 +243,276 @@ msgid "Paragraf 2"
 msgstr ""
 
 #: inc/acf-fields.php:63
-#: inc/acf-fields.php:87
+#: inc/acf-fields.php:102
 msgid "Tombol 1 - Teks"
 msgstr ""
 
 #: inc/acf-fields.php:63
-#: template-parts/sections/news.php:31
-#: template-parts/sections/news.php:42
+#: single.php:133
+#: template-parts/sections/news.php:32
+#: template-parts/sections/news.php:43
 #: template-parts/sections/story.php:6
 msgid "Baca Selengkapnya"
 msgstr ""
 
 #: inc/acf-fields.php:64
-#: inc/acf-fields.php:88
+#: inc/acf-fields.php:103
 msgid "Tombol 1 - URL"
 msgstr ""
 
 #: inc/acf-fields.php:65
-#: inc/acf-fields.php:89
+#: inc/acf-fields.php:104
 msgid "Tombol 2 - Teks"
 msgstr ""
 
 #: inc/acf-fields.php:66
-#: inc/acf-fields.php:90
+#: inc/acf-fields.php:105
 msgid "Tombol 2 - URL"
 msgstr ""
 
 #: inc/acf-fields.php:67
-msgid "Gambar Utama"
-msgstr ""
-
-#: inc/acf-fields.php:69
-msgid "Approach Section"
+msgid "Gambar Utama / Slide Pertama"
 msgstr ""
 
 #: inc/acf-fields.php:70
+msgid "Gallery Carousel"
+msgstr ""
+
+#: inc/acf-fields.php:77
+msgid "Tambahkan beberapa gambar untuk carousel. Gambar utama di atas akan dipakai sebagai slide pertama jika diisi."
+msgstr ""
+
+#: inc/acf-fields.php:80
+msgid "Approach Section"
+msgstr ""
+
+#: inc/acf-fields.php:81
 #: inc/helpers.php:176
-#: template-parts/global/footer.php:24
+#: template-parts/global/footer.php:32
 #: template-parts/sections/approach.php:2
 msgid "Program"
 msgstr ""
 
-#: inc/acf-fields.php:74
+#: inc/acf-fields.php:85
 msgid "Item Program"
 msgstr ""
 
-#: inc/acf-fields.php:76
+#: inc/acf-fields.php:87
 msgid "Tambah Program"
 msgstr ""
 
-#: inc/acf-fields.php:79
+#: inc/acf-fields.php:90
 msgid "Subtitle"
 msgstr ""
 
-#: inc/acf-fields.php:84
+#: inc/acf-fields.php:91
+msgid "Deskripsi Detail"
+msgstr ""
+
+#: inc/acf-fields.php:92
+msgid "Teks Tombol"
+msgstr ""
+
+#: inc/acf-fields.php:92
+#: template-parts/sections/approach.php:8
+#: template-parts/sections/approach.php:9
+#: template-parts/sections/approach.php:10
+#: template-parts/sections/approach.php:11
+#: template-parts/sections/approach.php:12
+#: template-parts/sections/approach.php:13
+#: template-parts/sections/approach.php:46
+#: template-parts/sections/approach.php:92
+msgid "Lihat Program"
+msgstr ""
+
+#: inc/acf-fields.php:93
+msgid "URL Tombol"
+msgstr ""
+
+#: inc/acf-fields.php:98
 msgid "Donate CTA Section"
 msgstr ""
 
-#: inc/acf-fields.php:85
+#: inc/acf-fields.php:99
 #: template-parts/sections/donate-cta.php:2
+msgid "DUKUNGAN ANDA"
+msgstr ""
+
+#: inc/acf-fields.php:100
+#: template-parts/sections/donate-cta.php:3
 msgid "Setiap Donasi Menyelamatkan Nyawa"
 msgstr ""
 
-#: inc/acf-fields.php:86
-#: inc/acf-fields.php:104
-#: inc/acf-fields.php:130
+#: inc/acf-fields.php:101
+#: inc/acf-fields.php:119
+#: inc/acf-fields.php:145
 msgid "Teks"
 msgstr ""
 
-#: inc/acf-fields.php:89
-#: template-parts/sections/donate-cta.php:6
+#: inc/acf-fields.php:104
+#: template-parts/sections/donate-cta.php:7
 msgid "Jadi Relawan"
 msgstr ""
 
-#: inc/acf-fields.php:91
+#: inc/acf-fields.php:106
 msgid "Gambar CTA"
 msgstr ""
 
-#: inc/acf-fields.php:97
+#: inc/acf-fields.php:112
 msgid "About Us - Sections"
 msgstr ""
 
-#: inc/acf-fields.php:101
+#: inc/acf-fields.php:116
 msgid "Hero"
 msgstr ""
 
-#: inc/acf-fields.php:103
+#: inc/acf-fields.php:118
 #: template-parts/sections/about-hero.php:3
 msgid ""
 "Untuk Mereka yang\n"
 "Tak Bisa Membela Diri"
 msgstr ""
 
-#: inc/acf-fields.php:105
+#: inc/acf-fields.php:120
 msgid "Tombol 1 Teks"
 msgstr ""
 
-#: inc/acf-fields.php:105
+#: inc/acf-fields.php:120
 #: template-parts/sections/about-hero.php:5
 msgid "Lihat Program Kami"
 msgstr ""
 
-#: inc/acf-fields.php:106
+#: inc/acf-fields.php:121
 msgid "Tombol 1 URL"
 msgstr ""
 
-#: inc/acf-fields.php:107
+#: inc/acf-fields.php:122
 msgid "Tombol 2 Teks"
 msgstr ""
 
-#: inc/acf-fields.php:107
+#: inc/acf-fields.php:122
 #: template-parts/sections/about-hero.php:7
 msgid "Pelajari Lebih Lanjut"
 msgstr ""
 
-#: inc/acf-fields.php:108
+#: inc/acf-fields.php:123
 msgid "Tombol 2 URL"
 msgstr ""
 
-#: inc/acf-fields.php:110
+#: inc/acf-fields.php:125
 msgid "Visi & Misi"
 msgstr ""
 
-#: inc/acf-fields.php:111
+#: inc/acf-fields.php:126
 #: template-parts/sections/about-vision.php:2
 msgid "Arah Kami Bergerak"
 msgstr ""
 
-#: inc/acf-fields.php:112
+#: inc/acf-fields.php:127
 msgid "Judul Section"
 msgstr ""
 
-#: inc/acf-fields.php:112
+#: inc/acf-fields.php:127
 msgid "Visi & Misi YIARI"
 msgstr ""
 
-#: inc/acf-fields.php:114
+#: inc/acf-fields.php:129
 msgid "Label Visi"
 msgstr ""
 
-#: inc/acf-fields.php:114
+#: inc/acf-fields.php:129
 #: template-parts/sections/about-vision.php:5
 msgid "Visi"
 msgstr ""
 
-#: inc/acf-fields.php:115
+#: inc/acf-fields.php:130
 msgid "Teks Visi"
 msgstr ""
 
-#: inc/acf-fields.php:116
+#: inc/acf-fields.php:131
 msgid "Label Misi"
 msgstr ""
 
-#: inc/acf-fields.php:116
+#: inc/acf-fields.php:131
 #: template-parts/sections/about-vision.php:7
 msgid "Misi"
 msgstr ""
 
-#: inc/acf-fields.php:117
+#: inc/acf-fields.php:132
 msgid "Teks Misi"
 msgstr ""
 
-#: inc/acf-fields.php:119
+#: inc/acf-fields.php:134
 msgid "Timeline"
 msgstr ""
 
-#: inc/acf-fields.php:120
+#: inc/acf-fields.php:135
 #: template-parts/sections/about-timeline.php:2
 msgid "Dampak Nyata"
 msgstr ""
 
-#: inc/acf-fields.php:121
+#: inc/acf-fields.php:136
 #: template-parts/sections/about-timeline.php:3
 msgid "Jejak Dampak YIARI"
 msgstr ""
 
-#: inc/acf-fields.php:124
+#: inc/acf-fields.php:139
 msgid "Item Timeline"
 msgstr ""
 
-#: inc/acf-fields.php:126
+#: inc/acf-fields.php:141
 msgid "Tambah Milestone"
 msgstr ""
 
-#: inc/acf-fields.php:128
+#: inc/acf-fields.php:143
 msgid "Tahun"
 msgstr ""
 
-#: inc/acf-fields.php:134
-#: inc/acf-fields.php:136
+#: inc/acf-fields.php:149
+#: inc/acf-fields.php:151
 #: template-parts/sections/about-org.php:3
 msgid "Struktur Organisasi"
 msgstr ""
 
-#: inc/acf-fields.php:135
+#: inc/acf-fields.php:150
 #: template-parts/sections/about-org.php:2
 msgid "Kepemimpinan Kami"
 msgstr ""
 
-#: inc/acf-fields.php:139
+#: inc/acf-fields.php:154
 msgid "Kelompok Organisasi"
 msgstr ""
 
-#: inc/acf-fields.php:141
+#: inc/acf-fields.php:156
 msgid "Tambah Kelompok"
 msgstr ""
 
-#: inc/acf-fields.php:143
+#: inc/acf-fields.php:158
 msgid "Nama Kelompok"
 msgstr ""
 
-#: inc/acf-fields.php:145
+#: inc/acf-fields.php:160
 msgid "Anggota"
 msgstr ""
 
-#: inc/acf-fields.php:147
+#: inc/acf-fields.php:162
 msgid "Tambah Anggota"
 msgstr ""
 
-#: inc/acf-fields.php:149
+#: inc/acf-fields.php:164
 msgid "Foto"
 msgstr ""
 
-#: inc/acf-fields.php:150
+#: inc/acf-fields.php:165
 msgid "Nama"
 msgstr ""
 
-#: inc/acf-fields.php:151
+#: inc/acf-fields.php:166
 msgid "Jabatan"
 msgstr ""
 
 #: inc/helpers.php:165
-#: template-parts/global/footer.php:23
+#: template-parts/global/footer.php:31
 msgid "Tentang"
 msgstr ""
 
@@ -528,7 +566,7 @@ msgid "Cerita"
 msgstr ""
 
 #: inc/helpers.php:187
-#: template-parts/global/footer.php:25
+#: template-parts/global/footer.php:33
 msgid "Publikasi"
 msgstr ""
 
@@ -595,48 +633,76 @@ msgstr ""
 msgid "Español (ES)"
 msgstr ""
 
-#: template-parts/global/footer.php:13
+#: single.php:115
+msgid "Lanjut Baca"
+msgstr ""
+
+#: template-parts/global/footer.php:3
 msgid "Menyelamatkan dan melestarikan satwa liar Indonesia untuk generasi mendatang."
 msgstr ""
 
-#: template-parts/global/footer.php:16
-#: template-parts/global/footer.php:17
-msgid "Email Anda"
+#: template-parts/global/footer.php:4
+msgid "KANTOR YIARI BOGOR"
 msgstr ""
 
-#: template-parts/global/footer.php:19
+#: template-parts/global/footer.php:5
+msgid "Jl. Curug Nangka, Kp. Sinarwangi, Kel. Sukajadi, Kec. Tamansari, Bogor, Jawa Barat 16610"
+msgstr ""
+
+#: template-parts/global/footer.php:6
+msgid "+62-856 7536 660 (Bogor)"
+msgstr ""
+
+#: template-parts/global/footer.php:7
+msgid "KANTOR YIARI KETAPANG"
+msgstr ""
+
+#: template-parts/global/footer.php:8
+msgid "Jl. Ketapang-Tanjungpura RT.010, Dsn. Pematang Merbau, Kec. Muara Pawan, Kab. Ketapang, Kalimantan Barat 78813"
+msgstr ""
+
+#: template-parts/global/footer.php:9
+msgid "+62-856 5237 3497 (Ketapang)"
+msgstr ""
+
+#: template-parts/global/footer.php:24
+#: template-parts/global/footer.php:25
+msgid "Masukkan email"
+msgstr ""
+
+#: template-parts/global/footer.php:27
 msgid "Langganan"
 msgstr ""
 
-#: template-parts/global/footer.php:29
-msgid "All Rights Reserved"
+#: template-parts/global/footer.php:52
+msgid "All rights reserved."
 msgstr ""
 
-#: template-parts/global/footer.php:31
+#: template-parts/global/footer.php:54
 msgid "Privacy"
 msgstr ""
 
-#: template-parts/global/footer.php:32
+#: template-parts/global/footer.php:55
 msgid "Terms"
 msgstr ""
 
-#: template-parts/global/footer.php:37
-msgid "Instagram"
-msgstr ""
-
-#: template-parts/global/footer.php:38
-msgid "X"
-msgstr ""
-
-#: template-parts/global/footer.php:39
-msgid "Facebook"
-msgstr ""
-
-#: template-parts/global/footer.php:40
+#: template-parts/global/footer.php:61
 msgid "YouTube"
 msgstr ""
 
-#: template-parts/global/footer.php:51
+#: template-parts/global/footer.php:62
+msgid "Instagram"
+msgstr ""
+
+#: template-parts/global/footer.php:63
+msgid "X"
+msgstr ""
+
+#: template-parts/global/footer.php:64
+msgid "Facebook"
+msgstr ""
+
+#: template-parts/global/footer.php:75
 msgid "Kembali ke atas"
 msgstr ""
 
@@ -645,16 +711,16 @@ msgid "Search"
 msgstr ""
 
 #: template-parts/global/header.php:41
-#: template-parts/global/header.php:107
+#: template-parts/global/header.php:136
 msgid "Cari"
 msgstr ""
 
 #: template-parts/global/header.php:52
-#: template-parts/global/header.php:128
+#: template-parts/global/header.php:56
 msgid "Donasi"
 msgstr ""
 
-#: template-parts/global/header.php:55
+#: template-parts/global/header.php:57
 msgid "Menu"
 msgstr ""
 
@@ -753,20 +819,40 @@ msgstr ""
 msgid "Penyelamatan dan rehabilitasi"
 msgstr ""
 
+#: template-parts/sections/approach.php:8
+msgid "Menyelamatkan, merawat, dan merehabilitasi satwa liar yang terluka, diperdagangkan, atau kehilangan habitat agar dapat kembali hidup dengan aman."
+msgstr ""
+
 #: template-parts/sections/approach.php:9
 msgid "Restorasi ekosistem"
+msgstr ""
+
+#: template-parts/sections/approach.php:9
+msgid "Melindungi dan memulihkan bentang alam penting agar satwa liar memiliki habitat yang aman dan berkelanjutan."
 msgstr ""
 
 #: template-parts/sections/approach.php:10
 msgid "Pendidikan masyarakat"
 msgstr ""
 
+#: template-parts/sections/approach.php:10
+msgid "Menghadirkan edukasi konservasi yang relevan bagi anak muda, sekolah, dan masyarakat sekitar kawasan penting satwa liar."
+msgstr ""
+
 #: template-parts/sections/approach.php:11
 msgid "Ekonomi berkelanjutan"
 msgstr ""
 
+#: template-parts/sections/approach.php:11
+msgid "Mendorong mata pencaharian yang selaras dengan konservasi agar masyarakat mendapat manfaat tanpa merusak alam."
+msgstr ""
+
 #: template-parts/sections/approach.php:12
 msgid "Kesehatan holistik"
+msgstr ""
+
+#: template-parts/sections/approach.php:12
+msgid "Menghubungkan kesehatan manusia, satwa, dan lingkungan sebagai satu ekosistem yang saling memengaruhi."
 msgstr ""
 
 #: template-parts/sections/approach.php:13
@@ -777,52 +863,56 @@ msgstr ""
 msgid "Penjagaan Satwa"
 msgstr ""
 
-#: template-parts/sections/approach.php:42
-msgid "Konservasi"
+#: template-parts/sections/approach.php:13
+msgid "Memperkuat upaya perlindungan satwa dari perdagangan ilegal, konflik, dan ancaman langsung di lapangan."
 msgstr ""
 
 #: template-parts/sections/crisis.php:4
-msgid "Data lengkap dari lapangan yang menunjukkan capaian nyata dari setiap krisis dan data yang dikumpulkan kami."
-msgstr ""
-
-#: template-parts/sections/crisis.php:8
-msgid "Perdagangan Satwa Liar"
-msgstr ""
-
-#: template-parts/sections/crisis.php:8
-msgid "Ribuan satwa liar Indonesia diperdagangkan secara ilegal, merusak populasi dan keseimbangan ekosistem."
+msgid "Di balik hutan yang terus hilang dan satwa yang terancam, ada krisis nyata yang sedang terjadi di sekitar kita setiap hari."
 msgstr ""
 
 #: template-parts/sections/crisis.php:9
-msgid "Kehilangan Habitat"
+msgid "Satwa Dijual, Alam Terancam"
 msgstr ""
 
 #: template-parts/sections/crisis.php:9
-msgid "Deforestasi besar-besaran menghilangkan jutaan hektar hutan tropis. Satwa kehilangan tempat tinggal yang alami."
+msgid "Ribuan satwa liar ditangkap dan diperjualbelikan secara ilegal setiap tahun. Banyak yang mati sebelum kembali ke habitatnya."
 msgstr ""
 
 #: template-parts/sections/crisis.php:10
-msgid "Konflik Manusia-Satwa"
+msgid "Hutan Hilang, Satwa Kehilangan Rumah"
 msgstr ""
 
 #: template-parts/sections/crisis.php:10
-msgid "Perluasan wilayah manusia menimbulkan konflik menegangkan. Satwa liar terdesak akibat deforestasi."
+msgid "Pembukaan hutan dan ekspansi lahan membuat satwa kehilangan rumah dan sumber hidupnya sedikit demi sedikit."
 msgstr ""
 
-#: template-parts/sections/donate-cta.php:3
+#: template-parts/sections/crisis.php:11
+msgid "Saat Satwa dan Manusia Bertemu Konflik"
+msgstr ""
+
+#: template-parts/sections/crisis.php:11
+msgid "Ketika habitat mengecil, perjumpaan satwa dengan manusia makin sering terjadi dan memicu konflik di lapangan."
+msgstr ""
+
+#: template-parts/sections/donate-cta.php:4
 msgid "Dari perawatan darurat hingga pelepasliaran. Dukungan Anda membuat perbedaan nyata bagi masa depan satwa Indonesia."
 msgstr ""
 
-#: template-parts/sections/donate-cta.php:22
+#: template-parts/sections/donate-cta.php:16
 msgid "Donasi untuk satwa"
 msgstr ""
 
-#: template-parts/sections/donate-cta.php:24
+#: template-parts/sections/donate-cta.php:18
 msgid "Orangutan"
 msgstr ""
 
 #: template-parts/sections/hero.php:3
 msgid "Bersama<br>Selamatkan Alam"
+msgstr ""
+
+#: template-parts/sections/hero.php:4
+msgid "Bersama kita bisa menjaga satwa liar tetap hidup di alamnya."
 msgstr ""
 
 #: template-parts/sections/news.php:2
@@ -833,12 +923,12 @@ msgstr ""
 msgid "Dari Lapangan"
 msgstr ""
 
-#: template-parts/sections/news.php:21
+#: template-parts/sections/news.php:22
 msgid "Lihat Semua Cerita"
 msgstr ""
 
-#: template-parts/sections/news.php:28
-#: template-parts/sections/news.php:40
+#: template-parts/sections/news.php:29
+#: template-parts/sections/news.php:41
 msgid "Oleh"
 msgstr ""
 
@@ -847,31 +937,45 @@ msgid "Data langsung dari lapangan yang menunjukkan dampak nyata dari setiap don
 msgstr ""
 
 #: template-parts/sections/stats.php:8
-msgid "Satwa telah diselamatkan"
+msgid ""
+"Satwa\n"
+"Diselamatkan"
 msgstr ""
 
 #: template-parts/sections/stats.php:9
-msgid "Hektar lahan telah direstorasi"
+msgid ""
+"Lahan berhasil\n"
+"direstorasi"
 msgstr ""
 
 #: template-parts/sections/stats.php:10
-msgid "Anak telah menerima pelatihan"
+msgid ""
+"Anak menerima\n"
+"pelatihan"
 msgstr ""
 
 #: template-parts/sections/stats.php:11
-msgid "Kelompok binaan telah didampingi"
+msgid ""
+"Kelompok telah\n"
+"didampingi"
 msgstr ""
 
 #: template-parts/sections/stats.php:12
-msgid "Penyuluhan lingkungan telah dilaksanakan"
+msgid ""
+"Penyuluhan telah\n"
+"dilakukan"
 msgstr ""
 
-#: template-parts/sections/stats.php:26
+#: template-parts/sections/stats.php:37
 msgid "Previous"
 msgstr ""
 
-#: template-parts/sections/stats.php:29
+#: template-parts/sections/stats.php:46
 msgid "Next"
+msgstr ""
+
+#: template-parts/sections/stats.php:79
+msgid "Go to slide"
 msgstr ""
 
 #: template-parts/sections/story.php:3
@@ -884,6 +988,10 @@ msgstr ""
 
 #: template-parts/sections/story.php:5
 msgid "Setelah berbulan-bulan perawatan, Barda kini hidup aman di pusat rehabilitasi kami. Ia menjadi simbol harapan yang menginspirasi ribuan orang untuk melindungi satwa Indonesia."
+msgstr ""
+
+#: template-parts/sections/story.php:112
+msgid "Go to story slide"
 msgstr ""
 
 #. Template Name of the theme
