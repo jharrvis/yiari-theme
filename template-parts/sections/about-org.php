@@ -13,7 +13,7 @@ if (empty($org_groups)) {
 <section class="about-org-section" id="struktur-organisasi" x-data="{ openPanel: 0 }">
   <div class="container">
     <div class="stats-layout about-org-header">
-      <div class="stats-intro"><?php yiari_section_label($label, true); ?><h2 class="section-heading-lg"><?php echo esc_html($title); ?></h2></div>
+      <div class="stats-intro"><?php yiari_section_label($label, true); ?><h2 class="section-heading"><?php echo esc_html($title); ?></h2></div>
       <div class="stats-desc"><p class="section-description"><?php echo esc_html($desc); ?></p></div>
     </div>
     <div class="about-org-accordion">

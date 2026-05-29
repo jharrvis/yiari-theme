@@ -23,18 +23,29 @@ document.addEventListener('alpine:init', () => {
     statsItemsPerPage: 1,
     statsCanScroll: false,
     statsIsMobile: false,
+    timelineActivePage: 0,
+    timelinePageCount: 1,
+    timelineItemsPerPage: 1,
+    timelineCanScroll: false,
+    timelineIsMobile: false,
 
     init() {
       this.handleScroll();
       window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
-      window.addEventListener('resize', () => this.updateStatsMetrics(), { passive: true });
+      window.addEventListener('resize', () => {
+        this.updateStatsMetrics();
+        this.updateTimelineMetrics();
+      }, { passive: true });
       document.addEventListener('click', (event) => this.handleOutsideClick(event));
       window.addEventListener('load', () => this.initLucide(), { once: true });
 
       this.initLucide();
       this.initFadeIn();
       this.initCounters();
-      this.$nextTick(() => this.initStatsCarousel());
+      this.$nextTick(() => {
+        this.initStatsCarousel();
+        this.initTimelineCarousel();
+      });
     },
 
     get navbarStyle() {
@@ -269,6 +280,88 @@ document.addEventListener('alpine:init', () => {
       }
 
       this.handleStatsScroll();
+    },
+
+    scrollTimeline(direction) {
+      if (!this.$refs.timelineGrid) {
+        return;
+      }
+
+      const targetPage = direction === 'next'
+        ? Math.min(this.timelineActivePage + 1, this.timelinePageCount - 1)
+        : Math.max(this.timelineActivePage - 1, 0);
+
+      this.scrollTimelineToPage(targetPage);
+    },
+
+    scrollTimelineToPage(page) {
+      if (!this.$refs.timelineGrid) {
+        return;
+      }
+
+      const grid = this.$refs.timelineGrid;
+      const nextPage = Math.max(0, Math.min(page, this.timelinePageCount - 1));
+      const card = grid.querySelector('.about-timeline-item');
+
+      if (!card) {
+        return;
+      }
+
+      const gap = parseFloat(window.getComputedStyle(grid).columnGap || window.getComputedStyle(grid).gap || '0');
+      const cardWidth = card.getBoundingClientRect().width;
+      const step = this.timelineIsMobile ? ((cardWidth + gap) * this.timelineItemsPerPage) : grid.clientWidth;
+
+      grid.scrollTo({
+        left: nextPage * step,
+        behavior: 'smooth'
+      });
+    },
+
+    handleTimelineScroll() {
+      if (!this.$refs.timelineGrid || !this.timelineCanScroll) {
+        return;
+      }
+
+      const grid = this.$refs.timelineGrid;
+      const card = grid.querySelector('.about-timeline-item');
+
+      if (!card) {
+        return;
+      }
+
+      const gap = parseFloat(window.getComputedStyle(grid).columnGap || window.getComputedStyle(grid).gap || '0');
+      const cardWidth = card.getBoundingClientRect().width;
+      const step = this.timelineIsMobile ? ((cardWidth + gap) * this.timelineItemsPerPage) : grid.clientWidth;
+
+      this.timelineActivePage = Math.max(0, Math.min(this.timelinePageCount - 1, Math.round(grid.scrollLeft / Math.max(step, 1))));
+    },
+
+    initTimelineCarousel() {
+      this.updateTimelineMetrics();
+    },
+
+    updateTimelineMetrics() {
+      if (!this.$refs.timelineGrid) {
+        return;
+      }
+
+      const grid = this.$refs.timelineGrid;
+      const cards = Array.from(grid.querySelectorAll('.about-timeline-item'));
+      const viewport = window.innerWidth;
+      const totalItems = cards.length;
+
+      this.timelineIsMobile = viewport <= 768;
+      this.timelineItemsPerPage = this.timelineIsMobile ? 1 : (viewport <= 1024 ? 2 : 3);
+      this.timelinePageCount = Math.max(1, Math.ceil(totalItems / this.timelineItemsPerPage));
+      this.timelineCanScroll = totalItems > this.timelineItemsPerPage;
+
+      if (!this.timelineCanScroll) {
+        this.timelineActivePage = 0;
+        grid.scrollTo({ left: 0, behavior: 'auto' });
+        return;
+      }
+
+      this.handleTimelineScroll();
     },
 
     initLucide() {

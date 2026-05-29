@@ -9,16 +9,36 @@ $misi_text = yiari_field('misi_text', __('Membangun kesadaran dan kepedulian ser
 ?>
 <section class="about-direction-section" id="visi-misi">
   <div class="container">
-    <div class="about-direction-header"><?php yiari_section_label($label, true); ?></div>
-    <div class="about-direction-grid">
-      <div class="about-direction-intro">
-        <h2 class="section-heading-lg about-direction-title"><?php echo wp_kses_post($section_title); ?></h2>
-        <div class="about-direction-image"><?php yiari_img($image, 'portrait', '', __('Orangutan dalam perawatan tim YIARI', 'yiari')); ?></div>
+    <div class="about-direction-card">
+      <div class="about-direction-head">
+        <div class="about-direction-intro">
+          <?php yiari_section_label($label, true); ?>
+          <h2 class="section-heading about-direction-title"><?php echo wp_kses_post($section_title); ?></h2>
+        </div>
+        <div class="about-direction-content">
+          <div class="about-direction-block">
+            <div class="about-direction-block-head">
+              <span class="about-direction-icon-wrap">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/icons/icon-visi.svg'); ?>" alt="<?php echo esc_attr($visi_label); ?>" class="about-direction-icon" />
+              </span>
+              <h3 class="about-direction-label"><?php echo esc_html($visi_label); ?></h3>
+            </div>
+            <p class="about-direction-text"><?php echo esc_html($visi_text); ?></p>
+          </div>
+          <div class="about-direction-block">
+            <div class="about-direction-block-head">
+              <span class="about-direction-icon-wrap">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/icons/icon-misi.svg'); ?>" alt="<?php echo esc_attr($misi_label); ?>" class="about-direction-icon" />
+              </span>
+              <h3 class="about-direction-label"><?php echo esc_html($misi_label); ?></h3>
+            </div>
+            <p class="about-direction-text"><?php echo esc_html($misi_text); ?></p>
+          </div>
+        </div>
       </div>
-      <div class="about-direction-content">
-        <div class="about-direction-block"><h3 class="about-direction-label"><?php echo esc_html($visi_label); ?></h3><p class="about-direction-text"><?php echo esc_html($visi_text); ?></p></div>
-        <div class="about-direction-divider"></div>
-        <div class="about-direction-block"><h3 class="about-direction-label"><?php echo esc_html($misi_label); ?></h3><p class="about-direction-text"><?php echo esc_html($misi_text); ?></p></div>
+
+      <div class="about-direction-image">
+        <?php yiari_img($image, 'section-wide', '', __('Orangutan dalam perawatan tim YIARI', 'yiari')); ?>
       </div>
     </div>
   </div>
