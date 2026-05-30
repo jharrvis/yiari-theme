@@ -23,19 +23,37 @@ if (empty($org_groups)) {
             <span><?php echo esc_html($group['group_name'] ?? ''); ?></span>
             <i data-lucide="chevron-down" class="about-org-chevron" :class="{ 'is-open': openPanel === <?php echo $gi; ?> }"></i>
           </button>
-          <div class="about-org-content" x-show="openPanel === <?php echo $gi; ?>">
+          <div
+            class="about-org-content"
+            x-show="openPanel === <?php echo $gi; ?>"
+            x-transition:enter="about-org-transition"
+            x-transition:enter-start="about-org-transition-enter-start"
+            x-transition:enter-end="about-org-transition-enter-end"
+            x-transition:leave="about-org-transition"
+            x-transition:leave-start="about-org-transition-enter-end"
+            x-transition:leave-end="about-org-transition-enter-start"
+          >
             <div class="about-org-grid">
               <?php foreach (($group['members'] ?? []) as $member): ?>
+                <?php
+                $name = trim((string) ($member['name'] ?? ''));
+                $role = trim((string) ($member['role'] ?? ''));
+                $initials = '';
+                if ($name !== '') {
+                    $parts = preg_split('/\s+/', $name) ?: [];
+                    foreach (array_slice($parts, 0, 2) as $part) {
+                        $initials .= function_exists('mb_substr') ? mb_substr($part, 0, 1) : substr($part, 0, 1);
+                    }
+                }
+                ?>
                 <article class="about-org-member">
-                  <div class="about-org-photo">
-                    <?php if (!empty($member['photo']['url'])): ?>
-                      <img src="<?php echo esc_url($member['photo']['url']); ?>" alt="<?php echo esc_attr($member['name'] ?? ''); ?>" />
-                    <?php else: ?>
-                      <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/organization/board-placeholder.webp'); ?>" alt="<?php echo esc_attr($member['name'] ?? ''); ?>" />
-                    <?php endif; ?>
+                  <div class="about-org-member-top">
+                    <h3 class="about-org-name"><?php echo esc_html($name); ?></h3>
+                    <span class="about-org-initials"><?php echo esc_html(strtoupper($initials)); ?></span>
                   </div>
-                  <h3 class="about-org-name"><?php echo esc_html($member['name'] ?? ''); ?></h3>
-                  <p class="about-org-role"><?php echo esc_html($member['role'] ?? ''); ?></p>
+                  <div class="about-org-member-bottom">
+                    <p class="about-org-role"><?php echo esc_html($role); ?></p>
+                  </div>
                 </article>
               <?php endforeach; ?>
             </div>

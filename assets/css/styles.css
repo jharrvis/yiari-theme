@@ -399,18 +399,22 @@ img { max-width: 100%; height: auto; }
 .about-timeline-text { max-width: 100%; color: #767981; font-family: 'Poppins', 'Inter', sans-serif; font-size: 15px; line-height: 1.58; }
 .about-org-section { padding: 72px 0 88px; background: #ffffff; }
 .about-org-header { margin-bottom: 44px; }
-.about-org-accordion { display: flex; flex-direction: column; gap: 14px; }
-.about-org-panel { background: #ffffff; border: 1px solid #e8ecf3; border-radius: 10px; overflow: hidden; }
-.about-org-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 22px 26px; background: #ffffff; border: none; color: #111827; font-family: 'Northwoods', serif; font-size: 22px; font-weight: 400; text-align: left; cursor: pointer; }
-.about-org-chevron { width: 18px; height: 18px; color: #94a3b8; transition: transform .2s ease; }
+.about-org-accordion { display: flex; flex-direction: column; gap: 16px; }
+.about-org-panel { background: #ffffff; border: 1px solid #e8ecf3; border-radius: 16px; overflow: hidden; }
+.about-org-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 26px 30px; background: #ffffff; border: none; color: #232323; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-size: 24px; font-weight: 500; line-height: 36px; text-align: left; cursor: pointer; }
+.about-org-chevron { width: 18px; height: 18px; color: #232323; transition: transform .2s ease; }
 .about-org-chevron.is-open { transform: rotate(180deg); }
-.about-org-content { padding: 0 26px 22px; }
-.about-org-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; padding-top: 8px; }
-.about-org-member { display: flex; flex-direction: column; align-items: flex-start; }
-.about-org-photo { width: 100%; aspect-ratio: 1 / 1; background: #d9d9d9; border: 0; border-radius: 8px; overflow: hidden; box-shadow: none; }
-.about-org-photo img { display: block; width: 100%; height: 100%; object-fit: cover; border: 0; border-radius: 8px; vertical-align: top; box-shadow: none; }
-.about-org-name { margin-top: 18px; color: #111827; font-family: 'Northwoods', serif; font-size: 19px; font-weight: 700; line-height: 1.35; }
-.about-org-role { margin-top: 6px; color: #64748b; font-size: 15px; line-height: 1.5; }
+.about-org-content { padding: 0 30px 30px; }
+.about-org-transition { overflow: hidden; transition: opacity .34s cubic-bezier(.22, 1, .36, 1), transform .34s cubic-bezier(.22, 1, .36, 1); transform-origin: top center; will-change: opacity, transform; }
+.about-org-transition-enter-start { opacity: 0; transform: translateY(-10px); }
+.about-org-transition-enter-end { opacity: 1; transform: translateY(0); }
+.about-org-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; padding-top: 4px; }
+.about-org-member { display: flex; flex-direction: column; min-height: 182px; border: 1px solid #edf0f4; border-radius: 14px; background: #ffffff; overflow: hidden; }
+.about-org-member-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; min-height: 118px; padding: 20px 18px; background: #f8f8f7; }
+.about-org-name { color: #232323; font-family: 'Poppins', 'Inter', sans-serif; font-size: 18px; font-weight: 600; line-height: 1.35; }
+.about-org-initials { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid #395AA8; border-radius: 999px; color: #395AA8; font-family: 'Poppins', 'Inter', sans-serif; font-size: 12px; font-weight: 500; line-height: 1; background: #f8fbff; flex: 0 0 auto; }
+.about-org-member-bottom { flex: 1; display: flex; align-items: flex-start; padding: 18px 18px 20px; border-top: 1px solid #edf0f4; background: #ffffff; }
+.about-org-role { color: #232323; font-family: 'Poppins', 'Inter', sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; }
 .location-page { background: #ffffff; }
 .location-hero-section { position: relative; min-height: 520px; display: flex; align-items: flex-end; overflow: hidden; background: #0f0f10; }
 .location-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
@@ -568,7 +572,11 @@ img { max-width: 100%; height: auto; }
   .about-timeline-item { flex: 0 0 calc((100% - 16px) / 2); min-width: calc((100% - 16px) / 2); min-height: 304px; }
   .about-timeline-card-top { min-height: 144px; padding: 18px 18px 18px; }
   .about-timeline-card-bottom { padding: 18px; }
-  .about-org-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  .about-org-trigger { padding: 24px 26px; font-size: 22px; }
+  .about-org-content { padding: 0 26px 26px; }
+  .about-org-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .about-org-member { min-height: 176px; }
+  .about-org-member-top { min-height: 112px; }
   .location-hero-section { min-height: 460px; }
   .location-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .nav-container { padding: 16px 24px; height: 72px; }
@@ -688,10 +696,11 @@ img { max-width: 100%; height: auto; }
   .about-timeline-indicators { display: flex; }
   .about-org-section { padding: 60px 0 72px; }
   .about-org-header { margin-bottom: 30px; }
-  .about-org-trigger { padding: 18px 20px; font-size: 20px; }
-  .about-org-content { padding: 0 20px 20px; }
+  .about-org-trigger { padding: 20px 22px; font-size: 20px; }
+  .about-org-content { padding: 0 22px 22px; }
   .about-org-grid { grid-template-columns: 1fr; gap: 24px; }
-  .about-org-photo { max-width: 260px; }
+  .about-org-member { min-height: 0; }
+  .about-org-member-top { min-height: 106px; }
   .location-hero-section { min-height: 400px; }
   .location-hero-content { padding-bottom: 28px; }
   .location-hero-copy { max-width: 380px; }
@@ -880,9 +889,12 @@ img { max-width: 100%; height: auto; }
   .about-timeline-text { font-size: 14px; line-height: 1.6; }
   .about-org-section { padding: 52px 0 60px; }
   .about-org-accordion { gap: 12px; }
-  .about-org-trigger { padding: 16px 18px; font-size: 18px; }
+  .about-org-trigger { padding: 18px 18px; font-size: 18px; }
   .about-org-content { padding: 0 18px 18px; }
-  .about-org-name { margin-top: 14px; font-size: 18px; }
+  .about-org-member-top { min-height: 98px; padding: 18px 16px; }
+  .about-org-name { font-size: 17px; }
+  .about-org-initials { width: 30px; height: 30px; font-size: 11px; }
+  .about-org-member-bottom { padding: 16px; }
   .about-org-role { font-size: 14px; }
   .location-hero-section { min-height: 360px; }
   .location-hero-content { padding: 0 20px 24px; }
