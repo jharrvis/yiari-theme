@@ -6,22 +6,23 @@ $btn1_text = yiari_field('about_btn1_text', __('Lihat Program Kami', 'yiari'));
 $btn1_url = yiari_field('about_btn1_url', yiari_get_program_url());
 $btn2_text = yiari_field('about_btn2_text', __('Pelajari Lebih Lanjut', 'yiari'));
 $btn2_url = yiari_field('about_btn2_url', '#visi-misi');
-?>
-<section class="about-hero-section" id="about-hero">
-  <?php if (!empty($image['url'])): ?>
-    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt'] ?: 'YIARI'); ?>" class="about-hero-img" />
-  <?php else: ?>
-    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/hero-about-us.jpg'); ?>" alt="<?php echo esc_attr__('About YIARI', 'yiari'); ?>" class="about-hero-img" />
-  <?php endif; ?>
-  <div class="about-hero-overlay"></div>
-  <div class="about-hero-content">
-    <div class="about-hero-copy">
-      <h1 class="about-hero-title"><?php echo wp_kses_post(nl2br(esc_html($title))); ?></h1>
-      <p class="about-hero-text"><?php echo esc_html($text); ?></p>
-      <div class="about-hero-actions">
-        <?php yiari_btn($btn1_text, $btn1_url, 'about-hero-btn about-hero-btn-primary'); ?>
-        <?php yiari_btn($btn2_text, $btn2_url, 'about-hero-btn about-hero-btn-outline'); ?>
-      </div>
-    </div>
-  </div>
-</section>
+get_template_part('template-parts/sections/page-hero', null, [
+    'id' => 'about-hero',
+    'classes' => 'about-hero-section',
+    'image' => !empty($image['url']) ? $image : ['url' => get_template_directory_uri() . '/assets/img/hero-about-us.jpg'],
+    'image_class' => 'about-hero-img',
+    'image_alt' => !empty($image['alt']) ? $image['alt'] : __('About YIARI', 'yiari'),
+    'overlay_class' => 'about-hero-overlay',
+    'content_class' => 'about-hero-content',
+    'copy_class' => 'about-hero-copy',
+    'title_class' => 'about-hero-title',
+    'text_class' => 'about-hero-text',
+    'actions_class' => 'about-hero-actions',
+    'title' => $title,
+    'text' => $text,
+    'allow_title_breaks' => true,
+    'buttons' => [
+        ['text' => $btn1_text, 'url' => $btn1_url, 'class' => 'btn-action btn-action-primary'],
+        ['text' => $btn2_text, 'url' => $btn2_url, 'class' => 'btn-action btn-action-outline'],
+    ],
+]);

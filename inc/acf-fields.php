@@ -170,4 +170,65 @@ add_action('acf/init', function () {
             ],
         ],
     ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_landscape',
+        'title' => __('Lanskap - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/lanskap.php']]],
+        'menu_order' => 10,
+        'fields' => [
+            ['key' => 'field_landscape_hero_tab', 'label' => __('Hero', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_landscape_hero_img', 'label' => __('Gambar Hero', 'yiari'), 'name' => 'landscape_hero_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_landscape_hero_title', 'label' => __('Judul Hero', 'yiari'), 'name' => 'landscape_hero_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Di Garis Depan Perlindungan Satwa dan Hutan Indonesia', 'yiari')],
+            ['key' => 'field_landscape_hero_text', 'label' => __('Teks Hero', 'yiari'), 'name' => 'landscape_hero_text', 'type' => 'textarea', 'rows' => 4],
+            ['key' => 'field_landscape_hero_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'landscape_hero_btn1_text', 'type' => 'text', 'default_value' => __('Lihat Lokasi Kegiatan', 'yiari')],
+            ['key' => 'field_landscape_hero_btn1_url', 'label' => __('Tombol 1 - URL', 'yiari'), 'name' => 'landscape_hero_btn1_url', 'type' => 'url'],
+            ['key' => 'field_landscape_hero_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'landscape_hero_btn2_text', 'type' => 'text', 'default_value' => __('Pelajari Lebih Lanjut', 'yiari')],
+            ['key' => 'field_landscape_hero_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'landscape_hero_btn2_url', 'type' => 'url'],
+
+            ['key' => 'field_landscape_locations_tab', 'label' => __('Lokasi Program', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_landscape_locations_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'landscape_locations_label', 'type' => 'text', 'default_value' => __('WILAYAH KERJA KONSERVASI KAMI', 'yiari')],
+            ['key' => 'field_landscape_locations_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'landscape_locations_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __("Lokasi Kegiatan\nProgram", 'yiari')],
+            ['key' => 'field_landscape_locations_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'landscape_locations_desc', 'type' => 'textarea', 'rows' => 3],
+            [
+                'key' => 'field_landscape_locations',
+                'label' => __('Daftar Lokasi', 'yiari'),
+                'name' => 'landscape_locations',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 12,
+                'layout' => 'row',
+                'button_label' => __('Tambah Lokasi', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_landscape_location_image', 'label' => __('Gambar', 'yiari'), 'name' => 'image', 'type' => 'image', 'return_format' => 'array'],
+                    ['key' => 'field_landscape_location_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_landscape_location_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 4],
+                    ['key' => 'field_landscape_location_link_text', 'label' => __('Teks Link', 'yiari'), 'name' => 'link_text', 'type' => 'text', 'default_value' => __('Lihat Selengkapnya', 'yiari')],
+                    ['key' => 'field_landscape_location_link_url', 'label' => __('URL Link', 'yiari'), 'name' => 'link_url', 'type' => 'url'],
+                ],
+            ],
+
+            ['key' => 'field_landscape_bases_tab', 'label' => __('Basis Operasi', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_landscape_bases_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'landscape_bases_label', 'type' => 'text', 'default_value' => __('BASIS OPERASI', 'yiari')],
+            ['key' => 'field_landscape_bases_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'landscape_bases_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __("Pusat Utama\nOperasional", 'yiari')],
+            ['key' => 'field_landscape_bases_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'landscape_bases_desc', 'type' => 'textarea', 'rows' => 3],
+            [
+                'key' => 'field_landscape_bases',
+                'label' => __('Daftar Basis', 'yiari'),
+                'name' => 'landscape_bases',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 6,
+                'layout' => 'row',
+                'button_label' => __('Tambah Basis', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_landscape_base_image', 'label' => __('Gambar', 'yiari'), 'name' => 'image', 'type' => 'image', 'return_format' => 'array'],
+                    ['key' => 'field_landscape_base_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_landscape_base_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 5],
+                    ['key' => 'field_landscape_base_link_text', 'label' => __('Teks Link', 'yiari'), 'name' => 'link_text', 'type' => 'text', 'default_value' => __('Lihat Selengkapnya', 'yiari')],
+                    ['key' => 'field_landscape_base_link_url', 'label' => __('URL Link', 'yiari'), 'name' => 'link_url', 'type' => 'url'],
+                ],
+            ],
+        ],
+    ]);
 });
