@@ -218,3 +218,11 @@ require_once get_template_directory() . '/inc/helpers.php';
 
 add_filter('excerpt_length', fn() => 24);
 add_filter('excerpt_more', fn() => '…');
+
+add_filter('wp_midtrans_donation_should_enqueue_assets', function (bool $should_enqueue): bool {
+    if ($should_enqueue) {
+        return true;
+    }
+
+    return is_page_template('templates/donasi.php');
+});

@@ -553,3 +553,34 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMoreButton.textContent = defaultLabel;
   });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const donationForm = document.querySelector('#wp-midtrans-donation-form');
+  if (!donationForm) {
+    return;
+  }
+
+  const currencyInputs = donationForm.querySelectorAll('input[name="currency"]');
+  const idrPrefix = donationForm.querySelector('.donation-input-prefix-idr');
+  const usdPrefix = donationForm.querySelector('.donation-input-prefix-usd');
+
+  const syncDonationCurrencyState = () => {
+    const activeCurrency = donationForm.querySelector('input[name="currency"]:checked')?.value || 'IDR';
+
+    if (idrPrefix && usdPrefix) {
+      if (activeCurrency === 'USD') {
+        idrPrefix.style.display = 'none';
+        usdPrefix.style.display = 'inline-flex';
+      } else {
+        usdPrefix.style.display = 'none';
+        idrPrefix.style.display = 'inline-flex';
+      }
+    }
+  };
+
+  currencyInputs.forEach((input) => {
+    input.addEventListener('change', syncDonationCurrencyState);
+  });
+
+  syncDonationCurrencyState();
+});

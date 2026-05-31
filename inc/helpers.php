@@ -76,6 +76,96 @@ function yiari_field(string $key, $default = '') {
     return ($value !== null && $value !== false && $value !== '') ? $value : $default;
 }
 
+function yiari_get_donation_initials(string $name): string {
+    $initials = '';
+
+    foreach (preg_split('/\s+/', trim($name)) as $part) {
+        if ($part === '') {
+            continue;
+        }
+
+        $initials .= function_exists('mb_substr') ? mb_substr($part, 0, 1) : substr($part, 0, 1);
+        if (strlen($initials) >= 2) {
+            break;
+        }
+    }
+
+    return strtoupper($initials ?: 'DN');
+}
+
+function yiari_get_donation_avatar_url(string $email, string $name = '', int $size = 80): string {
+    if (is_email($email)) {
+        $avatar_url = get_avatar_url($email, [
+            'size' => $size,
+            'default' => 'mp',
+            'scheme' => is_ssl() ? 'https' : 'http',
+        ]) ?: '';
+
+        if ($avatar_url !== '' && strpos($avatar_url, 'gravatar.com') !== false && strpos($avatar_url, 'd=404') === false) {
+            return $avatar_url;
+        }
+    }
+
+    $name = trim($name);
+    if ($name !== '') {
+        return sprintf(
+            'https://ui-avatars.com/api/?name=%s&size=%d&background=EEF2FB&color=395AA8&bold=true&format=png',
+            rawurlencode($name),
+            max(32, min(256, $size))
+        );
+    }
+
+    return '';
+}
+
+function yiari_format_donation_amount(object $donation): string {
+    $amount = isset($donation->amount) ? (float) $donation->amount : 0.0;
+
+    return sprintf(
+        /* translators: %s is the formatted donation amount in IDR. */
+        __('Sudah berdonasi Rp %s', 'yiari'),
+        number_format($amount, 0, ',', '.')
+    );
+}
+
+function yiari_get_successful_donations(int $limit = 5): array {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'midtrans_donations';
+
+    if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) !== $table_name) {
+        return [];
+    }
+
+    $limit = max(1, min(12, $limit));
+
+    $results = $wpdb->get_results(
+        $wpdb->prepare(
+            "SELECT donor_name, donor_email, amount, currency, original_amount, message, created_at
+             FROM {$table_name}
+             WHERE status IN ('success', 'PAID')
+             AND donor_name <> ''
+             ORDER BY created_at DESC
+             LIMIT %d",
+            $limit
+        )
+    );
+
+    return is_array($results) ? $results : [];
+}
+
+function yiari_count_successful_donations(): int {
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'midtrans_donations';
+
+    if ($wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table_name)) !== $table_name) {
+        return 0;
+    }
+
+    return (int) $wpdb->get_var("SELECT COUNT(*) FROM {$table_name} WHERE status IN ('success', 'PAID')");
+}
+
 function yiari_home_url(): string {
     if (function_exists('pll_home_url')) {
         $current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : '';

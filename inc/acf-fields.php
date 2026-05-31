@@ -312,4 +312,25 @@ add_action('acf/init', function () {
             ['key' => 'field_landscape_detail_updates_button_text', 'label' => __('Teks Tombol Bawah', 'yiari'), 'name' => 'landscape_detail_updates_button_text', 'type' => 'text', 'default_value' => __('Muat Lebih Banyak', 'yiari')],
         ],
     ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_donation_page',
+        'title' => __('Donasi - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/donasi.php']]],
+        'menu_order' => 12,
+        'fields' => [
+            ['key' => 'field_donation_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'donation_label', 'type' => 'text', 'default_value' => __('AKSI NYATA', 'yiari')],
+            ['key' => 'field_donation_title', 'label' => __('Judul Halaman', 'yiari'), 'name' => 'donation_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Karena Kontribusi\nAnda", 'yiari')],
+            ['key' => 'field_donation_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'donation_desc', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Membantu menyelamatkan, merawat, dan mengembalikan satwa ke alamnya, serta menjaga keseimbangan ekosistem.', 'yiari')],
+            ['key' => 'field_donation_image', 'label' => __('Gambar Utama', 'yiari'), 'name' => 'donation_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_donation_supporters_text', 'label' => __('Teks Dukungan Donatur', 'yiari'), 'name' => 'donation_supporters_text', 'type' => 'text', 'default_value' => __('Lebih dari 1 Juta orang sudah berdonasi', 'yiari')],
+            ['key' => 'field_donation_supporter_avatars', 'label' => __('Avatar Donatur', 'yiari'), 'name' => 'donation_supporter_avatars', 'type' => 'gallery', 'return_format' => 'array', 'preview_size' => 'thumbnail', 'insert' => 'append', 'library' => 'all'],
+            ['key' => 'field_donation_quote', 'label' => __('Testimoni', 'yiari'), 'name' => 'donation_quote', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('“Semangat terus tim YIARI. Semoga semakin banyak hewan-hewan kita yang bisa diselamatkan”', 'yiari')],
+            ['key' => 'field_donation_donor_name', 'label' => __('Nama Donatur', 'yiari'), 'name' => 'donation_donor_name', 'type' => 'text', 'default_value' => __('Ariani Namira', 'yiari')],
+            ['key' => 'field_donation_donor_meta', 'label' => __('Keterangan Donatur', 'yiari'), 'name' => 'donation_donor_meta', 'type' => 'text', 'default_value' => __('Sudah berdonasi Rp 50.000', 'yiari')],
+            ['key' => 'field_donation_form_title', 'label' => __('Judul Panel Form', 'yiari'), 'name' => 'donation_form_title', 'type' => 'text', 'default_value' => __('Lengkapi Kontribusi Anda', 'yiari')],
+            ['key' => 'field_donation_form_desc', 'label' => __('Deskripsi Panel Form', 'yiari'), 'name' => 'donation_form_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Pilih jumlah donasi dan lengkapi data diri secara singkat. Semua transaksi aman dan terenkripsi.', 'yiari')],
+            ['key' => 'field_donation_form_button_text', 'label' => __('Teks Tombol Form', 'yiari'), 'name' => 'donation_form_button_text', 'type' => 'text', 'default_value' => __('Kirim Donasi', 'yiari')],
+        ],
+    ]);
 });
