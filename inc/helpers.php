@@ -35,6 +35,33 @@ function yiari_btn(string $text, string $url, string $class = 'btn-primary'): vo
     );
 }
 
+function yiari_render_detail_landscape_update_card(int $post_id): string {
+    $title = get_the_title($post_id);
+    $permalink = get_permalink($post_id);
+    $image = get_the_post_thumbnail_url($post_id, 'card-thumb') ?: (get_template_directory_uri() . '/assets/img/hero-section.jpg');
+    $excerpt = has_excerpt($post_id)
+        ? get_the_excerpt($post_id)
+        : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $post_id)), 18, '…');
+
+    ob_start();
+    ?>
+    <article class="detail-landscape-update-card">
+      <a href="<?php echo esc_url($permalink); ?>" class="detail-landscape-update-image-wrap" aria-label="<?php echo esc_attr($title); ?>">
+        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" class="detail-landscape-update-image" />
+      </a>
+      <div class="detail-landscape-update-body">
+        <h3 class="detail-landscape-update-title">
+          <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($title); ?></a>
+        </h3>
+        <p class="detail-landscape-update-excerpt"><?php echo esc_html($excerpt); ?></p>
+        <a href="<?php echo esc_url($permalink); ?>" class="link-more"><?php echo esc_html__('Baca Selengkapnya', 'yiari'); ?> <i data-lucide="arrow-right" class="icon-sm"></i></a>
+      </div>
+    </article>
+    <?php
+
+    return trim((string) ob_get_clean());
+}
+
 function yiari_section_label(string $text, bool $circle = false): void {
     $class = $circle ? 'section-label section-label-circle' : 'section-label';
     printf('<span class="%s">%s</span>', esc_attr($class), esc_html($text));

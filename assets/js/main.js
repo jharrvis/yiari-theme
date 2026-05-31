@@ -468,3 +468,88 @@ document.addEventListener('alpine:init', () => {
     }
   }));
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const loadMoreButton = document.querySelector('[data-load-more-updates]');
+  const updatesGrid = document.querySelector('[data-updates-grid]');
+
+  if (!loadMoreButton || !updatesGrid) {
+    return;
+  }
+
+  const defaultLabel = loadMoreButton.textContent.trim();
+
+  loadMoreButton.addEventListener('click', async () => {
+    if (loadMoreButton.disabled) {
+      return;
+    }
+
+    const categoryId = loadMoreButton.dataset.categoryId || '0';
+    const page = loadMoreButton.dataset.page || '2';
+    const count = loadMoreButton.dataset.count || '9';
+
+    loadMoreButton.disabled = true;
+    loadMoreButton.textContent = window.yiariUpdates?.strings?.loading || defaultLabel;
+
+    try {
+      const payload = new URLSearchParams({
+        action: 'yiari_load_more_updates',
+        nonce: window.yiariUpdates?.nonce || '',
+        category_id: categoryId,
+        page,
+        count,
+      });
+
+      const response = await fetch(window.yiariUpdates?.ajaxUrl || '', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        },
+        body: payload.toString(),
+      });
+
+      const data = await response.json();
+
+      if (!data?.success || !data?.data?.html) {
+        throw new Error('Invalid response');
+      }
+
+      const fragment = document.createRange().createContextualFragment(data.data.html);
+      const newCards = Array.from(fragment.querySelectorAll('.detail-landscape-update-card'));
+
+      newCards.forEach((card, index) => {
+        card.classList.add('is-entering');
+        card.style.setProperty('--enter-delay', `${index * 70}ms`);
+      });
+
+      updatesGrid.appendChild(fragment);
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          newCards.forEach((card) => card.classList.add('is-visible'));
+        });
+      });
+
+      loadMoreButton.dataset.page = String(data.data.nextPage || Number(page) + 1);
+
+      if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+      }
+
+      if (!data.data.hasMore) {
+        loadMoreButton.closest('.detail-landscape-updates-footer')?.remove();
+        return;
+      }
+    } catch (error) {
+      loadMoreButton.textContent = window.yiariUpdates?.strings?.error || defaultLabel;
+      window.setTimeout(() => {
+        loadMoreButton.textContent = defaultLabel;
+      }, 1800);
+      loadMoreButton.disabled = false;
+      return;
+    }
+
+    loadMoreButton.disabled = false;
+    loadMoreButton.textContent = defaultLabel;
+  });
+});

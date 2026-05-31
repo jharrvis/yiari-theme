@@ -55,14 +55,87 @@ add_action('wp_enqueue_scripts', function () {
             'page' => __('Halaman', 'yiari'),
         ],
     ]);
+    wp_localize_script('yiari-main', 'yiariUpdates', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('yiari_load_more_updates'),
+        'strings' => [
+            'loading' => __('Memuat...', 'yiari'),
+            'error' => __('Gagal memuat artikel berikutnya.', 'yiari'),
+        ],
+    ]);
 
     wp_enqueue_script('alpinejs', 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js', ['yiari-main'], '3.14.0', true);
     wp_script_add_data('alpinejs', 'defer', true);
     wp_enqueue_script('lucide', 'https://unpkg.com/lucide@latest', ['yiari-main'], null, true);
 });
 
+add_filter('theme_page_templates', function (array $templates): array {
+    $templates['templates/detail-lanskap.php'] = __('Detail Lanskap', 'yiari');
+
+    return $templates;
+});
+
+add_action('add_meta_boxes_page', function (): void {
+    add_meta_box(
+        'yiari-page-template',
+        __('Template Halaman', 'yiari'),
+        function (WP_Post $post): void {
+            $templates = wp_get_theme()->get_page_templates($post, 'page');
+            $current = get_page_template_slug($post->ID);
+
+            wp_nonce_field('yiari_save_page_template', 'yiari_page_template_nonce');
+            ?>
+            <p>
+                <label for="yiari_page_template_select" class="screen-reader-text"><?php esc_html_e('Template Halaman', 'yiari'); ?></label>
+                <select name="yiari_page_template_select" id="yiari_page_template_select" style="width:100%;">
+                    <option value="default"><?php esc_html_e('Template Default', 'yiari'); ?></option>
+                    <?php foreach ($templates as $template_file => $template_name): ?>
+                        <option value="<?php echo esc_attr($template_file); ?>" <?php selected($current, $template_file); ?>>
+                            <?php echo esc_html($template_name); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </p>
+            <?php
+        },
+        'page',
+        'side',
+        'high'
+    );
+});
+
+add_action('save_post_page', function (int $post_id): void {
+    if (!isset($_POST['yiari_page_template_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['yiari_page_template_nonce'])), 'yiari_save_page_template')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_page', $post_id)) {
+        return;
+    }
+
+    $selected = isset($_POST['yiari_page_template_select']) ? sanitize_text_field(wp_unslash($_POST['yiari_page_template_select'])) : 'default';
+
+    if ($selected === 'default' || $selected === '') {
+        delete_post_meta($post_id, '_wp_page_template');
+        return;
+    }
+
+    $templates = wp_get_theme()->get_page_templates();
+    if (!isset($templates[$selected])) {
+        return;
+    }
+
+    update_post_meta($post_id, '_wp_page_template', $selected);
+});
+
 add_action('wp_ajax_yiari_live_search', 'yiari_handle_live_search');
 add_action('wp_ajax_nopriv_yiari_live_search', 'yiari_handle_live_search');
+add_action('wp_ajax_yiari_load_more_updates', 'yiari_handle_load_more_updates');
+add_action('wp_ajax_nopriv_yiari_load_more_updates', 'yiari_handle_load_more_updates');
 
 function yiari_handle_live_search(): void {
     check_ajax_referer('yiari_live_search', 'nonce');
@@ -101,6 +174,43 @@ function yiari_handle_live_search(): void {
     wp_reset_postdata();
 
     wp_send_json_success(['items' => $items]);
+}
+
+function yiari_handle_load_more_updates(): void {
+    check_ajax_referer('yiari_load_more_updates', 'nonce');
+
+    $category_id = isset($_POST['category_id']) ? (int) $_POST['category_id'] : 0;
+    $page = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
+    $count = isset($_POST['count']) ? max(1, min(12, (int) $_POST['count'])) : 9;
+
+    $query_args = [
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => $count,
+        'paged' => $page,
+        'ignore_sticky_posts' => true,
+        'orderby' => 'date',
+        'order' => 'DESC',
+    ];
+
+    if ($category_id > 0) {
+        $query_args['cat'] = $category_id;
+    }
+
+    $query = new WP_Query($query_args);
+    $items = [];
+
+    while ($query->have_posts()) {
+        $query->the_post();
+        $items[] = yiari_render_detail_landscape_update_card(get_the_ID());
+    }
+    wp_reset_postdata();
+
+    wp_send_json_success([
+        'html' => implode('', $items),
+        'nextPage' => $page + 1,
+        'hasMore' => $page < (int) $query->max_num_pages,
+    ]);
 }
 
 require_once get_template_directory() . '/inc/acf-fields.php';
