@@ -71,6 +71,8 @@ add_action('wp_enqueue_scripts', function () {
 
 add_filter('theme_page_templates', function (array $templates): array {
     $templates['templates/detail-lanskap.php'] = __('Detail Lanskap', 'yiari');
+    $templates['templates/donasi.php'] = __('Donasi', 'yiari');
+    $templates['templates/donasi-thankyou.php'] = __('Donasi Thank You', 'yiari');
 
     return $templates;
 });

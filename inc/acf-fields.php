@@ -333,4 +333,38 @@ add_action('acf/init', function () {
             ['key' => 'field_donation_form_button_text', 'label' => __('Teks Tombol Form', 'yiari'), 'name' => 'donation_form_button_text', 'type' => 'text', 'default_value' => __('Kirim Donasi', 'yiari')],
         ],
     ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_donation_thankyou_page',
+        'title' => __('Donasi Thank You - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/donasi-thankyou.php']]],
+        'menu_order' => 13,
+        'fields' => [
+            ['key' => 'field_donation_thankyou_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'donation_thankyou_label', 'type' => 'text', 'default_value' => __('DUKUNGAN ANDA', 'yiari')],
+            ['key' => 'field_donation_thankyou_title', 'label' => __('Judul Utama', 'yiari'), 'name' => 'donation_thankyou_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Terima Kasih atas\nDukungan Anda", 'yiari')],
+            ['key' => 'field_donation_thankyou_desc', 'label' => __('Deskripsi Utama', 'yiari'), 'name' => 'donation_thankyou_desc', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Donasi Anda berhasil kami terima. Kontribusi Anda sangat berarti bagi keberlangsungan satwa liar di Indonesia, membantu kami terus melindungi keanekaragaman hayati nusantara.', 'yiari')],
+            ['key' => 'field_donation_thankyou_note', 'label' => __('Catatan Tambahan', 'yiari'), 'name' => 'donation_thankyou_note', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Bukti konfirmasi telah dikirimkan ke email Anda. Silakan periksa folder spam jika tidak menemukannya di kotak masuk utama. Butuh bantuan? Hubungi kami di informasi@yiari.or.id', 'yiari')],
+            ['key' => 'field_donation_thankyou_image', 'label' => __('Gambar Utama', 'yiari'), 'name' => 'donation_thankyou_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_donation_thankyou_explore_label', 'label' => __('Label Eksplorasi', 'yiari'), 'name' => 'donation_thankyou_explore_label', 'type' => 'text', 'default_value' => __('EKSPLORASI', 'yiari')],
+            ['key' => 'field_donation_thankyou_explore_title', 'label' => __('Judul Eksplorasi', 'yiari'), 'name' => 'donation_thankyou_explore_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Terus Berjalan\nBersama Kami", 'yiari')],
+            ['key' => 'field_donation_thankyou_explore_desc', 'label' => __('Deskripsi Eksplorasi', 'yiari'), 'name' => 'donation_thankyou_explore_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Eksplorasi lebih dalam bagaimana kontribusi Anda membentuk masa depan yang lebih baik bagi satwa liar Indonesia.', 'yiari')],
+            [
+                'key' => 'field_donation_thankyou_cards',
+                'label' => __('Kartu Eksplorasi', 'yiari'),
+                'name' => 'donation_thankyou_cards',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 6,
+                'layout' => 'row',
+                'button_label' => __('Tambah Kartu', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_donation_thankyou_card_image', 'label' => __('Gambar', 'yiari'), 'name' => 'image', 'type' => 'image', 'return_format' => 'array'],
+                    ['key' => 'field_donation_thankyou_card_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_donation_thankyou_card_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 3],
+                    ['key' => 'field_donation_thankyou_card_link_text', 'label' => __('Teks Link', 'yiari'), 'name' => 'link_text', 'type' => 'text', 'default_value' => __('Lihat Selengkapnya', 'yiari')],
+                    ['key' => 'field_donation_thankyou_card_link_url', 'label' => __('URL Link', 'yiari'), 'name' => 'link_url', 'type' => 'url'],
+                ],
+            ],
+        ],
+    ]);
 });

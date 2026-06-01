@@ -1149,6 +1149,26 @@ img { max-width: 100%; height: auto; }
 .donation-form-theme .modal-header,
 .donation-form-theme .modal-body,
 .donation-form-theme .modal-footer { padding-left: 24px; padding-right: 24px; }
+.donation-thankyou-page { background: #ffffff; }
+.donation-thankyou-hero-section { padding: 40px 0 92px; }
+.donation-thankyou-hero-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(420px, .96fr); overflow: hidden; border: 1px solid #edf0f4; border-radius: 20px; background: #ffffff; }
+.donation-thankyou-hero-copy { display: flex; flex-direction: column; justify-content: center; padding: 34px 64px; }
+.donation-thankyou-hero-copy .section-label { margin-bottom: 18px; }
+.donation-thankyou-title { max-width: 420px; margin-bottom: 22px; color: #232323; font-family: 'Northwoods', serif; font-style: normal; font-weight: 400; font-size: 36px; line-height: 46px; }
+.donation-thankyou-description { max-width: 470px; margin-bottom: 32px; color: #4A4A4A; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-weight: 400; font-size: 16px; line-height: 24px; }
+.donation-thankyou-note { max-width: 430px; padding-top: 22px; border-top: 1px solid #e6e9ef; color: #8A8A8A; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-weight: 400; font-size: 12px; line-height: 18px; }
+.donation-thankyou-note p { margin: 0; }
+.donation-thankyou-note a { color: #395AA8; text-decoration: none; }
+.donation-thankyou-hero-media { display: flex; align-items: center; justify-content: center; padding: 24px; background: #eef3ff; }
+.donation-thankyou-hero-image { display: block; width: 100%; height: 446px; object-fit: cover; border-radius: 16px; }
+.donation-thankyou-explore-section { padding: 0 0 96px; }
+.donation-thankyou-explore-header { margin-bottom: 38px; }
+.donation-thankyou-card-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.donation-thankyou-card { display: flex; flex-direction: column; min-width: 0; }
+.donation-thankyou-card-media { margin-bottom: 18px; }
+.donation-thankyou-card-image { display: block; width: 100%; height: 360px; object-fit: cover; border-radius: 12px; }
+.donation-thankyou-card-title { margin-bottom: 12px; color: #232323; font-family: 'Poppins', 'Inter', sans-serif; font-size: 18px; font-weight: 600; line-height: 1.4; }
+.donation-thankyou-card-text { margin-bottom: 14px; color: #4A4A4A; font-family: 'Poppins', 'Inter', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.55; }
 @media (max-width: 768px) {
   .section-story { padding: 52px 0; }
   .story-card { border-radius: 18px; }
@@ -1177,6 +1197,17 @@ img { max-width: 100%; height: auto; }
   .donation-form-shell-head { padding: 24px 26px 26px; }
   .donation-form-shell-head h2 { font-size: 24px; line-height: 30px; }
   .donation-form-theme { padding: 24px 26px 24px; }
+  .donation-thankyou-hero-section { padding: 32px 0 72px; }
+  .donation-thankyou-hero-card { grid-template-columns: 1fr; }
+  .donation-thankyou-hero-copy { order: 1; padding: 28px 28px 30px; }
+  .donation-thankyou-title { max-width: 100%; font-size: 36px; line-height: 46px; }
+  .donation-thankyou-description { max-width: 100%; font-size: 16px; line-height: 24px; }
+  .donation-thankyou-hero-media { order: 2; padding: 0 28px 28px; }
+  .donation-thankyou-hero-image { height: 360px; }
+  .donation-thankyou-explore-section { padding-bottom: 80px; }
+  .donation-thankyou-explore-header { margin-bottom: 28px; }
+  .donation-thankyou-card-grid { grid-template-columns: 1fr; gap: 28px; }
+  .donation-thankyou-card-image { height: 320px; }
 }
 @media (max-width: 640px) {
   .donation-section { padding: 28px 0 60px; }
@@ -1217,4 +1248,19 @@ img { max-width: 100%; height: auto; }
   .donation-input-prefix { min-width: 52px; font-size: 14px; }
   .donation-form-theme .donation-submit-button { min-height: 50px; border-radius: 12px; font-size: 15px; }
   .donation-form-disclaimer { font-size: 11px; }
+  .donation-thankyou-hero-section { padding: 28px 0 60px; }
+  .donation-thankyou-hero-card { border-radius: 18px; }
+  .donation-thankyou-hero-copy { padding: 22px 20px 24px; }
+  .donation-thankyou-hero-copy .section-label { margin-bottom: 14px; }
+  .donation-thankyou-title { font-size: 36px; line-height: 46px; }
+  .donation-thankyou-description { margin-bottom: 24px; font-size: 16px; line-height: 24px; }
+  .donation-thankyou-note { padding-top: 18px; font-size: 12px; line-height: 18px; }
+  .donation-thankyou-hero-media { padding: 0 20px 20px; }
+  .donation-thankyou-hero-image { height: 240px; border-radius: 14px; }
+  .donation-thankyou-explore-section { padding-bottom: 64px; }
+  .donation-thankyou-card-grid { gap: 24px; }
+  .donation-thankyou-card-media { margin-bottom: 14px; }
+  .donation-thankyou-card-image { height: 220px; border-radius: 10px; }
+  .donation-thankyou-card-title { font-size: 16px; }
+  .donation-thankyou-card-text { font-size: 14px; }
 }
