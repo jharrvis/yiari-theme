@@ -47,7 +47,9 @@ $story_title = yiari_field('join_story_title', __("Pengalaman Nyata\nBersama YIA
 $story_desc = yiari_field('join_story_desc', __('Kisah mahasiswa, relawan, dan peserta magang yang terlibat langsung dalam kegiatan konservasi, penelitian, dan kehidupan di lapangan.', 'yiari'));
 $story_link_text = yiari_field('join_story_link_text', __('Lihat Semua Cerita Magang', 'yiari'));
 $story_link_url = yiari_field('join_story_link_url', yiari_get_posts_page_url('#'));
-$story_category = (int) yiari_field('join_story_category', 0);
+$story_categories_raw = yiari_field('join_story_category', []);
+$story_categories = is_array($story_categories_raw) ? $story_categories_raw : [$story_categories_raw];
+$story_categories = array_values(array_filter(array_map('intval', $story_categories)));
 $story_count = max(3, min(6, (int) yiari_field('join_story_count', 3)));
 
 $story_query_args = [
@@ -59,8 +61,8 @@ $story_query_args = [
     'order' => 'DESC',
 ];
 
-if ($story_category > 0) {
-    $story_query_args['cat'] = $story_category;
+if (!empty($story_categories)) {
+    $story_query_args['category__in'] = $story_categories;
 }
 
 $story_query = new WP_Query($story_query_args);

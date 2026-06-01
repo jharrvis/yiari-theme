@@ -229,3 +229,30 @@ add_filter('wp_midtrans_donation_should_enqueue_assets', function (bool $should_
 
     return is_page_template('templates/donasi.php');
 });
+
+add_filter('gettext', function (string $translation, string $text, string $domain): string {
+    if (is_admin()) {
+        return $translation;
+    }
+
+    global $post;
+
+    if (!$post instanceof WP_Post || get_page_template_slug($post->ID) !== 'templates/bergabung.php') {
+        return $translation;
+    }
+
+    $current_lang = function_exists('pll_current_language') ? (string) pll_current_language('slug') : '';
+    $is_english = strpos($current_lang, 'en') === 0;
+
+    $replacements = $is_english
+        ? [
+            'Next' => 'Next',
+            'Previous' => 'Previous',
+        ]
+        : [
+            'Next' => 'Selanjutnya',
+            'Previous' => 'Sebelumnya',
+        ];
+
+    return $replacements[$text] ?? $translation;
+}, 20, 3);
