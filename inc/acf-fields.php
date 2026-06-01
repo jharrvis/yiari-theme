@@ -367,4 +367,75 @@ add_action('acf/init', function () {
             ],
         ],
     ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_join_page',
+        'title' => __('Bergabung - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/bergabung.php']]],
+        'menu_order' => 14,
+        'fields' => [
+            ['key' => 'field_join_hero_tab', 'label' => __('Hero', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_join_hero_image', 'label' => __('Gambar Hero', 'yiari'), 'name' => 'join_hero_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_join_hero_title', 'label' => __('Judul Hero', 'yiari'), 'name' => 'join_hero_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Bersama Kita Bisa\nMelindungi Satwa\ndan Hutan Indonesia", 'yiari')],
+            ['key' => 'field_join_hero_text', 'label' => __('Teks Hero', 'yiari'), 'name' => 'join_hero_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Setiap langkah kecil yang Anda ambil hari ini menjadi fondasi bagi keberlangsungan ekosistem nusantara di masa depan. Bergabunglah dalam misi kolaboratif untuk menyelamatkan habitat yang terancam.', 'yiari')],
+            ['key' => 'field_join_hero_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'join_hero_btn1_text', 'type' => 'text', 'default_value' => __('Mulai Bergabung', 'yiari')],
+            ['key' => 'field_join_hero_btn1_url', 'label' => __('Tombol 1 - URL', 'yiari'), 'name' => 'join_hero_btn1_url', 'type' => 'url'],
+            ['key' => 'field_join_hero_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'join_hero_btn2_text', 'type' => 'text', 'default_value' => __('Pelajari Lebih Lanjut', 'yiari')],
+            ['key' => 'field_join_hero_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'join_hero_btn2_url', 'type' => 'url'],
+
+            ['key' => 'field_join_program_tab', 'label' => __('Program', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_join_program_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'join_program_label', 'type' => 'text', 'default_value' => __('PROGRAM MAGANG & RELAWAN', 'yiari')],
+            ['key' => 'field_join_program_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'join_program_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Rasakan Pengalaman\nNyata Bersama Tim\nKonservasi YIARI", 'yiari')],
+            ['key' => 'field_join_program_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'join_program_desc', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Program ini membuka kesempatan bagi pelajar dan mahasiswa untuk terlibat langsung dalam berbagai kegiatan konservasi, mulai dari magang, relawan, penelitian, hingga pengabdian lainnya di lingkungan YIARI.', 'yiari')],
+            ['key' => 'field_join_program_image', 'label' => __('Gambar Utama', 'yiari'), 'name' => 'join_program_image', 'type' => 'image', 'return_format' => 'array'],
+            [
+                'key' => 'field_join_program_items',
+                'label' => __('Daftar Peran', 'yiari'),
+                'name' => 'join_program_items',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 6,
+                'layout' => 'row',
+                'button_label' => __('Tambah Peran', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_join_program_item_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_join_program_item_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 3],
+                ],
+            ],
+
+            ['key' => 'field_join_story_tab', 'label' => __('Cerita Lapangan', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_join_story_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'join_story_label', 'type' => 'text', 'default_value' => __('CERITA DARI LAPANGAN', 'yiari')],
+            ['key' => 'field_join_story_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'join_story_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Pengalaman Nyata\nBersama YIARI", 'yiari')],
+            ['key' => 'field_join_story_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'join_story_desc', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Kisah mahasiswa, relawan, dan peserta magang yang terlibat langsung dalam kegiatan konservasi, penelitian, dan kehidupan di lapangan.', 'yiari')],
+            ['key' => 'field_join_story_link_text', 'label' => __('Teks Link Section', 'yiari'), 'name' => 'join_story_link_text', 'type' => 'text', 'default_value' => __('Lihat Semua Cerita Magang', 'yiari')],
+            ['key' => 'field_join_story_link_url', 'label' => __('URL Link Section', 'yiari'), 'name' => 'join_story_link_url', 'type' => 'url'],
+            ['key' => 'field_join_story_category', 'label' => __('Kategori Artikel', 'yiari'), 'name' => 'join_story_category', 'type' => 'taxonomy', 'taxonomy' => 'category', 'field_type' => 'select', 'return_format' => 'id', 'allow_null' => 1, 'add_term' => 0, 'save_terms' => 0, 'load_terms' => 0],
+            ['key' => 'field_join_story_count', 'label' => __('Jumlah Artikel', 'yiari'), 'name' => 'join_story_count', 'type' => 'number', 'default_value' => 3, 'min' => 3, 'max' => 6, 'step' => 1],
+
+            ['key' => 'field_join_steps_tab', 'label' => __('Langkah Pendaftaran', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_join_steps_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'join_steps_label', 'type' => 'text', 'default_value' => __('LANGKAH AWAL ANDA', 'yiari')],
+            ['key' => 'field_join_steps_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'join_steps_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Proses Pendaftaran', 'yiari')],
+            ['key' => 'field_join_steps_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'join_steps_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Mulai langkah pertama Anda untuk terlibat langsung dalam upaya konservasi, ikuti prosesnya dan jadilah bagian dari perubahan.', 'yiari')],
+            [
+                'key' => 'field_join_steps_items',
+                'label' => __('Daftar Langkah', 'yiari'),
+                'name' => 'join_steps_items',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 6,
+                'layout' => 'row',
+                'button_label' => __('Tambah Langkah', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_join_steps_item_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_join_steps_item_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 3],
+                ],
+            ],
+
+            ['key' => 'field_join_form_tab', 'label' => __('Formulir', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_join_form_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'join_form_label', 'type' => 'text', 'default_value' => __('MULAI DARI SINI', 'yiari')],
+            ['key' => 'field_join_form_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'join_form_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Formulir Pendaftaran', 'yiari')],
+            ['key' => 'field_join_form_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'join_form_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Lengkapi formulir ini dan ambil langkah nyata untuk terlibat langsung dalam konservasi.', 'yiari')],
+            ['key' => 'field_join_form_shortcode', 'label' => __('Shortcode Fluent Form', 'yiari'), 'name' => 'join_form_shortcode', 'type' => 'text', 'default_value' => '[fluentform id="1"]'],
+        ],
+    ]);
 });

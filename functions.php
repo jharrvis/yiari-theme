@@ -73,6 +73,7 @@ add_filter('theme_page_templates', function (array $templates): array {
     $templates['templates/detail-lanskap.php'] = __('Detail Lanskap', 'yiari');
     $templates['templates/donasi.php'] = __('Donasi', 'yiari');
     $templates['templates/donasi-thankyou.php'] = __('Donasi Thank You', 'yiari');
+    $templates['templates/bergabung.php'] = __('Bergabung', 'yiari');
 
     return $templates;
 });
