@@ -74,6 +74,7 @@ add_filter('theme_page_templates', function (array $templates): array {
     $templates['templates/donasi.php'] = __('Donasi', 'yiari');
     $templates['templates/donasi-thankyou.php'] = __('Donasi Thank You', 'yiari');
     $templates['templates/bergabung.php'] = __('Bergabung', 'yiari');
+    $templates['templates/jurnal.php'] = __('Jurnal', 'yiari');
 
     return $templates;
 });
@@ -256,3 +257,77 @@ add_filter('gettext', function (string $translation, string $text, string $domai
 
     return $replacements[$text] ?? $translation;
 }, 20, 3);
+
+add_filter('gettext', function (string $translation, string $text, string $domain): string {
+    if (is_admin()) {
+        return $translation;
+    }
+
+    global $post;
+
+    if (!$post instanceof WP_Post || get_page_template_slug($post->ID) !== 'templates/jurnal.php') {
+        return $translation;
+    }
+
+    $current_lang = function_exists('pll_current_language') ? (string) pll_current_language('slug') : '';
+    $is_english = strpos($current_lang, 'en') === 0;
+
+    $replacements = $is_english
+        ? [
+            'Search Publications' => 'Search Publications',
+            'Type to search...' => 'Search research...',
+            'Search publications' => 'Search research',
+            'Filter by Category' => 'Filter by Year',
+            'Filter by category' => 'Filter by year',
+            'All Categories' => 'All Years',
+            'Reset' => 'Reset',
+            'Loading...' => 'Loading...',
+            'Searching...' => 'Searching...',
+            'Error loading content. Please try again.' => 'Error loading content. Please try again.',
+            'Retry' => 'Retry',
+            'No research found' => 'No research found',
+            'Try another keyword or change the search filter.' => 'Try another keyword or change the search filter.',
+            'Search failed. Please try again.' => 'Search failed. Please try again.',
+            'No categories match your search or filter criteria.' => 'No categories match your search or filter criteria.',
+            'Parent category not found.' => 'Parent category not found.',
+            'No categories found.' => 'No publication categories found.',
+            'Invalid category ID.' => 'Invalid category ID.',
+            'Category not found.' => 'Category not found.',
+            'No publications found in this category.' => 'No publications found in this category.',
+            'View Journal' => 'View Journal',
+        ]
+        : [
+            'Search Publications' => 'Cari Penelitian',
+            'Type to search...' => 'Cari penelitian...',
+            'Search publications' => 'Cari penelitian',
+            'Filter by Category' => 'Filter Berdasarkan Tahun',
+            'Filter by category' => 'Filter berdasarkan tahun',
+            'All Categories' => 'Semua Tahun',
+            'Reset' => 'Reset',
+            'Loading...' => 'Memuat...',
+            'Searching...' => 'Mencari...',
+            'Error loading content. Please try again.' => 'Gagal memuat konten. Silakan coba lagi.',
+            'Retry' => 'Coba Lagi',
+            'No research found' => 'Tidak ada penelitian ditemukan',
+            'Try another keyword or change the search filter.' => 'Coba gunakan kata kunci lain atau ubah filter pencarian',
+            'Search failed. Please try again.' => 'Pencarian gagal. Silakan coba lagi.',
+            'No categories match your search or filter criteria.' => 'Tidak ada kategori yang cocok dengan pencarian atau filter Anda.',
+            'Parent category not found.' => 'Kategori induk tidak ditemukan.',
+            'No categories found.' => 'Belum ada kategori publikasi.',
+            'Invalid category ID.' => 'ID kategori tidak valid.',
+            'Category not found.' => 'Kategori tidak ditemukan.',
+            'No publications found in this category.' => 'Belum ada publikasi pada kategori ini.',
+            'View Journal' => 'Lihat Jurnal',
+        ];
+
+    return $replacements[$text] ?? $translation;
+}, 20, 3);
+
+add_action('wp_ajax_refresh_jurnal_nonce', 'yiari_refresh_jurnal_nonce');
+add_action('wp_ajax_nopriv_refresh_jurnal_nonce', 'yiari_refresh_jurnal_nonce');
+
+function yiari_refresh_jurnal_nonce(): void {
+    wp_send_json_success([
+        'nonce' => wp_create_nonce('jurnal_accordion_nonce'),
+    ]);
+}

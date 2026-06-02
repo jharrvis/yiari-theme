@@ -470,6 +470,16 @@ document.addEventListener('alpine:init', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  const journalPage = document.querySelector('.journal-page');
+  if (journalPage) {
+    window.setTimeout(() => {
+      const firstJournalTrigger = journalPage.querySelector('.jurnal-accordion-trigger[aria-expanded="false"]');
+      if (firstJournalTrigger) {
+        firstJournalTrigger.click();
+      }
+    }, 180);
+  }
+
   const loadMoreButton = document.querySelector('[data-load-more-updates]');
   const updatesGrid = document.querySelector('[data-updates-grid]');
 

@@ -438,4 +438,56 @@ add_action('acf/init', function () {
             ['key' => 'field_join_form_shortcode', 'label' => __('Shortcode Fluent Form', 'yiari'), 'name' => 'join_form_shortcode', 'type' => 'text', 'default_value' => '[fluentform id="1"]'],
         ],
     ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_journal_page',
+        'title' => __('Jurnal - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/jurnal.php']]],
+        'menu_order' => 15,
+        'fields' => [
+            ['key' => 'field_journal_hero_tab', 'label' => __('Hero', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_journal_hero_image', 'label' => __('Gambar Hero', 'yiari'), 'name' => 'journal_hero_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_journal_hero_title', 'label' => __('Judul Hero', 'yiari'), 'name' => 'journal_hero_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Penelitian untuk Memahami dan\nMelindungi Satwa Liar", 'yiari')],
+            ['key' => 'field_journal_hero_text', 'label' => __('Teks Hero', 'yiari'), 'name' => 'journal_hero_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Penelitian membantu kami memahami satwa, habitatnya, dan ancaman yang mereka hadapi. Pengetahuan ini menjadi dasar bagi berbagai upaya konservasi yang dilakukan YIARI.', 'yiari')],
+            ['key' => 'field_journal_hero_btn_text', 'label' => __('Teks Tombol Hero', 'yiari'), 'name' => 'journal_hero_btn_text', 'type' => 'text', 'default_value' => __('Lihat Perpustakaan Penelitian', 'yiari')],
+            ['key' => 'field_journal_hero_btn_url', 'label' => __('URL Tombol Hero', 'yiari'), 'name' => 'journal_hero_btn_url', 'type' => 'url'],
+
+            ['key' => 'field_journal_library_tab', 'label' => __('Perpustakaan Penelitian', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_journal_library_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'journal_library_label', 'type' => 'text', 'default_value' => __('SUMBER PENGETAHUAN', 'yiari')],
+            ['key' => 'field_journal_library_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'journal_library_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Perpustakaan Penelitian', 'yiari')],
+            ['key' => 'field_journal_library_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'journal_library_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Kumpulan publikasi ilmiah dan laporan teknis hasil kerja sama YIARI dengan berbagai mitra akademis.', 'yiari')],
+            ['key' => 'field_journal_library_shortcode', 'label' => __('Shortcode Jurnal Accordion', 'yiari'), 'name' => 'journal_library_shortcode', 'type' => 'text', 'default_value' => '[jurnal_accordion parent_slug="jurnal" taxonomy="kategori-publikasi" orderby="name" order="DESC" class="yiari-journal-accordion" show_search="yes" show_filter="yes"]'],
+
+            ['key' => 'field_journal_more_tab', 'label' => __('Publikasi Lainnya', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_journal_more_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'journal_more_label', 'type' => 'text', 'default_value' => __('EKSPLOR LEBIH BANYAK', 'yiari')],
+            ['key' => 'field_journal_more_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'journal_more_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Publikasi Lainnya', 'yiari')],
+            ['key' => 'field_journal_more_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'journal_more_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Beragam konten tambahan yang melengkapi informasi dan wawasan seputar konservasi.', 'yiari')],
+            [
+                'key' => 'field_journal_more_items',
+                'label' => __('Kartu Publikasi', 'yiari'),
+                'name' => 'journal_more_items',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 6,
+                'layout' => 'row',
+                'button_label' => __('Tambah Kartu', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_journal_more_item_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_journal_more_item_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 3],
+                    ['key' => 'field_journal_more_item_url', 'label' => __('URL', 'yiari'), 'name' => 'url', 'type' => 'url'],
+                    ['key' => 'field_journal_more_item_icon', 'label' => __('Nama Ikon Lucide', 'yiari'), 'name' => 'icon', 'type' => 'text', 'default_value' => 'file-text'],
+                ],
+            ],
+
+            ['key' => 'field_journal_cta_tab', 'label' => __('CTA Bawah', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_journal_cta_label', 'label' => __('Label CTA', 'yiari'), 'name' => 'journal_cta_label', 'type' => 'text', 'default_value' => __('DUKUNGAN ANDA', 'yiari')],
+            ['key' => 'field_journal_cta_title', 'label' => __('Judul CTA', 'yiari'), 'name' => 'journal_cta_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Dukung Penelitian untuk\nMelindungi Satwa Liar", 'yiari')],
+            ['key' => 'field_journal_cta_text', 'label' => __('Teks CTA', 'yiari'), 'name' => 'journal_cta_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Dukungan Anda membantu kami melanjutkan penelitian di lapangan, membiayai peralatan teknologi mutakhir, dan melatih generasi peneliti muda Indonesia untuk masa depan alam kita.', 'yiari')],
+            ['key' => 'field_journal_cta_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'journal_cta_btn1_text', 'type' => 'text', 'default_value' => __('Donasi Sekarang', 'yiari')],
+            ['key' => 'field_journal_cta_btn1_url', 'label' => __('Tombol 1 - URL', 'yiari'), 'name' => 'journal_cta_btn1_url', 'type' => 'url'],
+            ['key' => 'field_journal_cta_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'journal_cta_btn2_text', 'type' => 'text', 'default_value' => __('Gabung Bersama YIARI', 'yiari')],
+            ['key' => 'field_journal_cta_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'journal_cta_btn2_url', 'type' => 'url'],
+            ['key' => 'field_journal_cta_image', 'label' => __('Gambar CTA', 'yiari'), 'name' => 'journal_cta_image', 'type' => 'image', 'return_format' => 'array'],
+        ],
+    ]);
 });
