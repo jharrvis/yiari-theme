@@ -214,6 +214,58 @@ function yiari_get_page_url_by_template(string $template, string $fallback = '')
     return $fallback;
 }
 
+function yiari_localize_url(string $url): string {
+    $url = trim($url);
+    if ($url === '') {
+        return '';
+    }
+
+    if (str_starts_with($url, '#')) {
+        return yiari_fragment_url($url);
+    }
+
+    $home_host = (string) wp_parse_url(home_url('/'), PHP_URL_HOST);
+    $url_host = (string) wp_parse_url($url, PHP_URL_HOST);
+
+    if ($url_host !== '' && $home_host !== '' && !hash_equals($home_host, $url_host)) {
+        return $url;
+    }
+
+    $normalized_url = $url;
+    if ($url_host === '') {
+        $normalized_url = home_url('/' . ltrim($url, '/'));
+    }
+
+    $path = (string) wp_parse_url($normalized_url, PHP_URL_PATH);
+    $query = (string) wp_parse_url($normalized_url, PHP_URL_QUERY);
+    $fragment = (string) wp_parse_url($normalized_url, PHP_URL_FRAGMENT);
+    $post_id = url_to_postid($normalized_url);
+
+    if ($post_id <= 0 && $path !== '') {
+        $path_post = get_page_by_path(trim($path, '/'));
+        if ($path_post instanceof WP_Post) {
+            $post_id = (int) $path_post->ID;
+        }
+    }
+
+    if ($post_id <= 0) {
+        return $normalized_url;
+    }
+
+    $translated_id = yiari_translate_post_id($post_id);
+    $localized_url = get_permalink($translated_id) ?: $normalized_url;
+
+    if ($query !== '') {
+        $localized_url = add_query_arg(wp_parse_args($query), $localized_url);
+    }
+
+    if ($fragment !== '') {
+        $localized_url .= '#' . $fragment;
+    }
+
+    return $localized_url;
+}
+
 function yiari_get_posts_page_url(string $fallback = ''): string {
     $page_id = (int) get_option('page_for_posts');
     if ($page_id > 0) {
@@ -275,6 +327,319 @@ function yiari_get_join_url(): string {
     );
 }
 
+function yiari_get_publication_archive_url(): string {
+    return yiari_get_page_url_by_paths(
+        ['publikasi', 'publications'],
+        home_url('/publikasi/')
+    );
+}
+
+function yiari_get_publication_file_url(int $post_id): string {
+    $url = '';
+
+    if (function_exists('get_field')) {
+        $field_value = get_field('link_jurnal', $post_id);
+        if (is_string($field_value) && $field_value !== '') {
+            $url = $field_value;
+        }
+    }
+
+    if ($url === '') {
+        $meta_value = get_post_meta($post_id, 'link_jurnal', true);
+        if (is_string($meta_value) && $meta_value !== '') {
+            $url = $meta_value;
+        }
+    }
+
+    return esc_url_raw(trim($url));
+}
+
+function yiari_get_google_drive_file_id(string $url): string {
+    $url = trim($url);
+    if ($url === '') {
+        return '';
+    }
+
+    if (preg_match('~drive\.google\.com/file/d/([^/]+)~', $url, $matches)) {
+        return $matches[1];
+    }
+
+    if (preg_match('~[?&]id=([^&]+)~', $url, $matches)) {
+        return $matches[1];
+    }
+
+    return '';
+}
+
+function yiari_get_publication_preview_url(string $url): string {
+    $url = trim($url);
+    if ($url === '') {
+        return '';
+    }
+
+    $drive_file_id = yiari_get_google_drive_file_id($url);
+    if ($drive_file_id !== '') {
+        return 'https://drive.google.com/file/d/' . rawurlencode($drive_file_id) . '/preview';
+    }
+
+    return $url;
+}
+
+function yiari_get_publication_download_url(string $url): string {
+    $url = trim($url);
+    if ($url === '') {
+        return '';
+    }
+
+    $drive_file_id = yiari_get_google_drive_file_id($url);
+    if ($drive_file_id !== '') {
+        return 'https://drive.google.com/uc?export=download&id=' . rawurlencode($drive_file_id);
+    }
+
+    return $url;
+}
+
+function yiari_publication_supports_pdfjs(string $url): bool {
+    $url = trim($url);
+    if ($url === '') {
+        return false;
+    }
+
+    if (yiari_get_google_drive_file_id($url) !== '') {
+        return false;
+    }
+
+    $path = (string) wp_parse_url($url, PHP_URL_PATH);
+    if ($path !== '' && preg_match('/\.pdf$/i', $path)) {
+        return true;
+    }
+
+    $local_path = yiari_get_local_path_from_url($url);
+
+    return $local_path !== '' && preg_match('/\.pdf$/i', $local_path) === 1;
+}
+
+function yiari_format_file_size(int $bytes): string {
+    if ($bytes <= 0) {
+        return '';
+    }
+
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    $size = (float) $bytes;
+    $unit_index = 0;
+
+    while ($size >= 1024 && $unit_index < count($units) - 1) {
+        $size /= 1024;
+        $unit_index++;
+    }
+
+    $precision = $size >= 10 || $unit_index === 0 ? 0 : 1;
+
+    return sprintf('%s %s', number_format_i18n($size, $precision), $units[$unit_index]);
+}
+
+function yiari_get_local_path_from_url(string $url): string {
+    $url = trim($url);
+    if ($url === '') {
+        return '';
+    }
+
+    $uploads = wp_get_upload_dir();
+    $baseurl = isset($uploads['baseurl']) ? (string) $uploads['baseurl'] : '';
+    $basedir = isset($uploads['basedir']) ? (string) $uploads['basedir'] : '';
+
+    if ($baseurl !== '' && $basedir !== '' && str_starts_with($url, $baseurl . '/')) {
+        $relative_path = ltrim(substr($url, strlen($baseurl)), '/');
+        $candidate = trailingslashit($basedir) . $relative_path;
+        if (is_readable($candidate)) {
+            return $candidate;
+        }
+    }
+
+    $home = home_url('/');
+    if ($home !== '' && str_starts_with($url, $home)) {
+        $relative_path = ltrim(wp_parse_url($url, PHP_URL_PATH) ?: '', '/');
+        if ($relative_path !== '') {
+            $candidate = trailingslashit(ABSPATH) . $relative_path;
+            if (is_readable($candidate)) {
+                return $candidate;
+            }
+        }
+    }
+
+    return '';
+}
+
+function yiari_extract_pdf_page_count_from_string(string $contents): int {
+    if ($contents === '') {
+        return 0;
+    }
+
+    $count = 0;
+    if (preg_match_all('/\/Type\s*\/Page\b/', $contents, $matches)) {
+        $count = count($matches[0]);
+    }
+
+    if ($count > 0) {
+        return $count;
+    }
+
+    if (preg_match_all('/\/Count\s+(\d+)/', $contents, $matches)) {
+        $values = array_map('intval', $matches[1]);
+        return max($values) ?: 0;
+    }
+
+    return 0;
+}
+
+function yiari_extract_pdf_page_count_from_file(string $path): int {
+    if ($path === '' || !is_readable($path)) {
+        return 0;
+    }
+
+    $contents = @file_get_contents($path);
+    if (!is_string($contents) || $contents === '') {
+        return 0;
+    }
+
+    return yiari_extract_pdf_page_count_from_string($contents);
+}
+
+function yiari_get_publication_document_meta(int $post_id): array {
+    $file_url = yiari_get_publication_file_url($post_id);
+    if ($file_url === '') {
+        return [
+            'pages' => 0,
+            'file_size_bytes' => 0,
+            'file_size_label' => '',
+        ];
+    }
+
+    $cache_key = 'yiari_publication_meta_' . $post_id . '_' . md5($file_url);
+    $cached = get_transient($cache_key);
+    if (is_array($cached)) {
+        return wp_parse_args($cached, [
+            'pages' => 0,
+            'file_size_bytes' => 0,
+            'file_size_label' => '',
+        ]);
+    }
+
+    $meta = [
+        'pages' => 0,
+        'file_size_bytes' => 0,
+        'file_size_label' => '',
+    ];
+
+    $local_path = yiari_get_local_path_from_url($file_url);
+    if ($local_path !== '') {
+        $meta['file_size_bytes'] = (int) @filesize($local_path);
+        $meta['pages'] = yiari_extract_pdf_page_count_from_file($local_path);
+    }
+
+    $download_url = yiari_get_publication_download_url($file_url);
+    $request_url = $download_url !== '' ? $download_url : $file_url;
+
+    if ($meta['file_size_bytes'] <= 0 && $request_url !== '') {
+        $head_response = wp_remote_head($request_url, [
+            'timeout' => 10,
+            'redirection' => 5,
+        ]);
+
+        if (!is_wp_error($head_response)) {
+            $content_length = wp_remote_retrieve_header($head_response, 'content-length');
+            if (is_string($content_length) && ctype_digit($content_length)) {
+                $meta['file_size_bytes'] = (int) $content_length;
+            }
+        }
+    }
+
+    if (($meta['pages'] <= 0 || $meta['file_size_bytes'] <= 0) && $request_url !== '') {
+        if (!function_exists('download_url')) {
+            require_once ABSPATH . 'wp-admin/includes/file.php';
+        }
+
+        $temp_path = download_url($request_url, 20);
+        if (!is_wp_error($temp_path) && is_string($temp_path) && is_readable($temp_path)) {
+            if ($meta['file_size_bytes'] <= 0) {
+                $meta['file_size_bytes'] = (int) @filesize($temp_path);
+            }
+
+            if ($meta['pages'] <= 0) {
+                $meta['pages'] = yiari_extract_pdf_page_count_from_file($temp_path);
+            }
+
+            @unlink($temp_path);
+        }
+    }
+
+    $meta['file_size_label'] = yiari_format_file_size((int) $meta['file_size_bytes']);
+
+    set_transient($cache_key, $meta, 12 * HOUR_IN_SECONDS);
+
+    return $meta;
+}
+
+function yiari_get_publication_year_term_id(int $post_id, string $year, string $taxonomy = 'kategori-publikasi', string $parent_slug = 'jurnal'): int {
+    $year = trim($year);
+    if ($post_id <= 0 || $year === '' || !taxonomy_exists($taxonomy)) {
+        return 0;
+    }
+
+    $parent_term = get_term_by('slug', $parent_slug, $taxonomy);
+    $parent_id = $parent_term instanceof WP_Term ? (int) $parent_term->term_id : 0;
+    $post_terms = get_the_terms($post_id, $taxonomy);
+
+    if (is_array($post_terms)) {
+        foreach ($post_terms as $term) {
+            if (
+                $term instanceof WP_Term &&
+                ((string) $term->name === $year || (string) $term->slug === sanitize_title($year)) &&
+                ($parent_id === 0 || (int) $term->parent === $parent_id)
+            ) {
+                return (int) $term->term_id;
+            }
+        }
+    }
+
+    $matching_term = get_terms([
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+        'parent' => $parent_id,
+        'name' => $year,
+        'number' => 1,
+    ]);
+
+    if (is_array($matching_term) && !empty($matching_term[0]) && $matching_term[0] instanceof WP_Term) {
+        return (int) $matching_term[0]->term_id;
+    }
+
+    $matching_slug_term = get_terms([
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+        'parent' => $parent_id,
+        'slug' => sanitize_title($year),
+        'number' => 1,
+    ]);
+
+    if (is_array($matching_slug_term) && !empty($matching_slug_term[0]) && $matching_slug_term[0] instanceof WP_Term) {
+        return (int) $matching_slug_term[0]->term_id;
+    }
+
+    return 0;
+}
+
+function yiari_get_publication_year_url(int $post_id, string $year): string {
+    $archive_url = yiari_get_publication_archive_url();
+    $term_id = yiari_get_publication_year_term_id($post_id, $year);
+
+    if ($term_id > 0) {
+        return trailingslashit($archive_url) . '#jurnal-' . $term_id;
+    }
+
+    return $archive_url;
+}
+
 function yiari_fallback_primary_menu(): array {
     return [
         [
@@ -301,7 +666,7 @@ function yiari_fallback_primary_menu(): array {
             ],
         ],
         ['ID' => 301, 'title' => __('Cerita', 'yiari'), 'url' => yiari_get_posts_page_url(home_url('/cerita/')), 'children' => []],
-        ['ID' => 302, 'title' => __('Publikasi', 'yiari'), 'url' => yiari_get_page_url_by_paths(['publikasi','publications'], home_url('/publikasi/')), 'children' => []],
+        ['ID' => 302, 'title' => __('Publikasi', 'yiari'), 'url' => yiari_get_publication_archive_url(), 'children' => []],
         ['ID' => 303, 'title' => __('Bergabung', 'yiari'), 'url' => yiari_get_join_url(), 'children' => []],
     ];
 }

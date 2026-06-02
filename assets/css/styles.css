@@ -1488,7 +1488,7 @@ img { max-width: 100%; height: auto; }
 .journal-library-shell .yiari-journal-accordion .jurnal-post-excerpt p:last-child,
 .journal-library-shell .yiari-journal-accordion .jurnal-post-content p:last-child { margin-bottom: 0; color: #9aa1ae; font-size: 11px; text-transform: uppercase; letter-spacing: .03em; }
 .journal-library-shell .yiari-journal-accordion .jurnal-post-link { grid-column: 2; grid-row: 1 / span 2; align-self: center; margin-top: 0; }
-.journal-library-shell .yiari-journal-accordion .jurnal-link-button { display: inline-flex; flex-direction: row; justify-content: center; align-items: center; gap: 8px; min-width: 124px; min-height: 48px; padding: 12px 20px; background: #395AA8; border-radius: 12px; color: #FFFFFF; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-size: 16px; font-weight: 500; line-height: 24px; text-align: center; text-decoration: none; }
+.journal-library-shell .yiari-journal-accordion .jurnal-link-button { display: inline-flex; flex-direction: row; justify-content: center; align-items: center; gap: 8px; min-width: 124px; min-height: 48px; padding: 12px 20px; background: #395AA8; border-radius: 12px; color: #FFFFFF; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-size: 16px; font-weight: 500; line-height: 24px; text-align: center; text-decoration: none; white-space: nowrap; }
 .journal-library-shell .yiari-journal-accordion .jurnal-link-button:hover { background: #2d4373; transform: translateY(-1px); color: #ffffff; }
 .journal-library-shell .yiari-journal-accordion .jurnal-loading-spinner { padding: 36px 20px; color: #667085; }
 .journal-library-shell .yiari-journal-accordion .jurnal-loading-spinner .spinner { border-top-color: #395AA8; }
@@ -1554,7 +1554,7 @@ img { max-width: 100%; height: auto; }
   .journal-library-shell .yiari-journal-accordion .jurnal-post-excerpt,
   .journal-library-shell .yiari-journal-accordion .jurnal-post-content,
   .journal-library-shell .yiari-journal-accordion .jurnal-post-link { grid-column: 1; grid-row: auto; }
-  .journal-library-shell .yiari-journal-accordion .jurnal-link-button { min-width: 0; width: 140px; min-height: 48px; font-size: 15px; border-radius: 12px; }
+  .journal-library-shell .yiari-journal-accordion .jurnal-link-button { min-width: 0; width: auto; min-height: 48px; font-size: 15px; border-radius: 12px; }
   .journal-more-card { flex-basis: 284px; }
   .journal-more-card-title { font-size: 24px; }
   .journal-cta-image { height: 320px; }
@@ -1583,7 +1583,7 @@ img { max-width: 100%; height: auto; }
   .journal-library-shell .yiari-journal-accordion .jurnal-post-title { font-size: 20px; line-height: 25px; }
   .journal-library-shell .yiari-journal-accordion .jurnal-post-excerpt,
   .journal-library-shell .yiari-journal-accordion .jurnal-post-content { font-size: 14px; line-height: 21px; }
-  .journal-library-shell .yiari-journal-accordion .jurnal-link-button { width: 128px; min-height: 48px; padding: 12px 20px; font-size: 16px; line-height: 24px; border-radius: 12px; }
+  .journal-library-shell .yiari-journal-accordion .jurnal-link-button { width: auto; min-width: 148px; min-height: 48px; padding: 12px 20px; font-size: 16px; line-height: 24px; border-radius: 12px; white-space: nowrap; }
   .journal-more-header { margin-bottom: 24px; }
   .journal-more-desc { gap: 18px; }
   .journal-more-nav { display: none; }
@@ -1600,4 +1600,163 @@ img { max-width: 100%; height: auto; }
   .journal-cta-title { margin-bottom: 16px; font-size: 24px; }
   .journal-cta-text { margin-bottom: 22px; font-size: 15px; }
   .journal-cta-actions { max-width: none; }
+}
+
+.publication-detail-page { background: #ffffff; }
+.publication-detail-section { padding: 56px 0 88px; }
+.publication-detail-container { max-width: 1160px; }
+.publication-detail-breadcrumbs { display: none; margin-bottom: 26px; }
+.publication-detail-breadcrumbs a { color: inherit; text-decoration: none; transition: color .2s ease; }
+.publication-detail-breadcrumbs a:hover { color: #395AA8; }
+.publication-detail-title { max-width: 1120px; margin-bottom: 42px; color: #232323; font-family: 'Northwoods', serif; font-style: normal; font-size: 30px; font-weight: 400; line-height: 38px; }
+.publication-detail-card { display: grid; grid-template-columns: 386px minmax(0, 1fr); overflow: hidden; border: 1px solid #edf0f4; border-radius: 20px; background: #ffffff; }
+.publication-detail-sidebar { padding: 34px 38px 36px; border-right: 1px solid #edf0f4; }
+.publication-detail-sidebar-heading { margin-bottom: 14px; color: #232323; font-family: 'Northwoods', serif; font-style: normal; font-size: 18px; font-weight: 400; line-height: 23px; }
+.publication-detail-summary { margin-bottom: 28px; color: #4A4A4A; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-size: 16px; font-weight: 400; line-height: 24px; }
+.publication-detail-meta-list { display: flex; flex-direction: column; }
+.publication-detail-meta-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 20px 0; border-top: 1px solid #edf0f4; }
+.publication-detail-meta-label { display: inline-flex; align-items: center; gap: 10px; color: #8A8A8A; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-size: 16px; font-weight: 400; line-height: 24px; }
+.publication-detail-meta-value { color: #8A8A8A; font-family: 'Poppins', 'Inter', sans-serif; font-style: normal; font-size: 16px; font-weight: 400; line-height: 24px; text-align: right; }
+.publication-detail-actions { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+.publication-detail-btn { width: 100%; max-width: none; }
+.publication-detail-viewer { min-width: 0; padding: 36px 38px; background: #f8faff; }
+.publication-detail-viewer-shell { overflow: hidden; border-radius: 16px; background: #f5f7fb; border: 1px solid #e8edf7; }
+.publication-pdfjs-viewer { display: flex; flex-direction: column; min-height: 760px; }
+.publication-pdfjs-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px; border-bottom: 1px solid #e8edf7; background: #ffffff; }
+.publication-pdfjs-toolbar-group { display: flex; flex-wrap: wrap; gap: 10px; }
+.publication-pdfjs-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 9px 16px; border: 1px solid #dce4f5; border-radius: 12px; background: #395AA8; color: #ffffff; font-family: 'Poppins', 'Inter', sans-serif; font-size: 14px; font-weight: 500; line-height: 1.4; cursor: pointer; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+.publication-pdfjs-btn:hover { background: #2d4373; border-color: #2d4373; }
+.publication-pdfjs-btn.is-secondary { background: #ffffff; color: #395AA8; }
+.publication-pdfjs-btn.is-secondary:hover,
+.publication-pdfjs-btn.is-secondary.is-active { background: #eef2ff; border-color: #395AA8; color: #395AA8; }
+.publication-pdfjs-status { padding: 14px 20px; background: #eef4ff; border-bottom: 1px solid #e8edf7; color: #395AA8; font-family: 'Poppins', 'Inter', sans-serif; font-size: 14px; line-height: 21px; }
+.publication-pdfjs-stage { flex: 1; overflow: auto; padding: 24px; background: #edf2fb; cursor: default; }
+.publication-pdfjs-viewer[data-hand-tool='true'] .publication-pdfjs-stage { cursor: grab; }
+.publication-pdfjs-stage.is-dragging { cursor: grabbing; user-select: none; }
+.publication-pdfjs-canvas-list { display: flex; flex-direction: column; gap: 22px; align-items: center; min-width: max-content; }
+.publication-pdfjs-page { display: flex; flex-direction: column; gap: 10px; width: fit-content; }
+.publication-pdfjs-page-label { color: #8A8A8A; font-family: 'Poppins', 'Inter', sans-serif; font-size: 12px; font-weight: 500; line-height: 1.4; text-transform: uppercase; letter-spacing: .04em; }
+.publication-pdfjs-page-canvas-wrap { padding: 10px; background: #ffffff; border: 1px solid #e2e8f4; border-radius: 12px; box-shadow: 0 12px 30px rgba(25, 35, 57, .06); }
+.publication-pdfjs-canvas { display: block; background: #ffffff; }
+.publication-pdfjs-viewer.is-error .publication-pdfjs-stage { display: none; }
+.publication-detail-iframe { display: block; width: 100%; height: 760px; border: 0; background: #ffffff; }
+.publication-detail-preview-unavailable { display: flex; align-items: center; justify-content: center; min-height: 420px; padding: 24px; border: 1px dashed #d7dfef; border-radius: 16px; background: #ffffff; color: #667085; text-align: center; }
+
+@media (max-width: 1024px) {
+  .publication-detail-section { padding: 44px 0 76px; }
+  .publication-detail-breadcrumbs { margin-bottom: 22px; }
+  .publication-detail-title { margin-bottom: 34px; font-size: 30px; line-height: 38px; }
+  .publication-detail-card { grid-template-columns: 340px minmax(0, 1fr); }
+  .publication-detail-sidebar { padding: 28px 28px 30px; }
+  .publication-detail-viewer { padding: 28px; }
+  .publication-pdfjs-viewer { min-height: 680px; }
+  .publication-detail-iframe { height: 680px; }
+}
+
+@media (max-width: 768px) {
+  .publication-detail-section { padding: 34px 0 64px; }
+  .publication-detail-breadcrumbs { margin-bottom: 20px; }
+  .publication-detail-title { margin-bottom: 28px; font-size: 30px; line-height: 38px; }
+  .publication-detail-card { grid-template-columns: 1fr; }
+  .publication-detail-sidebar { order: 2; padding: 24px; border-right: 0; }
+  .publication-detail-summary { font-size: 16px; line-height: 24px; }
+  .publication-detail-viewer { order: 1; padding: 24px; }
+  .publication-pdfjs-toolbar { flex-direction: column; align-items: stretch; }
+  .publication-pdfjs-toolbar-group { justify-content: stretch; }
+  .publication-pdfjs-btn { width: 100%; }
+  .publication-pdfjs-stage { padding: 18px; }
+  .publication-pdfjs-viewer { min-height: 540px; }
+  .publication-detail-iframe { height: 540px; }
+}
+
+@media (max-width: 640px) {
+  .publication-detail-section { padding: 28px 0 56px; }
+  .publication-detail-breadcrumbs { margin-bottom: 18px; }
+  .publication-detail-title { margin-bottom: 22px; font-size: 30px; line-height: 38px; }
+  .publication-detail-card { border-radius: 18px; }
+  .publication-detail-sidebar { padding: 20px; }
+  .publication-detail-sidebar-heading { font-size: 18px; line-height: 23px; }
+  .publication-detail-summary { margin-bottom: 22px; font-size: 16px; line-height: 24px; }
+  .publication-detail-meta-item { gap: 14px; padding: 16px 0; }
+  .publication-detail-meta-label,
+  .publication-detail-meta-value { font-size: 16px; line-height: 24px; }
+  .publication-detail-viewer { padding: 20px; }
+  .publication-detail-viewer-shell,
+  .publication-detail-preview-unavailable { border-radius: 14px; }
+  .publication-pdfjs-toolbar { padding: 14px; }
+  .publication-pdfjs-stage { padding: 14px; }
+  .publication-pdfjs-page-canvas-wrap { padding: 8px; }
+.publication-pdfjs-viewer { min-height: 420px; }
+  .publication-detail-iframe { height: 420px; }
+}
+
+.books-page { background: #ffffff; }
+.books-hero-wrap { padding: 18px 0 46px; }
+.books-hero-section.page-hero { min-height: 278px; border-radius: 24px; overflow: hidden; }
+.books-hero-section .page-hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .58) 28%, rgba(0, 0, 0, .14) 58%, rgba(0, 0, 0, .08) 100%); }
+.books-hero-content { align-items: center; padding: 42px 32px; }
+.books-hero-copy { max-width: 420px; gap: 12px; }
+.books-hero-title { color: #ffffff; font-family: 'Northwoods', serif; font-size: 44px; font-weight: 400; line-height: 1.08; }
+.books-hero-text { color: rgba(255, 255, 255, .92); font-family: 'Poppins', 'Inter', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.6; }
+.books-hero-actions { margin-top: 10px; }
+.books-section-header { margin-bottom: 34px; }
+.books-library-section { padding: 0 0 92px; }
+.books-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 54px 20px; }
+.book-card { min-width: 0; }
+.book-card-media { display: block; margin-bottom: 14px; text-decoration: none; }
+.book-card-image { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 10px; background: #eef2ff; }
+.book-card-body { min-width: 0; }
+.book-card-title { margin: 0 0 8px; color: #232323; font-family: 'Poppins', 'Inter', sans-serif; font-size: 24px; font-weight: 500; line-height: 1.22; letter-spacing: -.02em; }
+.book-card-title a { color: inherit; text-decoration: none; }
+.book-card-meta { margin-bottom: 12px; color: #9aa1ae; font-family: 'Poppins', 'Inter', sans-serif; font-size: 11px; font-weight: 400; line-height: 1.45; text-transform: none; }
+.book-card-text { margin: 0 0 16px; color: #6b7280; font-family: 'Poppins', 'Inter', sans-serif; font-size: 16px; font-weight: 400; line-height: 1.6; }
+.book-card-link { color: #395AA8; font-size: 16px; font-weight: 500; text-decoration: none; }
+.books-load-more-wrap { display: none; justify-content: center; margin-top: 28px; }
+.books-load-more-btn { min-width: 188px; }
+.books-empty-state { padding: 28px 24px; border: 1px dashed #d8dfea; border-radius: 18px; color: #667085; text-align: center; }
+.books-more-section { padding-top: 0; }
+.books-cta-section { padding-top: 24px; }
+
+@media (max-width: 1024px) {
+  .books-hero-wrap { padding-bottom: 40px; }
+  .books-hero-section.page-hero { min-height: 246px; border-radius: 22px; }
+  .books-hero-content { padding: 36px 28px; }
+  .books-hero-title { font-size: 40px; }
+  .books-library-section { padding-bottom: 80px; }
+  .books-grid { gap: 42px 16px; }
+  .book-card-title { font-size: 20px; }
+  .book-card-text { font-size: 15px; }
+}
+
+@media (max-width: 768px) {
+  .books-hero-wrap { padding: 16px 0 34px; }
+  .books-hero-section.page-hero { min-height: 278px; border-radius: 20px; }
+  .books-hero-content { padding: 34px 24px; }
+  .books-hero-copy { max-width: 320px; }
+  .books-hero-title { font-size: 34px; line-height: 1.08; }
+  .books-hero-text { font-size: 15px; line-height: 1.55; }
+  .books-library-section { padding-bottom: 68px; }
+  .books-grid { gap: 32px 14px; }
+  .book-card-title { font-size: 18px; }
+  .book-card-text { font-size: 14px; line-height: 1.55; }
+}
+
+@media (max-width: 640px) {
+  .books-hero-wrap { padding: 12px 0 28px; }
+  .books-hero-section.page-hero { min-height: 252px; border-radius: 18px; }
+  .books-hero-section .page-hero-media::after { background: linear-gradient(180deg, rgba(0, 0, 0, .16) 0%, rgba(0, 0, 0, .68) 48%, rgba(0, 0, 0, .84) 100%); }
+  .books-hero-content { align-items: flex-end; padding: 24px 18px; }
+  .books-hero-copy { max-width: none; gap: 10px; }
+  .books-hero-title { font-size: 28px; line-height: 1.1; }
+  .books-hero-text { font-size: 13px; line-height: 1.5; }
+  .books-section-header { margin-bottom: 26px; }
+  .books-library-section { padding-bottom: 56px; }
+  .books-grid { grid-template-columns: 1fr; gap: 28px; }
+  .book-card-image { aspect-ratio: 1 / 1; border-radius: 10px; }
+  .book-card-title { margin-bottom: 8px; font-size: 16px; }
+  .book-card-meta { margin-bottom: 10px; font-size: 10px; }
+  .book-card-text { margin-bottom: 14px; font-size: 14px; line-height: 1.55; }
+  .book-card-link { font-size: 14px; }
+  .books-load-more-wrap { display: flex; }
+  .books-load-more-btn { min-width: 164px; }
 }

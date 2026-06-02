@@ -67,6 +67,24 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_script('alpinejs', 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js', ['yiari-main'], '3.14.0', true);
     wp_script_add_data('alpinejs', 'defer', true);
     wp_enqueue_script('lucide', 'https://unpkg.com/lucide@latest', ['yiari-main'], null, true);
+
+    if (is_singular('publikasi')) {
+        $pdfjs_version = '4.10.38';
+        wp_enqueue_script('yiari-pdf-viewer', $dir . '/assets/js/pdf-viewer.js', [], $ver, true);
+        wp_script_add_data('yiari-pdf-viewer', 'type', 'module');
+        wp_localize_script('yiari-pdf-viewer', 'yiariPdfViewer', [
+            'workerSrc' => 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' . $pdfjs_version . '/build/pdf.worker.min.mjs',
+            'strings' => [
+                'loading' => __('Memuat PDF...', 'yiari'),
+                'loadError' => __('PDF tidak dapat dimuat di viewer interaktif. Gunakan mode layar penuh atau unduh file.', 'yiari'),
+                'zoomIn' => __('Perbesar', 'yiari'),
+                'zoomOut' => __('Perkecil', 'yiari'),
+                'reset' => __('Reset', 'yiari'),
+                'handTool' => __('Hand Tool', 'yiari'),
+                'page' => __('Halaman', 'yiari'),
+            ],
+        ]);
+    }
 });
 
 add_filter('theme_page_templates', function (array $templates): array {
@@ -75,6 +93,7 @@ add_filter('theme_page_templates', function (array $templates): array {
     $templates['templates/donasi-thankyou.php'] = __('Donasi Thank You', 'yiari');
     $templates['templates/bergabung.php'] = __('Bergabung', 'yiari');
     $templates['templates/jurnal.php'] = __('Jurnal', 'yiari');
+    $templates['templates/buku.php'] = __('Buku', 'yiari');
 
     return $templates;
 });

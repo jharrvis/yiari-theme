@@ -15,7 +15,7 @@ $hero_image = yiari_field('journal_hero_image', ['url' => $theme_uri . '/assets/
 $hero_title = yiari_field('journal_hero_title', __("Penelitian untuk Memahami dan\nMelindungi Satwa Liar", 'yiari'));
 $hero_text = yiari_field('journal_hero_text', __('Penelitian membantu kami memahami satwa, habitatnya, dan ancaman yang mereka hadapi. Pengetahuan ini menjadi dasar bagi berbagai upaya konservasi yang dilakukan YIARI.', 'yiari'));
 $hero_btn_text = yiari_field('journal_hero_btn_text', __('Lihat Perpustakaan Penelitian', 'yiari'));
-$hero_btn_url = yiari_field('journal_hero_btn_url', '#journal-library');
+$hero_btn_url = yiari_localize_url((string) yiari_field('journal_hero_btn_url', '#journal-library'));
 
 $library_label = yiari_field('journal_library_label', __('SUMBER PENGETAHUAN', 'yiari'));
 $library_title = yiari_field('journal_library_title', __('Perpustakaan Penelitian', 'yiari'));
@@ -55,9 +55,9 @@ $cta_label = yiari_field('journal_cta_label', __('DUKUNGAN ANDA', 'yiari'));
 $cta_title = yiari_field('journal_cta_title', __("Dukung Penelitian untuk\nMelindungi Satwa Liar", 'yiari'));
 $cta_text = yiari_field('journal_cta_text', __('Dukungan Anda membantu kami melanjutkan penelitian di lapangan, membiayai peralatan teknologi mutakhir, dan melatih generasi peneliti muda Indonesia untuk masa depan alam kita.', 'yiari'));
 $cta_btn1_text = yiari_field('journal_cta_btn1_text', __('Donasi Sekarang', 'yiari'));
-$cta_btn1_url = yiari_field('journal_cta_btn1_url', yiari_get_page_url_by_template('templates/donasi.php', yiari_home_url()));
+$cta_btn1_url = yiari_localize_url((string) yiari_field('journal_cta_btn1_url', yiari_get_page_url_by_template('templates/donasi.php', yiari_home_url())));
 $cta_btn2_text = yiari_field('journal_cta_btn2_text', __('Gabung Bersama YIARI', 'yiari'));
-$cta_btn2_url = yiari_field('journal_cta_btn2_url', yiari_get_join_url());
+$cta_btn2_url = yiari_localize_url((string) yiari_field('journal_cta_btn2_url', yiari_get_join_url()));
 $cta_image = yiari_field('journal_cta_image', ['url' => $theme_uri . '/assets/img/gambar-cta.png', 'alt' => __('Dukung penelitian YIARI', 'yiari')]);
 ?>
 
@@ -142,7 +142,7 @@ $cta_image = yiari_field('journal_cta_image', ['url' => $theme_uri . '/assets/im
       <div class="journal-more-track" x-ref="track">
         <?php foreach ($more_items as $more_item): ?>
           <?php
-          $more_url = trim((string) ($more_item['url'] ?? ''));
+          $more_url = yiari_localize_url(trim((string) ($more_item['url'] ?? '')));
           $more_title_text = trim((string) ($more_item['title'] ?? ''));
           $more_text = trim((string) ($more_item['text'] ?? ''));
           $more_icon = trim((string) ($more_item['icon'] ?? 'file-text'));

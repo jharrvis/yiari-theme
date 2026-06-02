@@ -490,4 +490,73 @@ add_action('acf/init', function () {
             ['key' => 'field_journal_cta_image', 'label' => __('Gambar CTA', 'yiari'), 'name' => 'journal_cta_image', 'type' => 'image', 'return_format' => 'array'],
         ],
     ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_publication_detail',
+        'title' => __('Publikasi - Detail', 'yiari'),
+        'location' => [[['param' => 'post_type', 'operator' => '==', 'value' => 'publikasi']]],
+        'menu_order' => 16,
+        'fields' => [
+            ['key' => 'field_publication_summary', 'label' => __('Ringkasan Penelitian', 'yiari'), 'name' => 'publication_summary', 'type' => 'textarea', 'rows' => 5],
+            ['key' => 'field_publication_year', 'label' => __('Tahun', 'yiari'), 'name' => 'publication_year', 'type' => 'text'],
+            ['key' => 'field_publication_language', 'label' => __('Bahasa', 'yiari'), 'name' => 'publication_language', 'type' => 'text', 'default_value' => __('Indonesia', 'yiari')],
+            ['key' => 'field_publication_pages', 'label' => __('Jumlah Halaman', 'yiari'), 'name' => 'publication_pages', 'type' => 'text'],
+            ['key' => 'field_publication_file_size', 'label' => __('Ukuran File', 'yiari'), 'name' => 'publication_file_size', 'type' => 'text'],
+            ['key' => 'field_publication_publish_label', 'label' => __('Label Diterbitkan', 'yiari'), 'name' => 'publication_publish_label', 'type' => 'text'],
+        ],
+    ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_books_page',
+        'title' => __('Buku - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/buku.php']]],
+        'menu_order' => 17,
+        'fields' => [
+            ['key' => 'field_books_hero_tab', 'label' => __('Hero', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_books_hero_image', 'label' => __('Gambar Hero', 'yiari'), 'name' => 'books_hero_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_books_hero_title', 'label' => __('Judul Hero', 'yiari'), 'name' => 'books_hero_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Buku Konservasi', 'yiari')],
+            ['key' => 'field_books_hero_text', 'label' => __('Teks Hero', 'yiari'), 'name' => 'books_hero_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Buku-buku ini berisi pengetahuan, pengalaman lapangan, dan panduan yang membantu kita memahami satwa liar serta cara melindungi habitatnya.', 'yiari')],
+            ['key' => 'field_books_hero_btn_text', 'label' => __('Teks Tombol Hero', 'yiari'), 'name' => 'books_hero_btn_text', 'type' => 'text', 'default_value' => __('Lihat Koleksi Buku', 'yiari')],
+            ['key' => 'field_books_hero_btn_url', 'label' => __('URL Tombol Hero', 'yiari'), 'name' => 'books_hero_btn_url', 'type' => 'url'],
+
+            ['key' => 'field_books_library_tab', 'label' => __('Koleksi Buku', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_books_library_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'books_library_label', 'type' => 'text', 'default_value' => __('SUMBER PENGETAHUAN', 'yiari')],
+            ['key' => 'field_books_library_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'books_library_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Koleksi Buku', 'yiari')],
+            ['key' => 'field_books_library_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'books_library_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Publikasi buku, panduan, dan materi bacaan yang memperluas wawasan konservasi dan pengalaman lapangan YIARI.', 'yiari')],
+            ['key' => 'field_books_library_terms', 'label' => __('Kategori Publikasi', 'yiari'), 'name' => 'books_library_terms', 'type' => 'taxonomy', 'taxonomy' => 'kategori-publikasi', 'field_type' => 'multi_select', 'return_format' => 'id', 'allow_null' => 1, 'add_term' => 0, 'save_terms' => 0, 'load_terms' => 0, 'instructions' => __('Pilih satu atau beberapa kategori publikasi untuk ditampilkan pada grid buku.', 'yiari')],
+            ['key' => 'field_books_library_count', 'label' => __('Jumlah Buku', 'yiari'), 'name' => 'books_library_count', 'type' => 'number', 'default_value' => 9, 'min' => 3, 'max' => 18, 'step' => 1],
+            ['key' => 'field_books_load_more_text', 'label' => __('Teks Tombol Muat Lebih Banyak', 'yiari'), 'name' => 'books_load_more_text', 'type' => 'text', 'default_value' => __('Muat Lebih Banyak', 'yiari')],
+
+            ['key' => 'field_books_more_tab', 'label' => __('Publikasi Lainnya', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_books_more_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'books_more_label', 'type' => 'text', 'default_value' => __('EKSPLOR LEBIH BANYAK', 'yiari')],
+            ['key' => 'field_books_more_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'books_more_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Publikasi Lainnya', 'yiari')],
+            ['key' => 'field_books_more_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'books_more_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Beragam konten tambahan yang melengkapi informasi dan wawasan seputar konservasi.', 'yiari')],
+            [
+                'key' => 'field_books_more_items',
+                'label' => __('Kartu Publikasi', 'yiari'),
+                'name' => 'books_more_items',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 6,
+                'layout' => 'row',
+                'button_label' => __('Tambah Kartu', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_books_more_item_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_books_more_item_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 3],
+                    ['key' => 'field_books_more_item_url', 'label' => __('URL', 'yiari'), 'name' => 'url', 'type' => 'url'],
+                    ['key' => 'field_books_more_item_icon', 'label' => __('Nama Ikon Lucide', 'yiari'), 'name' => 'icon', 'type' => 'text', 'default_value' => 'file-text'],
+                ],
+            ],
+
+            ['key' => 'field_books_cta_tab', 'label' => __('CTA Bawah', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_books_cta_label', 'label' => __('Label CTA', 'yiari'), 'name' => 'books_cta_label', 'type' => 'text', 'default_value' => __('DUKUNGAN ANDA', 'yiari')],
+            ['key' => 'field_books_cta_title', 'label' => __('Judul CTA', 'yiari'), 'name' => 'books_cta_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Bantu Sebarkan\nPengetahuan untuk\nKonservasi", 'yiari')],
+            ['key' => 'field_books_cta_text', 'label' => __('Teks CTA', 'yiari'), 'name' => 'books_cta_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Dukungan Anda membantu YIARI menghadirkan lebih banyak buku, materi edukasi, dan pengetahuan konservasi yang mudah diakses oleh masyarakat luas.', 'yiari')],
+            ['key' => 'field_books_cta_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'books_cta_btn1_text', 'type' => 'text', 'default_value' => __('Donasi Sekarang', 'yiari')],
+            ['key' => 'field_books_cta_btn1_url', 'label' => __('Tombol 1 - URL', 'yiari'), 'name' => 'books_cta_btn1_url', 'type' => 'url'],
+            ['key' => 'field_books_cta_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'books_cta_btn2_text', 'type' => 'text', 'default_value' => __('Gabung Bersama YIARI', 'yiari')],
+            ['key' => 'field_books_cta_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'books_cta_btn2_url', 'type' => 'url'],
+            ['key' => 'field_books_cta_image', 'label' => __('Gambar CTA', 'yiari'), 'name' => 'books_cta_image', 'type' => 'image', 'return_format' => 'array'],
+        ],
+    ]);
 });

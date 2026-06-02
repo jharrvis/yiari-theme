@@ -15,9 +15,9 @@ $hero_image = yiari_field('join_hero_image', ['url' => $theme_uri . '/assets/img
 $hero_title = yiari_field('join_hero_title', __("Bersama Kita Bisa\nMelindungi Satwa\ndan Hutan Indonesia", 'yiari'));
 $hero_text = yiari_field('join_hero_text', __('Setiap langkah kecil yang Anda ambil hari ini menjadi fondasi bagi keberlangsungan ekosistem nusantara di masa depan. Bergabunglah dalam misi kolaboratif untuk menyelamatkan habitat yang terancam.', 'yiari'));
 $hero_btn1_text = yiari_field('join_hero_btn1_text', __('Mulai Bergabung', 'yiari'));
-$hero_btn1_url = yiari_field('join_hero_btn1_url', '#join-form');
+$hero_btn1_url = yiari_localize_url((string) yiari_field('join_hero_btn1_url', '#join-form'));
 $hero_btn2_text = yiari_field('join_hero_btn2_text', __('Pelajari Lebih Lanjut', 'yiari'));
-$hero_btn2_url = yiari_field('join_hero_btn2_url', '#join-program');
+$hero_btn2_url = yiari_localize_url((string) yiari_field('join_hero_btn2_url', '#join-program'));
 
 $program_label = yiari_field('join_program_label', __('PROGRAM MAGANG & RELAWAN', 'yiari'));
 $program_title = yiari_field('join_program_title', __("Rasakan Pengalaman\nNyata Bersama Tim\nKonservasi YIARI", 'yiari'));
@@ -46,7 +46,7 @@ $story_label = yiari_field('join_story_label', __('CERITA DARI LAPANGAN', 'yiari
 $story_title = yiari_field('join_story_title', __("Pengalaman Nyata\nBersama YIARI", 'yiari'));
 $story_desc = yiari_field('join_story_desc', __('Kisah mahasiswa, relawan, dan peserta magang yang terlibat langsung dalam kegiatan konservasi, penelitian, dan kehidupan di lapangan.', 'yiari'));
 $story_link_text = yiari_field('join_story_link_text', __('Lihat Semua Cerita Magang', 'yiari'));
-$story_link_url = yiari_field('join_story_link_url', yiari_get_posts_page_url('#'));
+$story_link_url = yiari_localize_url((string) yiari_field('join_story_link_url', yiari_get_posts_page_url('#')));
 $story_categories_raw = yiari_field('join_story_category', []);
 $story_categories = is_array($story_categories_raw) ? $story_categories_raw : [$story_categories_raw];
 $story_categories = array_values(array_filter(array_map('intval', $story_categories)));
