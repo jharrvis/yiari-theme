@@ -62,6 +62,55 @@ function yiari_render_detail_landscape_update_card(int $post_id): string {
     return trim((string) ob_get_clean());
 }
 
+function yiari_get_publication_card_classes(string $variant = 'book'): array {
+    $variant = $variant === 'education' ? 'education' : 'book';
+
+    return [
+        'article' => $variant === 'education' ? 'book-card education-card' : 'book-card',
+        'media' => $variant === 'education' ? 'book-card-media education-card-media' : 'book-card-media',
+        'image' => $variant === 'education' ? 'book-card-image education-card-image' : 'book-card-image',
+        'body' => $variant === 'education' ? 'book-card-body education-card-body' : 'book-card-body',
+        'title' => $variant === 'education' ? 'book-card-title education-card-title' : 'book-card-title',
+        'meta' => $variant === 'education' ? 'book-card-meta education-card-meta' : 'book-card-meta',
+        'text' => $variant === 'education' ? 'book-card-text education-card-text' : 'book-card-text',
+        'link' => $variant === 'education' ? 'link-more book-card-link education-card-link' : 'link-more book-card-link',
+    ];
+}
+
+function yiari_render_publication_card(int $post_id, string $variant = 'book'): string {
+    $classes = yiari_get_publication_card_classes($variant);
+    $title = get_the_title($post_id);
+    $permalink = get_permalink($post_id) ?: '#';
+    $image = get_the_post_thumbnail_url($post_id, 'card-thumb') ?: (get_template_directory_uri() . '/assets/img/logo-default.webp');
+    $excerpt = has_excerpt($post_id)
+        ? get_the_excerpt($post_id)
+        : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $post_id)), 18, '…');
+    $date = get_the_date('j F Y', $post_id);
+    $author = get_the_author_meta('display_name', (int) get_post_field('post_author', $post_id));
+    $meta = trim($date . ($author !== '' ? ' • ' . $author : ''));
+
+    ob_start();
+    ?>
+    <article class="<?php echo esc_attr($classes['article']); ?>">
+      <a href="<?php echo esc_url($permalink); ?>" class="<?php echo esc_attr($classes['media']); ?>" aria-label="<?php echo esc_attr($title); ?>">
+        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" class="<?php echo esc_attr($classes['image']); ?>" />
+      </a>
+      <div class="<?php echo esc_attr($classes['body']); ?>">
+        <h3 class="<?php echo esc_attr($classes['title']); ?>">
+          <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($title); ?></a>
+        </h3>
+        <?php if ($meta !== ''): ?>
+          <div class="<?php echo esc_attr($classes['meta']); ?>"><?php echo esc_html($meta); ?></div>
+        <?php endif; ?>
+        <p class="<?php echo esc_attr($classes['text']); ?>"><?php echo esc_html($excerpt); ?></p>
+        <a href="<?php echo esc_url($permalink); ?>" class="<?php echo esc_attr($classes['link']); ?>"><?php echo esc_html__('Baca Selengkapnya', 'yiari'); ?> <i data-lucide="arrow-right" class="icon-sm"></i></a>
+      </div>
+    </article>
+    <?php
+
+    return trim((string) ob_get_clean());
+}
+
 function yiari_section_label(string $text, bool $circle = false): void {
     $class = $circle ? 'section-label section-label-circle' : 'section-label';
     printf('<span class="%s">%s</span>', esc_attr($class), esc_html($text));
@@ -334,20 +383,92 @@ function yiari_get_publication_archive_url(): string {
     );
 }
 
+function yiari_resolve_publication_file_url($value): string {
+    if (is_string($value)) {
+        $trimmed = trim($value);
+
+        if ($trimmed !== '' && ctype_digit($trimmed)) {
+            $attachment_url = wp_get_attachment_url((int) $trimmed);
+            return $attachment_url ? esc_url_raw($attachment_url) : '';
+        }
+
+        return $trimmed !== '' ? esc_url_raw($trimmed) : '';
+    }
+
+    if (is_int($value) && $value > 0) {
+        $attachment_url = wp_get_attachment_url($value);
+        return $attachment_url ? esc_url_raw($attachment_url) : '';
+    }
+
+    if (is_array($value)) {
+        if (!empty($value['url']) && is_string($value['url'])) {
+            return esc_url_raw($value['url']);
+        }
+
+        if (!empty($value['ID'])) {
+            $attachment_url = wp_get_attachment_url((int) $value['ID']);
+            return $attachment_url ? esc_url_raw($attachment_url) : '';
+        }
+
+        if (!empty($value['id'])) {
+            $attachment_url = wp_get_attachment_url((int) $value['id']);
+            return $attachment_url ? esc_url_raw($attachment_url) : '';
+        }
+    }
+
+    return '';
+}
+
 function yiari_get_publication_file_url(int $post_id): string {
     $url = '';
 
     if (function_exists('get_field')) {
         $field_value = get_field('link_jurnal', $post_id);
-        if (is_string($field_value) && $field_value !== '') {
-            $url = $field_value;
-        }
+        $url = yiari_resolve_publication_file_url($field_value);
     }
 
     if ($url === '') {
         $meta_value = get_post_meta($post_id, 'link_jurnal', true);
-        if (is_string($meta_value) && $meta_value !== '') {
-            $url = $meta_value;
+        $url = yiari_resolve_publication_file_url($meta_value);
+    }
+
+    if ($url === '') {
+        $attachments = get_attached_media('application/pdf', $post_id);
+        if (is_array($attachments) && $attachments) {
+            $first_attachment = reset($attachments);
+            if ($first_attachment instanceof WP_Post) {
+                $attachment_url = wp_get_attachment_url($first_attachment->ID);
+                if (is_string($attachment_url) && $attachment_url !== '') {
+                    $url = $attachment_url;
+                }
+            }
+        }
+    }
+
+    if ($url === '') {
+        $attachment_posts = get_posts([
+            'post_type' => 'attachment',
+            'post_status' => 'inherit',
+            'posts_per_page' => 1,
+            'post_parent' => $post_id,
+            'post_mime_type' => 'application/pdf',
+            'orderby' => 'menu_order date',
+            'order' => 'ASC',
+            'suppress_filters' => false,
+        ]);
+
+        if ($attachment_posts) {
+            $attachment_url = wp_get_attachment_url((int) $attachment_posts[0]->ID);
+            if (is_string($attachment_url) && $attachment_url !== '') {
+                $url = $attachment_url;
+            }
+        }
+    }
+
+    if ($url === '') {
+        $content = (string) get_post_field('post_content', $post_id);
+        if ($content !== '' && preg_match('~https?://[^\s"\']+\.pdf(?:\?[^\s"\']*)?~i', $content, $matches)) {
+            $url = $matches[0];
         }
     }
 
@@ -638,6 +759,152 @@ function yiari_get_publication_year_url(int $post_id, string $year): string {
     }
 
     return $archive_url;
+}
+
+function yiari_is_book_publication(int $post_id, string $taxonomy = 'kategori-publikasi'): bool {
+    return yiari_publication_has_term_match(
+        $post_id,
+        ['buku', 'book', 'books'],
+        ['buku', 'book', 'books'],
+        $taxonomy
+    );
+}
+
+function yiari_is_education_publication(int $post_id, string $taxonomy = 'kategori-publikasi'): bool {
+    return yiari_publication_has_term_match(
+        $post_id,
+        ['materi-edukasi', 'education-materials', 'education-material'],
+        ['materi edukasi', 'education materials', 'education material'],
+        $taxonomy
+    );
+}
+
+function yiari_publication_has_term_match(int $post_id, array $candidate_slugs, array $candidate_names, string $taxonomy = 'kategori-publikasi'): bool {
+    if ($post_id <= 0 || !taxonomy_exists($taxonomy)) {
+        return false;
+    }
+
+    $terms = get_the_terms($post_id, $taxonomy);
+    if (!is_array($terms) || !$terms) {
+        return false;
+    }
+
+    foreach ($terms as $term) {
+        if (!$term instanceof WP_Term) {
+            continue;
+        }
+
+        $term_ids = [$term->term_id];
+        $ancestors = get_ancestors($term->term_id, $taxonomy, 'taxonomy');
+        if (is_array($ancestors) && $ancestors) {
+            $term_ids = array_merge($term_ids, array_map('intval', $ancestors));
+        }
+
+        foreach ($term_ids as $term_id) {
+            $resolved_term = get_term($term_id, $taxonomy);
+            if (!$resolved_term instanceof WP_Term) {
+                continue;
+            }
+
+            $slug = strtolower((string) $resolved_term->slug);
+            $name = strtolower((string) $resolved_term->name);
+
+            if (in_array($slug, $candidate_slugs, true) || in_array($name, $candidate_names, true)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function yiari_get_default_publication_more_items(): array {
+    return [
+        [
+            'title' => __('Blog', 'yiari'),
+            'text' => __('Cerita, insight, dan perspektif dari lapangan.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['blog'], home_url('/blog/')),
+            'icon' => 'file-text',
+        ],
+        [
+            'title' => __('Buku', 'yiari'),
+            'text' => __('Kumpulan buku, panduan, dan bacaan konservasi terpilih.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['buku', 'books'], home_url('/buku/')),
+            'icon' => 'book-open',
+        ],
+        [
+            'title' => __('Buletin', 'yiari'),
+            'text' => __('Ringkasan kabar dan update terbaru.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['buletin', 'bulletin'], home_url('/buletin/')),
+            'icon' => 'book-open-text',
+        ],
+        [
+            'title' => __('Galeri', 'yiari'),
+            'text' => __('Dokumentasi visual kegiatan, satwa, dan lanskap konservasi.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['galeri', 'gallery'], home_url('/galeri/')),
+            'icon' => 'images',
+        ],
+        [
+            'title' => __('Laporan Tahunan', 'yiari'),
+            'text' => __('Rangkuman capaian tahunan, program, dan dampak kerja YIARI.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['laporan', 'reports'], home_url('/laporan/')),
+            'icon' => 'file-badge',
+        ],
+        [
+            'title' => __('Materi Edukasi', 'yiari'),
+            'text' => __('Materi pembelajaran yang mendukung edukasi konservasi.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['materi-edukasi', 'education-materials'], home_url('/materi-edukasi/')),
+            'icon' => 'graduation-cap',
+        ],
+        [
+            'title' => __('Penelitian', 'yiari'),
+            'text' => __('Kumpulan riset dan temuan yang memperkuat upaya konservasi.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['penelitian', 'research'], home_url('/penelitian/')),
+            'icon' => 'flask-conical',
+        ],
+        [
+            'title' => __('Siaran Pers', 'yiari'),
+            'text' => __('Informasi resmi mengenai kegiatan dan perkembangan terbaru.', 'yiari'),
+            'url' => yiari_get_page_url_by_paths(['siaran-pers', 'press-releases'], home_url('/siaran-pers/')),
+            'icon' => 'newspaper',
+        ],
+    ];
+}
+
+function yiari_merge_publication_more_items($items): array {
+    $defaults = yiari_get_default_publication_more_items();
+    if (!is_array($items) || !$items) {
+        return $defaults;
+    }
+
+    $normalized = [];
+    $seen = [];
+
+    foreach ($items as $item) {
+        if (!is_array($item)) {
+            continue;
+        }
+
+        $title = trim((string) ($item['title'] ?? ''));
+        if ($title === '') {
+            continue;
+        }
+
+        $key = function_exists('mb_strtolower') ? mb_strtolower($title) : strtolower($title);
+        $seen[$key] = true;
+        $normalized[] = $item;
+    }
+
+    foreach ($defaults as $item) {
+        $title = trim((string) ($item['title'] ?? ''));
+        $key = function_exists('mb_strtolower') ? mb_strtolower($title) : strtolower($title);
+
+        if (!isset($seen[$key])) {
+            $normalized[] = $item;
+        }
+    }
+
+    return $normalized;
 }
 
 function yiari_fallback_primary_menu(): array {

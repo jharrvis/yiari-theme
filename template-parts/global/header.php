@@ -13,6 +13,7 @@
 <body <?php body_class(); ?> x-data="siteUI()" x-init="init()">
 <?php wp_body_open(); ?>
 <?php $current_language = yiari_get_current_language_item(); ?>
+<?php $donation_page_url = yiari_get_page_url_by_template('templates/donasi.php', home_url('/donasi/')); ?>
 
 <nav class="navbar" id="navbar" :style="navbarStyle">
   <div class="nav-container">
@@ -49,11 +50,11 @@
         <?php yiari_render_language_switcher(false); ?>
       </div>
 
-      <a href="<?php echo esc_url(yiari_fragment_url('donate')); ?>" class="btn-donate" id="donate-nav-btn"><?php echo esc_html__('Donasi', 'yiari'); ?></a>
+      <a href="<?php echo esc_url($donation_page_url); ?>" class="btn-donate" id="donate-nav-btn"><?php echo esc_html__('Donasi', 'yiari'); ?></a>
     </div>
 
     <div class="mobile-header-actions">
-      <a href="<?php echo esc_url(yiari_fragment_url('donate')); ?>" class="btn-donate mobile-header-donate"><?php echo esc_html__('Donasi', 'yiari'); ?></a>
+      <a href="<?php echo esc_url($donation_page_url); ?>" class="btn-donate mobile-header-donate"><?php echo esc_html__('Donasi', 'yiari'); ?></a>
       <button class="hamburger-btn" id="hamburger" x-ref="hamburger" aria-label="<?php echo esc_attr__('Menu', 'yiari'); ?>" type="button" @click="toggleMenu()">
         <span :class="{ 'hamburger-line-top': mobileMenuOpen }"></span>
         <span :class="{ 'hamburger-line-middle': mobileMenuOpen }"></span>

@@ -63,17 +63,25 @@ add_action('wp_enqueue_scripts', function () {
             'error' => __('Gagal memuat artikel berikutnya.', 'yiari'),
         ],
     ]);
+    wp_localize_script('yiari-main', 'yiariPublications', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('yiari_load_more_publications'),
+        'strings' => [
+            'loading' => __('Memuat...', 'yiari'),
+            'error' => __('Gagal memuat publikasi berikutnya.', 'yiari'),
+        ],
+    ]);
 
     wp_enqueue_script('alpinejs', 'https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js', ['yiari-main'], '3.14.0', true);
     wp_script_add_data('alpinejs', 'defer', true);
     wp_enqueue_script('lucide', 'https://unpkg.com/lucide@latest', ['yiari-main'], null, true);
 
     if (is_singular('publikasi')) {
-        $pdfjs_version = '4.10.38';
-        wp_enqueue_script('yiari-pdf-viewer', $dir . '/assets/js/pdf-viewer.js', [], $ver, true);
-        wp_script_add_data('yiari-pdf-viewer', 'type', 'module');
+        $pdfjs_version = '3.11.174';
+        wp_enqueue_script('pdfjs', $dir . '/assets/vendor/pdfjs/pdf.min.js', [], $pdfjs_version, true);
+        wp_enqueue_script('yiari-pdf-viewer', $dir . '/assets/js/pdf-viewer.js', ['pdfjs'], $ver, true);
         wp_localize_script('yiari-pdf-viewer', 'yiariPdfViewer', [
-            'workerSrc' => 'https://cdn.jsdelivr.net/npm/pdfjs-dist@' . $pdfjs_version . '/build/pdf.worker.min.mjs',
+            'workerSrc' => $dir . '/assets/vendor/pdfjs/pdf.worker.min.js',
             'strings' => [
                 'loading' => __('Memuat PDF...', 'yiari'),
                 'loadError' => __('PDF tidak dapat dimuat di viewer interaktif. Gunakan mode layar penuh atau unduh file.', 'yiari'),
@@ -94,6 +102,7 @@ add_filter('theme_page_templates', function (array $templates): array {
     $templates['templates/bergabung.php'] = __('Bergabung', 'yiari');
     $templates['templates/jurnal.php'] = __('Jurnal', 'yiari');
     $templates['templates/buku.php'] = __('Buku', 'yiari');
+    $templates['templates/materi-edukasi.php'] = __('Materi Edukasi', 'yiari');
 
     return $templates;
 });
@@ -159,6 +168,8 @@ add_action('wp_ajax_yiari_live_search', 'yiari_handle_live_search');
 add_action('wp_ajax_nopriv_yiari_live_search', 'yiari_handle_live_search');
 add_action('wp_ajax_yiari_load_more_updates', 'yiari_handle_load_more_updates');
 add_action('wp_ajax_nopriv_yiari_load_more_updates', 'yiari_handle_load_more_updates');
+add_action('wp_ajax_yiari_load_more_publications', 'yiari_handle_load_more_publications');
+add_action('wp_ajax_nopriv_yiari_load_more_publications', 'yiari_handle_load_more_publications');
 
 function yiari_handle_live_search(): void {
     check_ajax_referer('yiari_live_search', 'nonce');
@@ -226,6 +237,55 @@ function yiari_handle_load_more_updates(): void {
     while ($query->have_posts()) {
         $query->the_post();
         $items[] = yiari_render_detail_landscape_update_card(get_the_ID());
+    }
+    wp_reset_postdata();
+
+    wp_send_json_success([
+        'html' => implode('', $items),
+        'nextPage' => $page + 1,
+        'hasMore' => $page < (int) $query->max_num_pages,
+    ]);
+}
+
+function yiari_handle_load_more_publications(): void {
+    check_ajax_referer('yiari_load_more_publications', 'nonce');
+
+    $page = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
+    $count = isset($_POST['count']) ? max(3, min(12, (int) $_POST['count'])) : 9;
+    $variant = isset($_POST['variant']) ? sanitize_key((string) wp_unslash($_POST['variant'])) : 'book';
+    $variant = $variant === 'education' ? 'education' : 'book';
+
+    $terms_raw = isset($_POST['terms']) ? wp_unslash($_POST['terms']) : [];
+    if (!is_array($terms_raw)) {
+        $terms_raw = [$terms_raw];
+    }
+    $terms = array_values(array_filter(array_map('intval', $terms_raw)));
+
+    $query_args = [
+        'post_type' => 'publikasi',
+        'post_status' => 'publish',
+        'posts_per_page' => $count,
+        'paged' => $page,
+        'ignore_sticky_posts' => true,
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'suppress_filters' => false,
+    ];
+
+    if (!empty($terms)) {
+        $query_args['tax_query'] = [[
+            'taxonomy' => 'kategori-publikasi',
+            'field' => 'term_id',
+            'terms' => $terms,
+        ]];
+    }
+
+    $query = new WP_Query($query_args);
+    $items = [];
+
+    while ($query->have_posts()) {
+        $query->the_post();
+        $items[] = yiari_render_publication_card(get_the_ID(), $variant);
     }
     wp_reset_postdata();
 

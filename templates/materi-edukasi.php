@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Buku
+ * Template Name: Materi Edukasi
  * Template Post Type: page
- * Halaman koleksi buku dan panduan konservasi YIARI.
+ * Halaman materi edukasi dan sumber pembelajaran YIARI.
  */
 
 defined('ABSPATH') || exit;
@@ -11,22 +11,22 @@ get_template_part('template-parts/global/header');
 
 $theme_uri = get_template_directory_uri();
 
-$hero_image = yiari_field('books_hero_image', ['url' => $theme_uri . '/assets/img/hero-section.jpg']);
-$hero_title = yiari_field('books_hero_title', __('Buku Konservasi', 'yiari'));
-$hero_text = yiari_field('books_hero_text', __('Buku-buku ini berisi pengetahuan, pengalaman lapangan, dan panduan yang membantu kita memahami satwa liar serta cara melindungi habitatnya.', 'yiari'));
-$hero_btn_text = yiari_field('books_hero_btn_text', __('Lihat Koleksi Buku', 'yiari'));
-$hero_btn_url = yiari_localize_url((string) yiari_field('books_hero_btn_url', '#books-library'));
+$hero_image = yiari_field('education_hero_image', ['url' => $theme_uri . '/assets/img/hero-section.jpg']);
+$hero_title = yiari_field('education_hero_title', __('Materi Edukasi', 'yiari'));
+$hero_text = yiari_field('education_hero_text', __('Materi edukasi ini membantu memperluas pemahaman tentang satwa liar, habitat, dan praktik konservasi melalui media yang mudah diakses.', 'yiari'));
+$hero_btn_text = yiari_field('education_hero_btn_text', __('Lihat Materi Edukasi', 'yiari'));
+$hero_btn_url = yiari_localize_url((string) yiari_field('education_hero_btn_url', '#education-library'));
 
-$library_label = yiari_field('books_library_label', __('SUMBER PENGETAHUAN', 'yiari'));
-$library_title = yiari_field('books_library_title', __('Koleksi Buku', 'yiari'));
-$library_desc = yiari_field('books_library_desc', __('Publikasi buku, panduan, dan materi bacaan yang memperluas wawasan konservasi dan pengalaman lapangan YIARI.', 'yiari'));
-$library_terms_raw = yiari_field('books_library_terms', []);
+$library_label = yiari_field('education_library_label', __('SUMBER PEMBELAJARAN', 'yiari'));
+$library_title = yiari_field('education_library_title', __('Koleksi Materi Edukasi', 'yiari'));
+$library_desc = yiari_field('education_library_desc', __('Poster, panduan, lembar belajar, dan materi edukasi yang mendukung penyadartahuan konservasi.', 'yiari'));
+$library_terms_raw = yiari_field('education_library_terms', []);
 $library_terms = is_array($library_terms_raw) ? $library_terms_raw : [$library_terms_raw];
 $library_terms = array_values(array_filter(array_map('intval', $library_terms)));
-$library_count = max(3, min(18, (int) yiari_field('books_library_count', 9)));
-$load_more_text = yiari_field('books_load_more_text', __('Muat Lebih Banyak', 'yiari'));
+$library_count = max(3, min(18, (int) yiari_field('education_library_count', 9)));
+$load_more_text = yiari_field('education_load_more_text', __('Muat Lebih Banyak', 'yiari'));
 
-$book_query_args = [
+$education_query_args = [
     'post_type' => 'publikasi',
     'post_status' => 'publish',
     'posts_per_page' => $library_count,
@@ -37,28 +37,28 @@ $book_query_args = [
 ];
 
 if (!empty($library_terms)) {
-    $book_query_args['tax_query'] = [[
+    $education_query_args['tax_query'] = [[
         'taxonomy' => 'kategori-publikasi',
         'field' => 'term_id',
         'terms' => $library_terms,
     ]];
 }
 
-$book_query = new WP_Query($book_query_args);
-$book_posts = $book_query->posts;
-$book_has_more = $book_query->max_num_pages > 1;
+$education_query = new WP_Query($education_query_args);
+$education_posts = $education_query->posts;
+$education_has_more = $education_query->max_num_pages > 1;
 wp_reset_postdata();
 
-$more_label = yiari_field('books_more_label', __('EKSPLOR LEBIH BANYAK', 'yiari'));
-$more_title = yiari_field('books_more_title', __('Publikasi Lainnya', 'yiari'));
-$more_desc = yiari_field('books_more_desc', __('Beragam konten tambahan yang melengkapi informasi dan wawasan seputar konservasi.', 'yiari'));
-$more_items = yiari_merge_publication_more_items(yiari_field('books_more_items', []));
+$more_label = yiari_field('education_more_label', __('EKSPLOR LEBIH BANYAK', 'yiari'));
+$more_title = yiari_field('education_more_title', __('Publikasi Lainnya', 'yiari'));
+$more_desc = yiari_field('education_more_desc', __('Beragam konten tambahan yang melengkapi informasi dan wawasan seputar konservasi.', 'yiari'));
+$more_items = yiari_merge_publication_more_items(yiari_field('education_more_items', []));
 $current_page_url = trailingslashit((string) get_permalink());
 $more_items = array_values(array_filter($more_items, static function ($item) use ($current_page_url): bool {
     $title = trim((string) ($item['title'] ?? ''));
     $normalized_title = function_exists('mb_strtolower') ? mb_strtolower($title) : strtolower($title);
 
-    if (in_array($normalized_title, ['buku', 'book', 'books'], true)) {
+    if (in_array($normalized_title, ['materi edukasi', 'education materials'], true)) {
         return false;
     }
 
@@ -70,31 +70,31 @@ $more_items = array_values(array_filter($more_items, static function ($item) use
     return trailingslashit($url) !== $current_page_url;
 }));
 
-$cta_label = yiari_field('books_cta_label', __('DUKUNGAN ANDA', 'yiari'));
-$cta_title = yiari_field('books_cta_title', __("Bantu Sebarkan\nPengetahuan untuk\nKonservasi", 'yiari'));
-$cta_text = yiari_field('books_cta_text', __('Dukungan Anda membantu YIARI menghadirkan lebih banyak buku, materi edukasi, dan pengetahuan konservasi yang mudah diakses oleh masyarakat luas.', 'yiari'));
-$cta_btn1_text = yiari_field('books_cta_btn1_text', __('Donasi Sekarang', 'yiari'));
-$cta_btn1_url = yiari_localize_url((string) yiari_field('books_cta_btn1_url', yiari_get_page_url_by_template('templates/donasi.php', yiari_home_url())));
-$cta_btn2_text = yiari_field('books_cta_btn2_text', __('Gabung Bersama YIARI', 'yiari'));
-$cta_btn2_url = yiari_localize_url((string) yiari_field('books_cta_btn2_url', yiari_get_join_url()));
-$cta_image = yiari_field('books_cta_image', ['url' => $theme_uri . '/assets/img/gambar-cta.png', 'alt' => __('Dukung penyebaran pengetahuan YIARI', 'yiari')]);
+$cta_label = yiari_field('education_cta_label', __('DUKUNGAN ANDA', 'yiari'));
+$cta_title = yiari_field('education_cta_title', __("Bantu Sebarkan\nPengetahuan untuk\nKonservasi", 'yiari'));
+$cta_text = yiari_field('education_cta_text', __('Dukungan Anda membantu YIARI menghadirkan lebih banyak materi edukasi dan pengetahuan konservasi yang mudah diakses oleh masyarakat luas.', 'yiari'));
+$cta_btn1_text = yiari_field('education_cta_btn1_text', __('Donasi Sekarang', 'yiari'));
+$cta_btn1_url = yiari_localize_url((string) yiari_field('education_cta_btn1_url', yiari_get_page_url_by_template('templates/donasi.php', yiari_home_url())));
+$cta_btn2_text = yiari_field('education_cta_btn2_text', __('Gabung Bersama YIARI', 'yiari'));
+$cta_btn2_url = yiari_localize_url((string) yiari_field('education_cta_btn2_url', yiari_get_join_url()));
+$cta_image = yiari_field('education_cta_image', ['url' => $theme_uri . '/assets/img/gambar-cta.png', 'alt' => __('Dukung penyebaran materi edukasi YIARI', 'yiari')]);
 ?>
 
-<main class="books-page">
-  <section class="books-hero-wrap">
+<main class="education-page books-page">
+  <section class="books-hero-wrap education-hero-wrap">
     <?php
     get_template_part('template-parts/sections/page-hero', null, [
-        'id' => 'books-top',
-        'classes' => 'books-hero-section',
+        'id' => 'education-top',
+        'classes' => 'books-hero-section education-hero-section',
         'image' => $hero_image,
-        'image_class' => 'books-hero-img',
-        'image_alt' => __('Buku Konservasi YIARI', 'yiari'),
-        'overlay_class' => 'books-hero-overlay',
-        'content_class' => 'books-hero-content',
-        'copy_class' => 'books-hero-copy',
-        'title_class' => 'books-hero-title',
-        'text_class' => 'books-hero-text',
-        'actions_class' => 'books-hero-actions',
+        'image_class' => 'books-hero-img education-hero-img',
+        'image_alt' => __('Materi Edukasi YIARI', 'yiari'),
+        'overlay_class' => 'books-hero-overlay education-hero-overlay',
+        'content_class' => 'books-hero-content education-hero-content',
+        'copy_class' => 'books-hero-copy education-hero-copy',
+        'title_class' => 'books-hero-title education-hero-title',
+        'text_class' => 'books-hero-text education-hero-text',
+        'actions_class' => 'books-hero-actions education-hero-actions',
         'title' => $hero_title,
         'text' => $hero_text,
         'buttons' => [
@@ -104,13 +104,13 @@ $cta_image = yiari_field('books_cta_image', ['url' => $theme_uri . '/assets/img/
     ?>
   </section>
 
-  <section class="books-library-section" id="books-library">
+  <section class="books-library-section education-library-section" id="education-library">
     <div
       class="container"
       x-data="{
         itemsHtml: '',
         page: 2,
-        hasMore: <?php echo $book_has_more ? 'true' : 'false'; ?>,
+        hasMore: <?php echo $education_has_more ? 'true' : 'false'; ?>,
         loading: false,
         error: '',
         terms: <?php echo wp_json_encode($library_terms); ?>,
@@ -130,7 +130,7 @@ $cta_image = yiari_field('books_cta_image', ['url' => $theme_uri . '/assets/img/
               nonce: window.yiariPublications?.nonce || '',
               page: String(this.page),
               count: String(this.count),
-              variant: 'book'
+              variant: 'education'
             });
 
             this.terms.forEach((termId) => payload.append('terms[]', String(termId)));
@@ -169,7 +169,7 @@ $cta_image = yiari_field('books_cta_image', ['url' => $theme_uri . '/assets/img/
         }
       }"
     >
-      <div class="stats-layout books-section-header">
+      <div class="stats-layout books-section-header education-section-header">
         <div class="stats-intro">
           <?php yiari_section_label($library_label, true); ?>
           <h2 class="section-heading"><?php echo wp_kses_post(nl2br(esc_html($library_title))); ?></h2>
@@ -179,16 +179,16 @@ $cta_image = yiari_field('books_cta_image', ['url' => $theme_uri . '/assets/img/
         </div>
       </div>
 
-      <?php if (!empty($book_posts)): ?>
-        <div class="books-grid" x-ref="grid">
-          <?php foreach ($book_posts as $book_post): ?>
-            <?php echo yiari_render_publication_card((int) $book_post->ID, 'book'); ?>
+      <?php if (!empty($education_posts)): ?>
+        <div class="books-grid education-grid" x-ref="grid">
+          <?php foreach ($education_posts as $education_post): ?>
+            <?php echo yiari_render_publication_card((int) $education_post->ID, 'education'); ?>
           <?php endforeach; ?>
         </div>
 
-        <?php if ($book_has_more): ?>
-          <div class="books-load-more-wrap books-load-more-wrap-visible" x-show="hasMore" x-cloak>
-            <button type="button" class="btn-volunteer-main books-load-more-btn" @click="loadMore()" :disabled="loading">
+        <?php if ($education_has_more): ?>
+          <div class="books-load-more-wrap books-load-more-wrap-visible education-load-more-wrap" x-show="hasMore" x-cloak>
+            <button type="button" class="btn-volunteer-main books-load-more-btn education-load-more-btn" @click="loadMore()" :disabled="loading">
               <span x-show="!loading"><?php echo esc_html($load_more_text); ?></span>
               <span x-show="loading" x-cloak><?php esc_html_e('Memuat...', 'yiari'); ?></span>
             </button>
@@ -196,14 +196,14 @@ $cta_image = yiari_field('books_cta_image', ['url' => $theme_uri . '/assets/img/
           <p class="books-load-more-error" x-show="error" x-text="error" x-cloak></p>
         <?php endif; ?>
       <?php else: ?>
-        <div class="books-empty-state">
-          <p><?php esc_html_e('Belum ada buku yang tersedia untuk kategori ini.', 'yiari'); ?></p>
+        <div class="books-empty-state education-empty-state">
+          <p><?php esc_html_e('Belum ada materi edukasi yang tersedia untuk kategori ini.', 'yiari'); ?></p>
         </div>
       <?php endif; ?>
     </div>
   </section>
 
-  <section class="journal-more-section books-more-section">
+  <section class="journal-more-section books-more-section education-more-section">
     <div class="container" x-data="{
       prev() {
         if (!this.$refs.track) return;
@@ -259,26 +259,26 @@ $cta_image = yiari_field('books_cta_image', ['url' => $theme_uri . '/assets/img/
     </div>
   </section>
 
-  <section class="journal-cta-section books-cta-section">
+  <section class="journal-cta-section books-cta-section education-cta-section">
     <div class="container">
-      <div class="journal-cta-card books-cta-card">
-        <div class="journal-cta-copy books-cta-copy">
+      <div class="journal-cta-card books-cta-card education-cta-card">
+        <div class="journal-cta-copy books-cta-copy education-cta-copy">
           <div class="donate-pill">
             <i data-lucide="heart-handshake" class="donate-pill-icon"></i>
             <span><?php echo esc_html($cta_label); ?></span>
           </div>
 
-          <h2 class="journal-cta-title books-cta-title"><?php echo wp_kses_post(nl2br(esc_html($cta_title))); ?></h2>
-          <p class="journal-cta-text books-cta-text"><?php echo esc_html($cta_text); ?></p>
+          <h2 class="journal-cta-title books-cta-title education-cta-title"><?php echo wp_kses_post(nl2br(esc_html($cta_title))); ?></h2>
+          <p class="journal-cta-text books-cta-text education-cta-text"><?php echo esc_html($cta_text); ?></p>
 
-          <div class="journal-cta-actions books-cta-actions">
+          <div class="journal-cta-actions books-cta-actions education-cta-actions">
             <?php yiari_btn($cta_btn1_text, $cta_btn1_url, 'btn-donate-main'); ?>
             <?php yiari_btn($cta_btn2_text, $cta_btn2_url, 'btn-volunteer-main'); ?>
           </div>
         </div>
 
-        <div class="journal-cta-media books-cta-media">
-          <?php yiari_img($cta_image, 'section-wide', 'journal-cta-image books-cta-image', $cta_title); ?>
+        <div class="journal-cta-media books-cta-media education-cta-media">
+          <?php yiari_img($cta_image, 'section-wide', 'journal-cta-image books-cta-image education-cta-image', $cta_title); ?>
         </div>
       </div>
     </div>

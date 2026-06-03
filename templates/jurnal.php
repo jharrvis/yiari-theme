@@ -26,30 +26,16 @@ $has_journal_shortcode = $library_shortcode !== '' && preg_match('/\[jurnal_acco
 $more_label = yiari_field('journal_more_label', __('EKSPLOR LEBIH BANYAK', 'yiari'));
 $more_title = yiari_field('journal_more_title', __('Publikasi Lainnya', 'yiari'));
 $more_desc = yiari_field('journal_more_desc', __('Beragam konten tambahan yang melengkapi informasi dan wawasan seputar konservasi.', 'yiari'));
-$more_items = yiari_field('journal_more_items', []);
+$more_items = yiari_merge_publication_more_items(yiari_field('journal_more_items', []));
+$current_page_url = trailingslashit((string) get_permalink());
+$more_items = array_values(array_filter($more_items, static function ($item) use ($current_page_url): bool {
+    $url = yiari_localize_url(trim((string) ($item['url'] ?? '')));
+    if ($url === '') {
+        return false;
+    }
 
-if (empty($more_items) || !is_array($more_items)) {
-    $more_items = [
-        [
-            'title' => __('Blog', 'yiari'),
-            'text' => __('Cerita, insight, dan perspektif dari lapangan.', 'yiari'),
-            'url' => yiari_get_page_url_by_paths(['blog'], home_url('/blog/')),
-            'icon' => 'file-text',
-        ],
-        [
-            'title' => __('Siaran Pers', 'yiari'),
-            'text' => __('Informasi resmi mengenai kegiatan dan perkembangan terbaru.', 'yiari'),
-            'url' => yiari_get_page_url_by_paths(['siaran-pers', 'press-releases'], home_url('/siaran-pers/')),
-            'icon' => 'newspaper',
-        ],
-        [
-            'title' => __('Buletin', 'yiari'),
-            'text' => __('Ringkasan kabar dan update terbaru.', 'yiari'),
-            'url' => yiari_get_page_url_by_paths(['buletin', 'bulletin'], home_url('/buletin/')),
-            'icon' => 'book-open-text',
-        ],
-    ];
-}
+    return trailingslashit($url) !== $current_page_url;
+}));
 
 $cta_label = yiari_field('journal_cta_label', __('DUKUNGAN ANDA', 'yiari'));
 $cta_title = yiari_field('journal_cta_title', __("Dukung Penelitian untuk\nMelindungi Satwa Liar", 'yiari'));

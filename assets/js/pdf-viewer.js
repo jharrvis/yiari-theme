@@ -1,14 +1,22 @@
-import * as pdfjsLib from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs';
+const pdfjsLib = window.pdfjsLib || null;
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = window.yiariPdfViewer?.workerSrc || '';
+if (pdfjsLib && pdfjsLib.GlobalWorkerOptions) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = window.yiariPdfViewer?.workerSrc || '';
+}
 
-const DEFAULT_SCALE = 1.2;
+const DEFAULT_SCALE = 1;
 const MIN_SCALE = 0.7;
 const MAX_SCALE = 2.8;
 const SCALE_STEP = 0.2;
+const PAGE_FRAME_PADDING = 72;
 
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-pdf-viewer]').forEach((viewer) => {
+    if (!pdfjsLib) {
+      showViewerError(viewer);
+      return;
+    }
+
     initPdfViewer(viewer).catch(() => {
       showViewerError(viewer);
     });
@@ -21,7 +29,6 @@ async function initPdfViewer(viewer) {
   const stage = viewer.querySelector('[data-pdf-stage]');
   const canvasList = viewer.querySelector('[data-pdf-canvas-list]');
   const status = viewer.querySelector('[data-pdf-status]');
-  const handToolButton = viewer.querySelector('[data-pdf-action="hand-tool"]');
 
   if (!pdfUrl || !stage || !canvasList || !status) {
     throw new Error('Missing PDF viewer elements');
@@ -31,17 +38,19 @@ async function initPdfViewer(viewer) {
     pdfDocument: null,
     renderedPages: [],
     scale: DEFAULT_SCALE,
+    fitScale: DEFAULT_SCALE,
     handToolActive: false,
     dragActive: false,
     dragStartX: 0,
     dragStartY: 0,
     scrollLeft: 0,
     scrollTop: 0,
+    resizeFrame: null,
   };
 
-  viewer.dataset.handTool = 'false';
+  syncHandToolState(viewer, state);
   bindToolbar(viewer, state);
-  bindHandTool(stage, handToolButton, state);
+  bindHandTool(viewer, stage, state);
 
   status.textContent = window.yiariPdfViewer?.strings?.loading || 'Loading PDF...';
 
@@ -79,6 +88,9 @@ async function initPdfViewer(viewer) {
   }
 
   state.renderedPages = pages;
+  updateFitScale(viewer, stage, state);
+  state.scale = state.fitScale;
+  bindResize(viewer, stage, state);
   await renderAllPages(state);
   status.hidden = true;
 }
@@ -90,33 +102,52 @@ function bindToolbar(viewer, state) {
 
       if (action === 'zoom-in') {
         state.scale = Math.min(MAX_SCALE, roundScale(state.scale + SCALE_STEP));
+        syncHandToolState(viewer, state);
         await renderAllPages(state);
         return;
       }
 
       if (action === 'zoom-out') {
         state.scale = Math.max(MIN_SCALE, roundScale(state.scale - SCALE_STEP));
+        syncHandToolState(viewer, state);
         await renderAllPages(state);
         return;
       }
 
       if (action === 'reset') {
-        state.scale = DEFAULT_SCALE;
+        const stage = viewer.querySelector('[data-pdf-stage]');
+        updateFitScale(viewer, stage, state);
+        state.scale = state.fitScale;
+        syncHandToolState(viewer, state);
         await renderAllPages(state);
         return;
-      }
-
-      if (action === 'hand-tool') {
-        state.handToolActive = !state.handToolActive;
-        button.setAttribute('aria-pressed', state.handToolActive ? 'true' : 'false');
-        button.classList.toggle('is-active', state.handToolActive);
-        viewer.dataset.handTool = state.handToolActive ? 'true' : 'false';
       }
     });
   });
 }
 
-function bindHandTool(stage, handToolButton, state) {
+function bindResize(viewer, stage, state) {
+  let resizeTimer = null;
+
+  const handleResize = async () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(async () => {
+      const previousFitScale = state.fitScale;
+      updateFitScale(viewer, stage, state);
+
+      if (Math.abs(state.scale - previousFitScale) < 0.05 || state.scale < state.fitScale) {
+        state.scale = state.fitScale;
+        syncHandToolState(viewer, state);
+        await renderAllPages(state);
+      }
+    }, 120);
+  };
+
+  state.resizeFrame = handleResize;
+  window.addEventListener('resize', handleResize, { passive: true });
+}
+
+function bindHandTool(viewer, stage, state) {
   stage.addEventListener('pointerdown', (event) => {
     if (!state.handToolActive || state.scale <= 1) {
       return;
@@ -128,6 +159,7 @@ function bindHandTool(stage, handToolButton, state) {
     state.scrollLeft = stage.scrollLeft;
     state.scrollTop = stage.scrollTop;
     stage.classList.add('is-dragging');
+    viewer.classList.add('is-hand-tool-active');
     stage.setPointerCapture(event.pointerId);
     event.preventDefault();
   });
@@ -150,6 +182,7 @@ function bindHandTool(stage, handToolButton, state) {
 
     state.dragActive = false;
     stage.classList.remove('is-dragging');
+    viewer.classList.remove('is-hand-tool-active');
     if (event?.pointerId !== undefined) {
       stage.releasePointerCapture(event.pointerId);
     }
@@ -164,11 +197,8 @@ function bindHandTool(stage, handToolButton, state) {
 
     state.dragActive = false;
     stage.classList.remove('is-dragging');
+    viewer.classList.remove('is-hand-tool-active');
   });
-
-  if (handToolButton) {
-    handToolButton.setAttribute('aria-pressed', 'false');
-  }
 }
 
 async function renderAllPages(state) {
@@ -194,6 +224,26 @@ async function renderAllPages(state) {
 
 function roundScale(value) {
   return Math.round(value * 100) / 100;
+}
+
+function updateFitScale(viewer, stage, state) {
+  const firstPage = state.renderedPages[0]?.page || null;
+  if (!firstPage || !stage) {
+    state.fitScale = DEFAULT_SCALE;
+    return;
+  }
+
+  const baseViewport = firstPage.getViewport({ scale: 1 });
+  const availableWidth = Math.max(240, stage.clientWidth - PAGE_FRAME_PADDING);
+  const fitScale = availableWidth / Math.max(baseViewport.width, 1);
+
+  state.fitScale = roundScale(Math.min(MAX_SCALE, Math.max(MIN_SCALE, fitScale)));
+  viewer.dataset.fitScale = String(state.fitScale);
+}
+
+function syncHandToolState(viewer, state) {
+  state.handToolActive = state.scale > 1;
+  viewer.dataset.handTool = state.handToolActive ? 'true' : 'false';
 }
 
 function showViewerError(viewer) {

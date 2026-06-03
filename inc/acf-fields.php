@@ -100,9 +100,9 @@ add_action('acf/init', function () {
             ['key' => 'field_home_donate_title', 'label' => __('Judul', 'yiari'), 'name' => 'donate_title', 'type' => 'text', 'default_value' => __('Setiap Donasi Menyelamatkan Nyawa', 'yiari')],
             ['key' => 'field_home_donate_text', 'label' => __('Teks', 'yiari'), 'name' => 'donate_text', 'type' => 'textarea', 'rows' => 3],
             ['key' => 'field_home_donate_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'donate_btn1_text', 'type' => 'text', 'default_value' => __('Donasi Sekarang', 'yiari')],
-            ['key' => 'field_home_donate_btn1_url', 'label' => __('Tombol 1 - URL', 'yiari'), 'name' => 'donate_btn1_url', 'type' => 'url'],
+            ['key' => 'field_home_donate_btn1_url', 'label' => __('Tombol 1 - Halaman', 'yiari'), 'name' => 'donate_btn1_url', 'type' => 'page_link', 'post_type' => ['page'], 'allow_archives' => 0, 'allow_null' => 1, 'multiple' => 0],
             ['key' => 'field_home_donate_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'donate_btn2_text', 'type' => 'text', 'default_value' => __('Jadi Relawan', 'yiari')],
-            ['key' => 'field_home_donate_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'donate_btn2_url', 'type' => 'url'],
+            ['key' => 'field_home_donate_btn2_url', 'label' => __('Tombol 2 - Halaman', 'yiari'), 'name' => 'donate_btn2_url', 'type' => 'page_link', 'post_type' => ['page'], 'allow_archives' => 0, 'allow_null' => 1, 'multiple' => 0],
             ['key' => 'field_home_donate_image', 'label' => __('Gambar CTA', 'yiari'), 'name' => 'donate_image', 'type' => 'image', 'return_format' => 'array'],
         ],
     ]);
@@ -557,6 +557,60 @@ add_action('acf/init', function () {
             ['key' => 'field_books_cta_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'books_cta_btn2_text', 'type' => 'text', 'default_value' => __('Gabung Bersama YIARI', 'yiari')],
             ['key' => 'field_books_cta_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'books_cta_btn2_url', 'type' => 'url'],
             ['key' => 'field_books_cta_image', 'label' => __('Gambar CTA', 'yiari'), 'name' => 'books_cta_image', 'type' => 'image', 'return_format' => 'array'],
+        ],
+    ]);
+
+    acf_add_local_field_group([
+        'key' => 'group_education_page',
+        'title' => __('Materi Edukasi - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/materi-edukasi.php']]],
+        'menu_order' => 18,
+        'fields' => [
+            ['key' => 'field_education_hero_tab', 'label' => __('Hero', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_education_hero_image', 'label' => __('Gambar Hero', 'yiari'), 'name' => 'education_hero_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_education_hero_title', 'label' => __('Judul Hero', 'yiari'), 'name' => 'education_hero_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Materi Edukasi', 'yiari')],
+            ['key' => 'field_education_hero_text', 'label' => __('Teks Hero', 'yiari'), 'name' => 'education_hero_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Materi edukasi ini membantu memperluas pemahaman tentang satwa liar, habitat, dan praktik konservasi melalui media yang mudah diakses.', 'yiari')],
+            ['key' => 'field_education_hero_btn_text', 'label' => __('Teks Tombol Hero', 'yiari'), 'name' => 'education_hero_btn_text', 'type' => 'text', 'default_value' => __('Lihat Materi Edukasi', 'yiari')],
+            ['key' => 'field_education_hero_btn_url', 'label' => __('URL Tombol Hero', 'yiari'), 'name' => 'education_hero_btn_url', 'type' => 'url'],
+
+            ['key' => 'field_education_library_tab', 'label' => __('Koleksi Materi', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_education_library_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'education_library_label', 'type' => 'text', 'default_value' => __('SUMBER PEMBELAJARAN', 'yiari')],
+            ['key' => 'field_education_library_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'education_library_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Koleksi Materi Edukasi', 'yiari')],
+            ['key' => 'field_education_library_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'education_library_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Poster, panduan, lembar belajar, dan materi edukasi yang mendukung penyadartahuan konservasi.', 'yiari')],
+            ['key' => 'field_education_library_terms', 'label' => __('Kategori Publikasi', 'yiari'), 'name' => 'education_library_terms', 'type' => 'taxonomy', 'taxonomy' => 'kategori-publikasi', 'field_type' => 'multi_select', 'return_format' => 'id', 'allow_null' => 1, 'add_term' => 0, 'save_terms' => 0, 'load_terms' => 0, 'instructions' => __('Pilih satu atau beberapa kategori publikasi untuk ditampilkan pada grid materi edukasi.', 'yiari')],
+            ['key' => 'field_education_library_count', 'label' => __('Jumlah Materi', 'yiari'), 'name' => 'education_library_count', 'type' => 'number', 'default_value' => 9, 'min' => 3, 'max' => 18, 'step' => 1],
+            ['key' => 'field_education_load_more_text', 'label' => __('Teks Tombol Muat Lebih Banyak', 'yiari'), 'name' => 'education_load_more_text', 'type' => 'text', 'default_value' => __('Muat Lebih Banyak', 'yiari')],
+
+            ['key' => 'field_education_more_tab', 'label' => __('Publikasi Lainnya', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_education_more_label', 'label' => __('Label Atas', 'yiari'), 'name' => 'education_more_label', 'type' => 'text', 'default_value' => __('EKSPLOR LEBIH BANYAK', 'yiari')],
+            ['key' => 'field_education_more_title', 'label' => __('Judul Section', 'yiari'), 'name' => 'education_more_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Publikasi Lainnya', 'yiari')],
+            ['key' => 'field_education_more_desc', 'label' => __('Deskripsi', 'yiari'), 'name' => 'education_more_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Beragam konten tambahan yang melengkapi informasi dan wawasan seputar konservasi.', 'yiari')],
+            [
+                'key' => 'field_education_more_items',
+                'label' => __('Kartu Publikasi', 'yiari'),
+                'name' => 'education_more_items',
+                'type' => 'repeater',
+                'min' => 1,
+                'max' => 8,
+                'layout' => 'row',
+                'button_label' => __('Tambah Kartu', 'yiari'),
+                'sub_fields' => [
+                    ['key' => 'field_education_more_item_title', 'label' => __('Judul', 'yiari'), 'name' => 'title', 'type' => 'text'],
+                    ['key' => 'field_education_more_item_text', 'label' => __('Deskripsi', 'yiari'), 'name' => 'text', 'type' => 'textarea', 'rows' => 3],
+                    ['key' => 'field_education_more_item_url', 'label' => __('URL', 'yiari'), 'name' => 'url', 'type' => 'url'],
+                    ['key' => 'field_education_more_item_icon', 'label' => __('Nama Ikon Lucide', 'yiari'), 'name' => 'icon', 'type' => 'text', 'default_value' => 'file-text'],
+                ],
+            ],
+
+            ['key' => 'field_education_cta_tab', 'label' => __('CTA Bawah', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_education_cta_label', 'label' => __('Label CTA', 'yiari'), 'name' => 'education_cta_label', 'type' => 'text', 'default_value' => __('DUKUNGAN ANDA', 'yiari')],
+            ['key' => 'field_education_cta_title', 'label' => __('Judul CTA', 'yiari'), 'name' => 'education_cta_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Bantu Sebarkan\nPengetahuan untuk\nKonservasi", 'yiari')],
+            ['key' => 'field_education_cta_text', 'label' => __('Teks CTA', 'yiari'), 'name' => 'education_cta_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Dukungan Anda membantu YIARI menghadirkan lebih banyak materi edukasi dan pengetahuan konservasi yang mudah diakses oleh masyarakat luas.', 'yiari')],
+            ['key' => 'field_education_cta_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'education_cta_btn1_text', 'type' => 'text', 'default_value' => __('Donasi Sekarang', 'yiari')],
+            ['key' => 'field_education_cta_btn1_url', 'label' => __('Tombol 1 - URL', 'yiari'), 'name' => 'education_cta_btn1_url', 'type' => 'url'],
+            ['key' => 'field_education_cta_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'education_cta_btn2_text', 'type' => 'text', 'default_value' => __('Gabung Bersama YIARI', 'yiari')],
+            ['key' => 'field_education_cta_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'education_cta_btn2_url', 'type' => 'url'],
+            ['key' => 'field_education_cta_image', 'label' => __('Gambar CTA', 'yiari'), 'name' => 'education_cta_image', 'type' => 'image', 'return_format' => 'array'],
         ],
     ]);
 });

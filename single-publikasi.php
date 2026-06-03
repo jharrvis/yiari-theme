@@ -22,6 +22,18 @@ get_template_part('template-parts/global/header');
     $is_google_drive = yiari_get_google_drive_file_id($file_url) !== '';
     $supports_pdfjs = yiari_publication_supports_pdfjs($file_url);
     $document_meta = yiari_get_publication_document_meta($post_id);
+    $is_book_publication = yiari_is_book_publication($post_id);
+    $is_education_publication = yiari_is_education_publication($post_id);
+    $about_heading = $is_book_publication
+        ? __('Tentang Buku Ini:', 'yiari')
+        : ($is_education_publication
+            ? __('Tentang Materi Edukasi Ini:', 'yiari')
+            : __('Tentang Penelitian Ini:', 'yiari'));
+    $download_label = $is_book_publication
+        ? __('Download Buku', 'yiari')
+        : ($is_education_publication
+            ? __('Download Materi', 'yiari')
+            : __('Download Laporan', 'yiari'));
 
     $year = yiari_field('publication_year', get_the_date('Y'));
     $language = yiari_field('publication_language', __('Indonesia', 'yiari'));
@@ -77,7 +89,7 @@ get_template_part('template-parts/global/header');
 
           <div class="publication-detail-card">
             <aside class="publication-detail-sidebar">
-              <h2 class="publication-detail-sidebar-heading"><?php esc_html_e('Tentang Penelitian Ini:', 'yiari'); ?></h2>
+              <h2 class="publication-detail-sidebar-heading"><?php echo esc_html($about_heading); ?></h2>
               <?php if ($summary !== ''): ?>
                 <p class="publication-detail-summary"><?php echo esc_html($summary); ?></p>
               <?php endif; ?>
@@ -98,7 +110,7 @@ get_template_part('template-parts/global/header');
 
               <div class="publication-detail-actions">
                 <?php if ($download_url !== ''): ?>
-                  <a href="<?php echo esc_url($download_url); ?>" class="btn-donate-main publication-detail-btn" target="_blank" rel="noopener"><?php esc_html_e('Download Laporan', 'yiari'); ?></a>
+                  <a href="<?php echo esc_url($download_url); ?>" class="btn-donate-main publication-detail-btn" target="_blank" rel="noopener"><?php echo esc_html($download_label); ?></a>
                 <?php endif; ?>
                 <?php if ($preview_url !== ''): ?>
                   <a href="<?php echo esc_url($preview_url); ?>" class="btn-volunteer-main publication-detail-btn" target="_blank" rel="noopener"><?php esc_html_e('Buka Layar Penuh', 'yiari'); ?></a>
@@ -117,12 +129,15 @@ get_template_part('template-parts/global/header');
                   >
                     <div class="publication-pdfjs-toolbar" role="toolbar" aria-label="<?php esc_attr_e('Kontrol PDF', 'yiari'); ?>">
                       <div class="publication-pdfjs-toolbar-group">
-                        <button type="button" class="publication-pdfjs-btn" data-pdf-action="zoom-out"><?php esc_html_e('Perkecil', 'yiari'); ?></button>
-                        <button type="button" class="publication-pdfjs-btn" data-pdf-action="zoom-in"><?php esc_html_e('Perbesar', 'yiari'); ?></button>
-                        <button type="button" class="publication-pdfjs-btn is-secondary" data-pdf-action="reset"><?php esc_html_e('Reset', 'yiari'); ?></button>
-                      </div>
-                      <div class="publication-pdfjs-toolbar-group">
-                        <button type="button" class="publication-pdfjs-btn is-secondary" data-pdf-action="hand-tool" aria-pressed="false"><?php esc_html_e('Hand Tool', 'yiari'); ?></button>
+                        <button type="button" class="publication-pdfjs-btn" data-pdf-action="zoom-out" aria-label="<?php esc_attr_e('Perkecil', 'yiari'); ?>" title="<?php esc_attr_e('Perkecil', 'yiari'); ?>">
+                          <i data-lucide="minus" class="icon-sm"></i>
+                        </button>
+                        <button type="button" class="publication-pdfjs-btn" data-pdf-action="zoom-in" aria-label="<?php esc_attr_e('Perbesar', 'yiari'); ?>" title="<?php esc_attr_e('Perbesar', 'yiari'); ?>">
+                          <i data-lucide="plus" class="icon-sm"></i>
+                        </button>
+                        <button type="button" class="publication-pdfjs-btn is-secondary" data-pdf-action="reset" aria-label="<?php esc_attr_e('Reset', 'yiari'); ?>" title="<?php esc_attr_e('Reset', 'yiari'); ?>">
+                          <i data-lucide="rotate-ccw" class="icon-sm"></i>
+                        </button>
                       </div>
                     </div>
                     <div class="publication-pdfjs-status" data-pdf-status><?php esc_html_e('Memuat PDF...', 'yiari'); ?></div>
