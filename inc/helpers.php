@@ -62,6 +62,42 @@ function yiari_render_detail_landscape_update_card(int $post_id): string {
     return trim((string) ob_get_clean());
 }
 
+function yiari_render_program_child_update_card(int $post_id): string {
+    $title = get_the_title($post_id);
+    $permalink = get_permalink($post_id) ?: '#';
+    $image = get_the_post_thumbnail_url($post_id, 'card-thumb') ?: (get_template_directory_uri() . '/assets/img/hero-section.jpg');
+    $excerpt = has_excerpt($post_id)
+        ? get_the_excerpt($post_id)
+        : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $post_id)), 22, '…');
+    $author = get_the_author_meta('display_name', (int) get_post_field('post_author', $post_id));
+    $date = get_the_date('j F Y', $post_id);
+
+    ob_start();
+    ?>
+    <article class="program-child-update-card">
+      <a href="<?php echo esc_url($permalink); ?>" class="program-child-update-image-wrap" aria-label="<?php echo esc_attr($title); ?>">
+        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" class="program-child-update-image" />
+      </a>
+      <div class="program-child-update-body">
+        <h3 class="program-child-update-title">
+          <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($title); ?></a>
+        </h3>
+        <div class="program-child-update-meta">
+          <span><?php echo esc_html($date); ?></span>
+          <?php if ($author !== ''): ?>
+            <span class="program-child-update-meta-sep">&bull;</span>
+            <span><?php echo esc_html($author); ?></span>
+          <?php endif; ?>
+        </div>
+        <p class="program-child-update-excerpt"><?php echo esc_html($excerpt); ?></p>
+        <a href="<?php echo esc_url($permalink); ?>" class="link-more"><?php echo esc_html__('Lihat Selengkapnya', 'yiari'); ?> <i data-lucide="arrow-right" class="icon-sm"></i></a>
+      </div>
+    </article>
+    <?php
+
+    return trim((string) ob_get_clean());
+}
+
 function yiari_get_publication_card_classes(string $variant = 'book'): array {
     $variant = $variant === 'education' ? 'education' : 'book';
 
