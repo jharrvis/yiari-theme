@@ -314,6 +314,42 @@ add_action('acf/init', function () {
     ]);
 
     acf_add_local_field_group([
+        'key' => 'group_blog_page',
+        'title' => __('Blog - Sections', 'yiari'),
+        'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/blog.php']]],
+        'menu_order' => 12,
+        'fields' => [
+            ['key' => 'field_blog_hero_tab', 'label' => __('Hero', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_blog_hero_image', 'label' => __('Gambar Hero', 'yiari'), 'name' => 'blog_hero_image', 'type' => 'image', 'return_format' => 'array'],
+            ['key' => 'field_blog_hero_title', 'label' => __('Judul Hero', 'yiari'), 'name' => 'blog_hero_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __("Cerita dan Wawasan\nDari Lapangan", 'yiari')],
+            ['key' => 'field_blog_hero_text', 'label' => __('Teks Hero', 'yiari'), 'name' => 'blog_hero_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Kumpulan cerita, pembaruan lapangan, dan perspektif dari kerja konservasi YIARI di berbagai wilayah Indonesia.', 'yiari')],
+            ['key' => 'field_blog_hero_btn_text', 'label' => __('Teks Tombol Hero', 'yiari'), 'name' => 'blog_hero_btn_text', 'type' => 'text', 'default_value' => __('Lihat Artikel', 'yiari')],
+            ['key' => 'field_blog_hero_btn_url', 'label' => __('URL Tombol Hero', 'yiari'), 'name' => 'blog_hero_btn_url', 'type' => 'url'],
+
+            ['key' => 'field_blog_query_tab', 'label' => __('Konten Artikel', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_blog_category', 'label' => __('Kategori Artikel', 'yiari'), 'name' => 'blog_category', 'type' => 'taxonomy', 'taxonomy' => 'category', 'field_type' => 'select', 'return_format' => 'id', 'allow_null' => 1, 'add_term' => 0, 'save_terms' => 0, 'load_terms' => 0],
+            ['key' => 'field_blog_featured_label', 'label' => __('Label Artikel Unggulan', 'yiari'), 'name' => 'blog_featured_label', 'type' => 'text', 'default_value' => __('ARTIKEL UNGGULAN', 'yiari')],
+            ['key' => 'field_blog_featured_title', 'label' => __('Judul Artikel Unggulan', 'yiari'), 'name' => 'blog_featured_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Sorotan Cerita Terbaru', 'yiari')],
+            ['key' => 'field_blog_featured_desc', 'label' => __('Deskripsi Artikel Unggulan', 'yiari'), 'name' => 'blog_featured_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Temukan cerita terbaru, pembelajaran lapangan, dan kabar dari kerja konservasi kami.', 'yiari')],
+            ['key' => 'field_blog_archive_label', 'label' => __('Label Semua Artikel', 'yiari'), 'name' => 'blog_archive_label', 'type' => 'text', 'default_value' => __('SEMUA ARTIKEL', 'yiari')],
+            ['key' => 'field_blog_archive_title', 'label' => __('Judul Semua Artikel', 'yiari'), 'name' => 'blog_archive_title', 'type' => 'textarea', 'rows' => 2, 'default_value' => __('Jelajahi Semua Cerita', 'yiari')],
+            ['key' => 'field_blog_archive_desc', 'label' => __('Deskripsi Semua Artikel', 'yiari'), 'name' => 'blog_archive_desc', 'type' => 'textarea', 'rows' => 3, 'default_value' => __('Artikel, pembaruan, dan cerita dari lapangan yang mendokumentasikan kerja konservasi YIARI.', 'yiari')],
+            ['key' => 'field_blog_archive_count', 'label' => __('Jumlah Artikel Awal', 'yiari'), 'name' => 'blog_archive_count', 'type' => 'number', 'default_value' => 9, 'min' => 3, 'max' => 18, 'step' => 1],
+            ['key' => 'field_blog_load_more_text', 'label' => __('Teks Tombol Muat Lebih Banyak', 'yiari'), 'name' => 'blog_load_more_text', 'type' => 'text', 'default_value' => __('Muat Lebih Banyak', 'yiari')],
+
+            ['key' => 'field_blog_cta_tab', 'label' => __('CTA Bawah', 'yiari'), 'name' => '', 'type' => 'tab', 'placement' => 'top'],
+            ['key' => 'field_blog_cta_label', 'label' => __('Label CTA', 'yiari'), 'name' => 'blog_cta_label', 'type' => 'text', 'default_value' => __('DUKUNGAN ANDA', 'yiari')],
+            ['key' => 'field_blog_cta_title', 'label' => __('Judul CTA', 'yiari'), 'name' => 'blog_cta_title', 'type' => 'textarea', 'rows' => 3, 'default_value' => __("Bantu Cerita Konservasi\nMenjangkau Lebih Banyak\nOrang", 'yiari')],
+            ['key' => 'field_blog_cta_text', 'label' => __('Teks CTA', 'yiari'), 'name' => 'blog_cta_text', 'type' => 'textarea', 'rows' => 4, 'default_value' => __('Dukungan Anda membantu YIARI membagikan lebih banyak cerita, pembelajaran, dan pengetahuan dari lapangan kepada publik yang lebih luas.', 'yiari')],
+            ['key' => 'field_blog_cta_btn1_text', 'label' => __('Tombol 1 - Teks', 'yiari'), 'name' => 'blog_cta_btn1_text', 'type' => 'text', 'default_value' => __('Donasi Sekarang', 'yiari')],
+            ['key' => 'field_blog_cta_btn1_url', 'label' => __('Tombol 1 - URL', 'yiari'), 'name' => 'blog_cta_btn1_url', 'type' => 'url'],
+            ['key' => 'field_blog_cta_btn2_text', 'label' => __('Tombol 2 - Teks', 'yiari'), 'name' => 'blog_cta_btn2_text', 'type' => 'text', 'default_value' => __('Gabung Bersama YIARI', 'yiari')],
+            ['key' => 'field_blog_cta_btn2_url', 'label' => __('Tombol 2 - URL', 'yiari'), 'name' => 'blog_cta_btn2_url', 'type' => 'url'],
+            ['key' => 'field_blog_cta_image', 'label' => __('Gambar CTA', 'yiari'), 'name' => 'blog_cta_image', 'type' => 'image', 'return_format' => 'array'],
+        ],
+    ]);
+
+    acf_add_local_field_group([
         'key' => 'group_donation_page',
         'title' => __('Donasi - Sections', 'yiari'),
         'location' => [[['param' => 'page_template', 'operator' => '==', 'value' => 'templates/donasi.php']]],

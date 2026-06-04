@@ -103,6 +103,7 @@ add_filter('theme_page_templates', function (array $templates): array {
     $templates['templates/jurnal.php'] = __('Jurnal', 'yiari');
     $templates['templates/buku.php'] = __('Buku', 'yiari');
     $templates['templates/materi-edukasi.php'] = __('Materi Edukasi', 'yiari');
+    $templates['templates/blog.php'] = __('Blog', 'yiari');
 
     return $templates;
 });
@@ -216,6 +217,11 @@ function yiari_handle_load_more_updates(): void {
     $category_id = isset($_POST['category_id']) ? (int) $_POST['category_id'] : 0;
     $page = isset($_POST['page']) ? max(1, (int) $_POST['page']) : 1;
     $count = isset($_POST['count']) ? max(1, min(12, (int) $_POST['count'])) : 9;
+    $exclude_ids_raw = isset($_POST['exclude_ids']) ? wp_unslash($_POST['exclude_ids']) : [];
+    if (!is_array($exclude_ids_raw)) {
+        $exclude_ids_raw = [$exclude_ids_raw];
+    }
+    $exclude_ids = array_values(array_filter(array_map('intval', $exclude_ids_raw)));
 
     $query_args = [
         'post_type' => 'post',
@@ -226,6 +232,10 @@ function yiari_handle_load_more_updates(): void {
         'orderby' => 'date',
         'order' => 'DESC',
     ];
+
+    if (!empty($exclude_ids)) {
+        $query_args['post__not_in'] = $exclude_ids;
+    }
 
     if ($category_id > 0) {
         $query_args['cat'] = $category_id;
