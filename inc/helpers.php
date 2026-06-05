@@ -279,6 +279,20 @@ function yiari_translate_post_id(int $post_id): int {
     return $post_id;
 }
 
+function yiari_post_is_english(int $post_id = 0): bool {
+    if ($post_id > 0 && function_exists('pll_get_post_language')) {
+        $lang = (string) pll_get_post_language($post_id, 'slug');
+        return strpos($lang, 'en') === 0;
+    }
+
+    if (function_exists('pll_current_language')) {
+        $lang = (string) pll_current_language('slug');
+        return strpos($lang, 'en') === 0;
+    }
+
+    return false;
+}
+
 function yiari_get_page_url_by_template(string $template, string $fallback = ''): string {
     $pages = get_posts([
         'post_type' => 'page',

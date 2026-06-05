@@ -11,6 +11,7 @@ get_template_part('template-parts/global/header');
 
 $theme_uri = get_template_directory_uri();
 $page_id = get_queried_object_id();
+$is_english = yiari_post_is_english($page_id);
 
 $legacy_title = trim((string) get_post_meta($page_id, 'program_title', true));
 $legacy_description = trim((string) get_post_meta($page_id, 'diskripsi', true));
@@ -37,23 +38,27 @@ $hero_image = has_post_thumbnail($page_id)
     ]
     : yiari_field('program_child_hero_image', ['url' => $theme_uri . '/assets/img/hero-section.jpg']);
 $hero_title = yiari_field('program_child_hero_title', $legacy_title !== '' ? $legacy_title : get_the_title($page_id));
-$hero_text = yiari_field('program_child_hero_text', $legacy_description !== '' ? $legacy_description : __('Ikuti berbagai cerita, kegiatan, dan perkembangan terbaru dari program yang sedang berjalan di lapangan.', 'yiari'));
-$hero_btn1_text = yiari_field('program_child_hero_btn1_text', __('Lihat Fokus Program', 'yiari'));
+$hero_text = yiari_field('program_child_hero_text', $legacy_description !== '' ? $legacy_description : ($is_english
+    ? __('Follow stories, activities, and the latest field updates from this program.', 'yiari')
+    : __('Ikuti berbagai cerita, kegiatan, dan perkembangan terbaru dari program yang sedang berjalan di lapangan.', 'yiari')));
+$hero_btn1_text = yiari_field('program_child_hero_btn1_text', $is_english ? __('View Program Focus', 'yiari') : __('Lihat Fokus Program', 'yiari'));
 $hero_btn1_raw = trim((string) yiari_field('program_child_hero_btn1_url', $default_focus_url));
 $hero_btn1_url = $hero_btn1_raw !== '' && str_starts_with($hero_btn1_raw, '#')
     ? $hero_btn1_raw
     : yiari_localize_url($hero_btn1_raw !== '' ? $hero_btn1_raw : $default_focus_url);
-$hero_btn2_text = yiari_field('program_child_hero_btn2_text', __('Pelajari Lebih Lanjut', 'yiari'));
+$hero_btn2_text = yiari_field('program_child_hero_btn2_text', $is_english ? __('Learn More', 'yiari') : __('Pelajari Lebih Lanjut', 'yiari'));
 $hero_btn2_raw = trim((string) yiari_field('program_child_hero_btn2_url', '#program-updates'));
 $hero_btn2_url = $hero_btn2_raw !== '' && str_starts_with($hero_btn2_raw, '#')
     ? $hero_btn2_raw
     : yiari_localize_url($hero_btn2_raw !== '' ? $hero_btn2_raw : '#program-updates');
 
-$updates_label = yiari_field('program_child_updates_label', __('SOROTAN LAPANGAN', 'yiari'));
-$updates_title = yiari_field('program_child_updates_title', __("Cerita dan\nPerkembangan\nTerbaru", 'yiari'));
-$updates_desc = yiari_field('program_child_updates_desc', __('Ikuti berbagai cerita, kegiatan, dan perkembangan terbaru dari program yang sedang berjalan di lapangan.', 'yiari'));
+$updates_label = yiari_field('program_child_updates_label', $is_english ? __('FIELD HIGHLIGHTS', 'yiari') : __('SOROTAN LAPANGAN', 'yiari'));
+$updates_title = yiari_field('program_child_updates_title', $is_english ? __("Stories and\nLatest\nUpdates", 'yiari') : __("Cerita dan\nPerkembangan\nTerbaru", 'yiari'));
+$updates_desc = yiari_field('program_child_updates_desc', $is_english
+    ? __('Follow stories, activities, and the latest updates from the program in the field.', 'yiari')
+    : __('Ikuti berbagai cerita, kegiatan, dan perkembangan terbaru dari program yang sedang berjalan di lapangan.', 'yiari'));
 $updates_count = max(3, min(18, (int) yiari_field('program_child_updates_count', 9)));
-$load_more_text = yiari_field('program_child_load_more_text', __('Muat Lebih Banyak', 'yiari'));
+$load_more_text = yiari_field('program_child_load_more_text', $is_english ? __('Load More', 'yiari') : __('Muat Lebih Banyak', 'yiari'));
 
 $updates_query_args = [
     'post_type' => 'post',
@@ -186,7 +191,7 @@ wp_reset_postdata();
         <p class="program-child-updates-error" x-show="error" x-text="error" x-cloak></p>
       <?php else: ?>
         <div class="program-child-updates-empty">
-          <p class="program-child-updates-empty-text"><?php esc_html_e('Belum ada cerita yang tersedia untuk program ini.', 'yiari'); ?></p>
+          <p class="program-child-updates-empty-text"><?php echo esc_html($is_english ? __('No stories are available for this program yet.', 'yiari') : __('Belum ada cerita yang tersedia untuk program ini.', 'yiari')); ?></p>
         </div>
       <?php endif; ?>
     </div>

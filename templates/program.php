@@ -11,6 +11,7 @@ get_template_part('template-parts/global/header');
 
 $theme_uri = get_template_directory_uri();
 $page_id = get_queried_object_id();
+$is_english = yiari_post_is_english($page_id);
 
 $legacy_program_title = trim((string) get_post_meta($page_id, 'program_title', true));
 $legacy_program_description = trim((string) get_post_meta($page_id, 'diskripsi', true));
@@ -34,37 +35,44 @@ $hero_image = has_post_thumbnail($page_id)
         'alt' => get_the_title($page_id),
     ]
     : yiari_field('program_hero_image', ['url' => $theme_uri . '/assets/img/hero-section.jpg']);
-$hero_title = yiari_field('program_hero_title', $legacy_primary_title !== '' ? $legacy_primary_title : (get_the_title($page_id) ?: __("Melindungi dan Mengembalikan Satwa\nLiar ke Habitatnya", 'yiari')));
-$hero_text = yiari_field('program_hero_text', $legacy_primary_description !== '' ? $legacy_primary_description : __('Dari penyelamatan darurat hingga rehabilitasi intensif, kami memastikan setiap satwa mendapatkan perawatan terbaik dan kesempatan kedua untuk hidup bebas di alam liar.', 'yiari'));
+$hero_title = yiari_field('program_hero_title', $legacy_primary_title !== '' ? $legacy_primary_title : (get_the_title($page_id) ?: ($is_english ? __("Protecting and Returning\nWildlife to Their Habitat", 'yiari') : __("Melindungi dan Mengembalikan Satwa\nLiar ke Habitatnya", 'yiari'))));
+$hero_text = yiari_field('program_hero_text', $legacy_primary_description !== '' ? $legacy_primary_description : ($is_english ? __('From emergency rescue to intensive rehabilitation, we ensure every animal gets the best care and a second chance to live freely in the wild.', 'yiari') : __('Dari penyelamatan darurat hingga rehabilitasi intensif, kami memastikan setiap satwa mendapatkan perawatan terbaik dan kesempatan kedua untuk hidup bebas di alam liar.', 'yiari')));
 $hero_btn1_raw = trim((string) yiari_field('program_hero_btn_url', '#program-focus'));
-$hero_btn1_text = yiari_field('program_hero_btn_text', __('Lihat Fokus Program', 'yiari'));
+$hero_btn1_text = yiari_field('program_hero_btn_text', $is_english ? __('View Program Focus', 'yiari') : __('Lihat Fokus Program', 'yiari'));
 $hero_btn1_url = $hero_btn1_raw !== '' && str_starts_with($hero_btn1_raw, '#')
     ? $hero_btn1_raw
     : yiari_localize_url($hero_btn1_raw !== '' ? $hero_btn1_raw : '#program-focus');
 $hero_btn2_raw = trim((string) yiari_field('program_hero_btn2_url', '#program-action'));
-$hero_btn2_text = yiari_field('program_hero_btn2_text', __('Pelajari Lebih Lanjut', 'yiari'));
+$hero_btn2_text = yiari_field('program_hero_btn2_text', $is_english ? __('Learn More', 'yiari') : __('Pelajari Lebih Lanjut', 'yiari'));
 $hero_btn2_url = $hero_btn2_raw !== '' && str_starts_with($hero_btn2_raw, '#')
     ? $hero_btn2_raw
     : yiari_localize_url($hero_btn2_raw !== '' ? $hero_btn2_raw : '#program-action');
 
-$action_label = yiari_field('program_main_label', __('KRISIS EKOSISTEM', 'yiari'));
-$action_title = yiari_field('program_main_title', $legacy_primary_title !== '' ? $legacy_primary_title : __("Kenapa Ini Penting dan\nBagaimana Kami\nBertindak", 'yiari'));
-$action_desc = yiari_field('program_main_desc', $legacy_primary_description !== '' ? $legacy_primary_description : __('Perdagangan ilegal, konflik manusia-satwa, dan kerusakan habitat terus mengancam kehidupan satwa liar. Melalui penyelamatan, rehabilitasi, hingga pelepasliaran, kami membantu mereka mendapatkan kesempatan hidup yang lebih aman di alam.', 'yiari'));
+$action_label = yiari_field('program_main_label', $is_english ? __('ECOSYSTEM CRISIS', 'yiari') : __('KRISIS EKOSISTEM', 'yiari'));
+$action_title = yiari_field('program_main_title', $legacy_primary_title !== '' ? $legacy_primary_title : ($is_english ? __("Why This Matters and\nHow We\nTake Action", 'yiari') : __("Kenapa Ini Penting dan\nBagaimana Kami\nBertindak", 'yiari')));
+$action_desc = yiari_field('program_main_desc', $legacy_primary_description !== '' ? $legacy_primary_description : ($is_english ? __('Illegal trade, human-wildlife conflict, and habitat degradation continue to threaten wildlife. Through rescue, rehabilitation, and release, we help give them a safer future in the wild.', 'yiari') : __('Perdagangan ilegal, konflik manusia-satwa, dan kerusakan habitat terus mengancam kehidupan satwa liar. Melalui penyelamatan, rehabilitasi, hingga pelepasliaran, kami membantu mereka mendapatkan kesempatan hidup yang lebih aman di alam.', 'yiari')));
 $action_image = yiari_field('program_main_image_main', ['url' => $theme_uri . '/assets/img/konservasi.png', 'alt' => __('Kenapa ini penting', 'yiari')]);
 $action_image = !empty($action_image['url']) ? $action_image : $hero_image;
 $action_items = yiari_field('program_main_items', []);
 if (empty($action_items) || !is_array($action_items)) {
-    $action_items = [
-        ['title' => __('Penyelamatan', 'yiari'), 'details' => __('Tim kami bergerak cepat menyelamatkan satwa liar dari perdagangan ilegal, jerat, dan situasi berbahaya lainnya.', 'yiari')],
-        ['title' => __('Rehabilitasi', 'yiari'), 'details' => __('Satwa mendapatkan perawatan medis dan pelatihan agar siap kembali hidup mandiri di alam liar.', 'yiari')],
-        ['title' => __('Pelepasliaran', 'yiari'), 'details' => __('Setelah pulih, satwa dilepaskan kembali ke habitat alaminya yang aman dan terlindungi.', 'yiari')],
-        ['title' => __('Pemantauan', 'yiari'), 'details' => __('Tim terus memantau perkembangan satwa untuk memastikan mereka dapat beradaptasi dengan baik di alam liar.', 'yiari')],
-    ];
+    $action_items = $is_english
+        ? [
+            ['title' => __('Rescue', 'yiari'), 'details' => __('Our team moves quickly to rescue wildlife from illegal trade, snares, and other dangerous situations.', 'yiari')],
+            ['title' => __('Rehabilitation', 'yiari'), 'details' => __('Animals receive medical care and training to prepare them for an independent life back in the wild.', 'yiari')],
+            ['title' => __('Release', 'yiari'), 'details' => __('Once recovered, the animals are returned to safe and protected natural habitats.', 'yiari')],
+            ['title' => __('Monitoring', 'yiari'), 'details' => __('The team continues monitoring to ensure the animals adapt well after release.', 'yiari')],
+        ]
+        : [
+            ['title' => __('Penyelamatan', 'yiari'), 'details' => __('Tim kami bergerak cepat menyelamatkan satwa liar dari perdagangan ilegal, jerat, dan situasi berbahaya lainnya.', 'yiari')],
+            ['title' => __('Rehabilitasi', 'yiari'), 'details' => __('Satwa mendapatkan perawatan medis dan pelatihan agar siap kembali hidup mandiri di alam liar.', 'yiari')],
+            ['title' => __('Pelepasliaran', 'yiari'), 'details' => __('Setelah pulih, satwa dilepaskan kembali ke habitat alaminya yang aman dan terlindungi.', 'yiari')],
+            ['title' => __('Pemantauan', 'yiari'), 'details' => __('Tim terus memantau perkembangan satwa untuk memastikan mereka dapat beradaptasi dengan baik di alam liar.', 'yiari')],
+        ];
 }
 
-$stats_label = yiari_field('program_stats_label', __('DATA & BUKTI', 'yiari'));
-$stats_title = yiari_field('program_stats_title', __('Dampak yang Terukur', 'yiari'));
-$stats_desc = yiari_field('program_stats_desc', __('Setiap angka di bawah ini mewakili satwa yang diselamatkan, kehidupan yang diselamatkan, dan ekosistem yang dilindungi.', 'yiari'));
+$stats_label = yiari_field('program_stats_label', $is_english ? __('DATA & EVIDENCE', 'yiari') : __('DATA & BUKTI', 'yiari'));
+$stats_title = yiari_field('program_stats_title', $is_english ? __('Measured Impact', 'yiari') : __('Dampak yang Terukur', 'yiari'));
+$stats_desc = yiari_field('program_stats_desc', $is_english ? __('Each number below represents animals saved, lives protected, and ecosystems safeguarded.', 'yiari') : __('Setiap angka di bawah ini mewakili satwa yang diselamatkan, kehidupan yang diselamatkan, dan ekosistem yang dilindungi.', 'yiari'));
 $stats_items = yiari_field('program_stats_items', []);
 if ((empty($stats_items) || !is_array($stats_items)) && $legacy_stats_count > 0) {
     $stats_items = [];
@@ -87,21 +95,36 @@ if ((empty($stats_items) || !is_array($stats_items)) && $legacy_stats_count > 0)
     }
 }
 if (empty($stats_items) || !is_array($stats_items)) {
-    $stats_items = [
-        ['number' => 264, 'suffix' => '', 'label' => __('Orang Utan Diselamatkan', 'yiari'), 'icon' => 'paw-print'],
-        ['number' => 1302, 'suffix' => '', 'label' => __('Kukang Diselamatkan', 'yiari'), 'icon' => 'badge-check'],
-        ['number' => 269, 'suffix' => '', 'label' => __('Monyet Diselamatkan', 'yiari'), 'icon' => 'shield-check'],
-        ['number' => 1082, 'suffix' => '', 'label' => __('Satwa Lain Diselamatkan', 'yiari'), 'icon' => 'heart-pulse'],
-        ['number' => 22, 'suffix' => '', 'label' => __('Lokasi Pemantauan', 'yiari'), 'icon' => 'map-pinned'],
-    ];
+    $stats_items = $is_english
+        ? [
+            ['number' => 264, 'suffix' => '', 'label' => __('Orangutans Rescued', 'yiari'), 'icon' => 'paw-print'],
+            ['number' => 1302, 'suffix' => '', 'label' => __('Slow Lorises Rescued', 'yiari'), 'icon' => 'badge-check'],
+            ['number' => 269, 'suffix' => '', 'label' => __('Macaques Rescued', 'yiari'), 'icon' => 'shield-check'],
+            ['number' => 1082, 'suffix' => '', 'label' => __('Other Wildlife Rescued', 'yiari'), 'icon' => 'heart-pulse'],
+            ['number' => 22, 'suffix' => '', 'label' => __('Monitoring Locations', 'yiari'), 'icon' => 'map-pinned'],
+        ]
+        : [
+            ['number' => 264, 'suffix' => '', 'label' => __('Orang Utan Diselamatkan', 'yiari'), 'icon' => 'paw-print'],
+            ['number' => 1302, 'suffix' => '', 'label' => __('Kukang Diselamatkan', 'yiari'), 'icon' => 'badge-check'],
+            ['number' => 269, 'suffix' => '', 'label' => __('Monyet Diselamatkan', 'yiari'), 'icon' => 'shield-check'],
+            ['number' => 1082, 'suffix' => '', 'label' => __('Satwa Lain Diselamatkan', 'yiari'), 'icon' => 'heart-pulse'],
+            ['number' => 22, 'suffix' => '', 'label' => __('Lokasi Pemantauan', 'yiari'), 'icon' => 'map-pinned'],
+        ];
 }
+$stats_icons = [
+    'icon-satwa.svg',
+    'icon-restorasi.svg',
+    'icon-pelatihan.svg',
+    'icon-kelompok.svg',
+    'Icon-penyuluhan.svg',
+];
 
-$story_label = yiari_field('program_story_label', __('DARI LAPANGAN', 'yiari'));
-$story_title = yiari_field('program_story_title', __("Pulih Pasca Kena\nJeratan, Orangutan Siap\nKembali ke Habitatnya", 'yiari'));
-$story_desc = yiari_field('program_story_desc', __('Setelah ditemukan terluka akibat jerat, orangutan ini menjalani perawatan intensif bersama tim YIARI hingga akhirnya dapat kembali hidup di alam liar.', 'yiari'));
-$story_btn1_text = yiari_field('program_story_btn1_text', __('Baca Selengkapnya', 'yiari'));
+$story_label = yiari_field('program_story_label', $is_english ? __('FROM THE FIELD', 'yiari') : __('DARI LAPANGAN', 'yiari'));
+$story_title = yiari_field('program_story_title', $is_english ? __("Recovered from a\nSnare, an Orangutan Is\nReady to Return Home", 'yiari') : __("Pulih Pasca Kena\nJeratan, Orangutan Siap\nKembali ke Habitatnya", 'yiari'));
+$story_desc = yiari_field('program_story_desc', $is_english ? __('After being found injured by a snare, this orangutan underwent intensive care with the YIARI team before finally returning to the wild.', 'yiari') : __('Setelah ditemukan terluka akibat jerat, orangutan ini menjalani perawatan intensif bersama tim YIARI hingga akhirnya dapat kembali hidup di alam liar.', 'yiari'));
+$story_btn1_text = yiari_field('program_story_btn1_text', $is_english ? __('Read More', 'yiari') : __('Baca Selengkapnya', 'yiari'));
 $story_btn1_url = yiari_localize_url((string) yiari_field('program_story_btn1_url', yiari_get_posts_page_url('#')));
-$story_btn2_text = yiari_field('program_story_btn2_text', __('Donasi Sekarang', 'yiari'));
+$story_btn2_text = yiari_field('program_story_btn2_text', $is_english ? __('Donate Now', 'yiari') : __('Donasi Sekarang', 'yiari'));
 $story_btn2_url = yiari_localize_url((string) yiari_field('program_story_btn2_url', yiari_get_page_url_by_template('templates/donasi.php', yiari_home_url())));
 $story_image = yiari_field('program_story_image');
 $story_gallery = yiari_field('program_story_gallery', []);
@@ -166,9 +189,9 @@ if (empty($story_slides)) {
 $story_slides = array_values(array_filter($story_slides, static fn($slide) => !empty($slide['url'])));
 $story_slide_count = count($story_slides);
 
-$focus_label = yiari_field('program_focus_label', __('FOKUS PROGRAM', 'yiari'));
-$focus_title = yiari_field('program_focus_title', __("Area Fokus Program\nKami", 'yiari'));
-$focus_desc = yiari_field('program_focus_desc', __('Setiap program memiliki fokus dan tantangan yang berbeda, mulai dari perlindungan satwa hingga pemberdayaan masyarakat dan pelestarian habitat.', 'yiari'));
+$focus_label = yiari_field('program_focus_label', $is_english ? __('PROGRAM FOCUS', 'yiari') : __('FOKUS PROGRAM', 'yiari'));
+$focus_title = yiari_field('program_focus_title', $is_english ? __("Our Program\nFocus Areas", 'yiari') : __("Area Fokus Program\nKami", 'yiari'));
+$focus_desc = yiari_field('program_focus_desc', $is_english ? __('Each program has different priorities and challenges, from wildlife protection to community empowerment and habitat conservation.', 'yiari') : __('Setiap program memiliki fokus dan tantangan yang berbeda, mulai dari perlindungan satwa hingga pemberdayaan masyarakat dan pelestarian habitat.', 'yiari'));
 $focus_items = yiari_field('program_focus_items', []);
 if ((empty($focus_items) || !is_array($focus_items)) && $legacy_program_count > 0) {
     $focus_items = [];
@@ -189,7 +212,7 @@ if ((empty($focus_items) || !is_array($focus_items)) && $legacy_program_count > 
         $focus_items[] = [
             'title' => $title,
             'text' => wp_strip_all_tags($text),
-            'link_text' => __('Lihat Selengkapnya', 'yiari'),
+            'link_text' => $is_english ? __('View More', 'yiari') : __('Lihat Selengkapnya', 'yiari'),
             'link_url' => $link_url ?: yiari_get_program_url(),
             'image' => [
                 'url' => $image_url ?: ($theme_uri . '/assets/img/konservasi.png'),
@@ -199,20 +222,27 @@ if ((empty($focus_items) || !is_array($focus_items)) && $legacy_program_count > 
     }
 }
 if (empty($focus_items) || !is_array($focus_items)) {
-    $focus_items = [
-        ['title' => __('Orang Utan', 'yiari'), 'text' => __('Penyelamatan, rehabilitasi, dan pelepasliaran orangutan yang terancam akibat perburuan dan perdagangan ilegal.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/konservasi.png', 'alt' => __('Orang Utan', 'yiari')]],
-        ['title' => __('Kukang', 'yiari'), 'text' => __('Perlindungan dan rehabilitasi kukang dari ancaman perburuan, perdagangan ilegal, dan kehilangan habitat.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar4.jpg', 'alt' => __('Kukang', 'yiari')]],
-        ['title' => __('Macaca', 'yiari'), 'text' => __('Penanganan konflik manusia dan monyet ekor panjang melalui pendekatan konservasi dan edukasi masyarakat.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar1.png', 'alt' => __('Macaca', 'yiari')]],
-        ['title' => __('Satwa Lainnya', 'yiari'), 'text' => __('Penyelamatan dan perawatan satwa liar korban perburuan, perdagangan ilegal, dan konflik dengan manusia.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar3.png', 'alt' => __('Satwa Lainnya', 'yiari')]],
-    ];
+    $focus_items = $is_english
+        ? [
+            ['title' => __('Orangutan', 'yiari'), 'text' => __('Rescue, rehabilitation, and release of orangutans threatened by hunting and illegal trade.', 'yiari'), 'link_text' => __('View More', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/konservasi.png', 'alt' => __('Orangutan', 'yiari')]],
+            ['title' => __('Slow Loris', 'yiari'), 'text' => __('Protection and rehabilitation of slow lorises from hunting, illegal trade, and habitat loss.', 'yiari'), 'link_text' => __('View More', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar4.jpg', 'alt' => __('Slow Loris', 'yiari')]],
+            ['title' => __('Macaque', 'yiari'), 'text' => __('Managing human and long-tailed macaque conflict through conservation and community education.', 'yiari'), 'link_text' => __('View More', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar1.png', 'alt' => __('Macaque', 'yiari')]],
+            ['title' => __('Other Wildlife', 'yiari'), 'text' => __('Rescue and care for wildlife affected by hunting, illegal trade, and conflict with humans.', 'yiari'), 'link_text' => __('View More', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar3.png', 'alt' => __('Other Wildlife', 'yiari')]],
+        ]
+        : [
+            ['title' => __('Orang Utan', 'yiari'), 'text' => __('Penyelamatan, rehabilitasi, dan pelepasliaran orangutan yang terancam akibat perburuan dan perdagangan ilegal.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/konservasi.png', 'alt' => __('Orang Utan', 'yiari')]],
+            ['title' => __('Kukang', 'yiari'), 'text' => __('Perlindungan dan rehabilitasi kukang dari ancaman perburuan, perdagangan ilegal, dan kehilangan habitat.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar4.jpg', 'alt' => __('Kukang', 'yiari')]],
+            ['title' => __('Macaca', 'yiari'), 'text' => __('Penanganan konflik manusia dan monyet ekor panjang melalui pendekatan konservasi dan edukasi masyarakat.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar1.png', 'alt' => __('Macaca', 'yiari')]],
+            ['title' => __('Satwa Lainnya', 'yiari'), 'text' => __('Penyelamatan dan perawatan satwa liar korban perburuan, perdagangan ilegal, dan konflik dengan manusia.', 'yiari'), 'link_text' => __('Lihat Selengkapnya', 'yiari'), 'link_url' => yiari_get_program_url(), 'image' => ['url' => $theme_uri . '/assets/img/gambar3.png', 'alt' => __('Satwa Lainnya', 'yiari')]],
+        ];
 }
 
-$cta_label = yiari_field('program_cta_label', __('DUKUNGAN ANDA', 'yiari'));
-$cta_title = yiari_field('program_cta_title', __("Bersama Kita Bisa\nMenjaga Alam Tetap\nHidup", 'yiari'));
-$cta_text = yiari_field('program_cta_text', __('Setiap dukungan membantu melindungi satwa liar, memulihkan habitat, dan menciptakan masa depan yang lebih baik bagi alam dan masyarakat.', 'yiari'));
-$cta_btn1_text = yiari_field('program_cta_btn1_text', __('Donasi Sekarang', 'yiari'));
+$cta_label = yiari_field('program_cta_label', $is_english ? __('YOUR SUPPORT', 'yiari') : __('DUKUNGAN ANDA', 'yiari'));
+$cta_title = yiari_field('program_cta_title', $is_english ? __("Together We Can\nKeep Nature\nAlive", 'yiari') : __("Bersama Kita Bisa\nMenjaga Alam Tetap\nHidup", 'yiari'));
+$cta_text = yiari_field('program_cta_text', $is_english ? __('Every contribution helps protect wildlife, restore habitats, and create a better future for nature and communities.', 'yiari') : __('Setiap dukungan membantu melindungi satwa liar, memulihkan habitat, dan menciptakan masa depan yang lebih baik bagi alam dan masyarakat.', 'yiari'));
+$cta_btn1_text = yiari_field('program_cta_btn1_text', $is_english ? __('Donate Now', 'yiari') : __('Donasi Sekarang', 'yiari'));
 $cta_btn1_url = yiari_localize_url((string) yiari_field('program_cta_btn1_url', yiari_get_page_url_by_template('templates/donasi.php', yiari_home_url())));
-$cta_btn2_text = yiari_field('program_cta_btn2_text', __('Gabung Bersama YIARI', 'yiari'));
+$cta_btn2_text = yiari_field('program_cta_btn2_text', $is_english ? __('Join YIARI', 'yiari') : __('Gabung Bersama YIARI', 'yiari'));
 $cta_btn2_url = yiari_localize_url((string) yiari_field('program_cta_btn2_url', yiari_get_join_url()));
 $cta_image = yiari_field('program_cta_image', ['url' => $theme_uri . '/assets/img/gambar-cta.png', 'alt' => __('Dukung program konservasi YIARI', 'yiari')]);
 if ($story_query instanceof WP_Query) {
@@ -285,38 +315,75 @@ if ($story_query instanceof WP_Query) {
     </div>
   </section>
 
-  <section class="program-stats-section" id="program-stats">
-    <div class="container" x-data="{ statsActivePage: 0, statsPageCount: 1, statsItemsPerPage: 1, statsCanScroll: false, statsIsMobile: false }">
+  <section class="section-stats program-stats-section" id="program-stats">
+    <div class="container">
       <div class="stats-layout program-section-header">
-        <div class="stats-intro">
+        <div class="stats-intro fade-in">
           <?php yiari_section_label($stats_label, true); ?>
           <h2 class="section-heading section-heading-dark"><?php echo wp_kses_post(nl2br(esc_html($stats_title))); ?></h2>
         </div>
-        <div class="stats-desc">
+        <div class="stats-desc fade-in">
           <p class="section-description"><?php echo esc_html($stats_desc); ?></p>
+        </div>
+        <div class="stats-nav-tablet" x-show="statsCanScroll && !statsIsMobile" x-cloak>
+          <button
+            class="stats-arrow"
+            aria-label="<?php echo esc_attr__('Previous', 'yiari'); ?>"
+            type="button"
+            @click="scrollStats('prev')"
+            :disabled="!statsCanScroll || statsActivePage === 0"
+          >
+            <i data-lucide="chevron-left" class="icon-md"></i>
+          </button>
+          <button
+            class="stats-arrow"
+            aria-label="<?php echo esc_attr__('Next', 'yiari'); ?>"
+            type="button"
+            @click="scrollStats('next')"
+            :disabled="!statsCanScroll || statsActivePage >= statsPageCount - 1"
+          >
+            <i data-lucide="chevron-right" class="icon-md"></i>
+          </button>
         </div>
       </div>
 
-      <div class="program-stats-grid">
-        <?php foreach ($stats_items as $stat): ?>
+      <div class="stats-carousel fade-in">
+        <div class="stats-grid" x-ref="statsGrid" @scroll.passive="handleStatsScroll()">
+        <?php foreach ($stats_items as $index => $stat): ?>
           <?php
+          $icon = $stats_icons[$index % count($stats_icons)];
           $number = (int) ($stat['number'] ?? 0);
           $suffix = trim((string) ($stat['suffix'] ?? ''));
           $label = trim((string) ($stat['label'] ?? ''));
-          $icon = trim((string) ($stat['icon'] ?? 'badge-check'));
           ?>
-          <article class="program-stat-card">
-            <div class="program-stat-card-top">
-              <div class="program-stat-number">
-                <?php echo esc_html((string) $number); ?><?php if ($suffix !== ''): ?><span class="program-stat-suffix"><?php echo esc_html($suffix); ?></span><?php endif; ?>
+          <article class="stat-card">
+            <div class="stat-card-top">
+              <div class="stat-number" data-target="<?php echo esc_attr((string) $number); ?>" <?php if ($suffix !== ''): ?>data-suffix="<?php echo esc_attr($suffix); ?>"<?php endif; ?>>
+                <?php echo esc_html((string) $number); ?>
+                <?php if ($suffix !== ''): ?><span class="stat-plus"><?php echo esc_html($suffix); ?></span><?php endif; ?>
               </div>
-              <div class="program-stat-icon">
-                <i data-lucide="<?php echo esc_attr($icon !== '' ? $icon : 'badge-check'); ?>" class="icon-sm"></i>
+              <div class="stat-icon-wrap" aria-hidden="true">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/img/icons/' . $icon); ?>" alt="" class="stat-icon" loading="lazy" />
               </div>
             </div>
-            <div class="program-stat-label"><?php echo esc_html($label); ?></div>
+            <div class="stat-card-bottom">
+              <div class="stat-label"><?php echo wp_kses_post(nl2br(esc_html($label))); ?></div>
+            </div>
           </article>
         <?php endforeach; ?>
+        </div>
+        <div class="stats-indicators" x-show="statsCanScroll && statsIsMobile" x-cloak>
+          <template x-for="index in statsPageCount" :key="index">
+            <button
+              class="stats-indicator-btn"
+              :aria-label="`<?php echo esc_js(__('Go to slide', 'yiari')); ?> ${index}`"
+              type="button"
+              @click="scrollStatsToPage(index - 1)"
+            >
+              <span class="stats-indicator" :class="{ 'is-active': statsActivePage === (index - 1) }"></span>
+            </button>
+          </template>
+        </div>
       </div>
     </div>
   </section>
