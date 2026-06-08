@@ -467,6 +467,222 @@ document.addEventListener('alpine:init', () => {
       statNumbers.forEach((stat) => observer.observe(stat));
     }
   }));
+
+  Alpine.data('searchPage', (initialState = {}, filterGroups = []) => ({
+    query: initialState.query || '',
+    page: Number(initialState.page || 1),
+    total: Number(initialState.total || 0),
+    totalPages: Number(initialState.totalPages || 1),
+    filters: {
+      contentTypes: Array.isArray(initialState.filters?.contentTypes) ? [...initialState.filters.contentTypes] : [],
+      locations: Array.isArray(initialState.filters?.locations) ? initialState.filters.locations.map(String) : [],
+      programs: Array.isArray(initialState.filters?.programs) ? initialState.filters.programs.map(String) : [],
+    },
+    draftFilters: {
+      contentTypes: Array.isArray(initialState.filters?.contentTypes) ? [...initialState.filters.contentTypes] : [],
+      locations: Array.isArray(initialState.filters?.locations) ? initialState.filters.locations.map(String) : [],
+      programs: Array.isArray(initialState.filters?.programs) ? initialState.filters.programs.map(String) : [],
+    },
+    filterGroups,
+    filtersOpen: false,
+    loading: false,
+    abortController: null,
+    accordionOpen: {
+      contentTypes: true,
+      locations: false,
+      programs: false,
+    },
+
+    init() {
+      this.syncResultsHtml(initialState.html || '');
+      this.refreshIcons();
+    },
+
+    get resultLabel() {
+      const template = window.yiariSearchPage?.strings?.resultsLabel || 'Showing %d Results';
+      return template.replace('%d', String(this.total));
+    },
+
+    get pageItems() {
+      if (this.totalPages <= 1) {
+        return [];
+      }
+
+      const items = [];
+      const pages = new Set([1, this.totalPages, this.page - 1, this.page, this.page + 1]);
+      const visiblePages = Array.from(pages)
+        .filter((page) => page >= 1 && page <= this.totalPages)
+        .sort((left, right) => left - right);
+
+      visiblePages.forEach((value, index) => {
+        const previous = visiblePages[index - 1];
+        if (previous && value - previous > 1) {
+          items.push({ type: 'ellipsis', key: `ellipsis-${previous}-${value}` });
+        }
+
+        items.push({ type: 'page', value, key: `page-${value}` });
+      });
+
+      return items;
+    },
+
+    handleQueryInput() {
+      this.fetchResults(1);
+    },
+
+    handleQuerySubmit() {
+      this.fetchResults(1);
+    },
+
+    clearQuery() {
+      this.query = '';
+      this.fetchResults(1);
+    },
+
+    openFilters() {
+      this.filtersOpen = true;
+      document.documentElement.classList.add('search-modal-open');
+      document.body.classList.add('search-modal-open');
+    },
+
+    closeFilters() {
+      this.filtersOpen = false;
+      document.documentElement.classList.remove('search-modal-open');
+      document.body.classList.remove('search-modal-open');
+    },
+
+    toggleAccordion(key) {
+      this.accordionOpen[key] = !this.accordionOpen[key];
+    },
+
+    isAccordionOpen(key) {
+      return Boolean(this.accordionOpen[key]);
+    },
+
+    applyFilters() {
+      this.filters = {
+        contentTypes: [...this.draftFilters.contentTypes],
+        locations: [...this.draftFilters.locations],
+        programs: [...this.draftFilters.programs],
+      };
+
+      this.closeFilters();
+      this.fetchResults(1);
+    },
+
+    resetFilters() {
+      this.filters = { contentTypes: [], locations: [], programs: [] };
+      this.draftFilters = { contentTypes: [], locations: [], programs: [] };
+      this.closeFilters();
+      this.fetchResults(1);
+    },
+
+    goToPage(page) {
+      const nextPage = Number(page || 1);
+      if (nextPage < 1 || nextPage > this.totalPages || nextPage === this.page) {
+        return;
+      }
+
+      this.fetchResults(nextPage);
+    },
+
+    syncResultsHtml(html) {
+      if (this.$refs.resultsGrid) {
+        this.$refs.resultsGrid.innerHTML = html || '';
+      }
+
+      this.$nextTick(() => this.refreshIcons());
+    },
+
+    refreshIcons() {
+      if (window.lucide?.createIcons) {
+        window.lucide.createIcons();
+      }
+    },
+
+    updateUrl() {
+      const url = new URL(window.location.href);
+
+      if (this.query.trim() !== '') {
+        url.searchParams.set('s', this.query.trim());
+      } else {
+        url.searchParams.delete('s');
+      }
+
+      [
+        ['types', this.filters.contentTypes],
+        ['locations', this.filters.locations],
+        ['programs', this.filters.programs],
+      ].forEach(([key, values]) => {
+        if (values.length) {
+          url.searchParams.set(key, values.join(','));
+        } else {
+          url.searchParams.delete(key);
+        }
+      });
+
+      if (this.page > 1) {
+        url.searchParams.set('search_page', String(this.page));
+      } else {
+        url.searchParams.delete('search_page');
+      }
+
+      window.history.replaceState({}, '', url.toString());
+    },
+
+    async fetchResults(nextPage = 1) {
+      if (this.abortController) {
+        this.abortController.abort();
+      }
+
+      this.loading = true;
+      this.abortController = new AbortController();
+
+      const payload = new URLSearchParams({
+        action: 'yiari_search_results',
+        nonce: window.yiariSearchPage?.nonce || '',
+        s: this.query.trim(),
+        search_page: String(nextPage),
+      });
+
+      this.filters.contentTypes.forEach((value) => payload.append('types[]', value));
+      this.filters.locations.forEach((value) => payload.append('locations[]', value));
+      this.filters.programs.forEach((value) => payload.append('programs[]', value));
+
+      try {
+        const response = await fetch(window.yiariSearchPage?.ajaxUrl || '', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          },
+          body: payload.toString(),
+          signal: this.abortController.signal,
+        });
+
+        const data = await response.json();
+        if (!data?.success) {
+          throw new Error('Invalid response');
+        }
+
+        this.page = Number(data.data?.page || nextPage);
+        this.total = Number(data.data?.total || 0);
+        this.totalPages = Number(data.data?.totalPages || 1);
+        this.syncResultsHtml(data.data?.html || '');
+        this.updateUrl();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          this.page = 1;
+          this.total = 0;
+          this.totalPages = 1;
+          this.syncResultsHtml('');
+        }
+      } finally {
+        this.loading = false;
+        this.abortController = null;
+      }
+    },
+  }));
 });
 
 document.addEventListener('DOMContentLoaded', () => {

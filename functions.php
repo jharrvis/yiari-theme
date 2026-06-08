@@ -36,6 +36,7 @@ add_action('after_setup_theme', function () {
 add_action('wp_enqueue_scripts', function () {
     $ver = wp_get_theme()->get('Version');
     $dir = get_template_directory_uri();
+    $is_english = function_exists('pll_current_language') && strpos((string) pll_current_language('slug'), 'en') === 0;
 
     wp_enqueue_style('yiari-style', $dir . '/assets/css/styles.css', [], $ver);
 
@@ -69,6 +70,21 @@ add_action('wp_enqueue_scripts', function () {
         'strings' => [
             'loading' => __('Memuat...', 'yiari'),
             'error' => __('Gagal memuat publikasi berikutnya.', 'yiari'),
+        ],
+    ]);
+    wp_localize_script('yiari-main', 'yiariSearchPage', [
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('yiari_search_results'),
+        'strings' => [
+            'title' => $is_english ? 'Search Results' : 'Hasil Pencarian',
+            'resultsLabel' => $is_english ? 'Showing %d Results' : 'Menampilkan %d Hasil',
+            'filterTitle' => $is_english ? 'Filter By' : 'Filter berdasarkan',
+            'applyFilter' => $is_english ? 'Apply Filter' : 'Terapkan Filter',
+            'resetFilter' => $is_english ? 'Reset Filter' : 'Hapus Filter',
+            'loading' => $is_english ? 'Loading results...' : 'Memuat hasil...',
+            'empty' => $is_english ? 'No results match your keyword or selected filters.' : 'Tidak ada hasil yang cocok dengan kata kunci atau filter yang dipilih.',
+            'previous' => $is_english ? 'Previous' : 'Sebelumnya',
+            'next' => $is_english ? 'Next' : 'Selanjutnya',
         ],
     ]);
 
@@ -173,6 +189,8 @@ add_action('wp_ajax_yiari_load_more_updates', 'yiari_handle_load_more_updates');
 add_action('wp_ajax_nopriv_yiari_load_more_updates', 'yiari_handle_load_more_updates');
 add_action('wp_ajax_yiari_load_more_publications', 'yiari_handle_load_more_publications');
 add_action('wp_ajax_nopriv_yiari_load_more_publications', 'yiari_handle_load_more_publications');
+add_action('wp_ajax_yiari_search_results', 'yiari_handle_search_results');
+add_action('wp_ajax_nopriv_yiari_search_results', 'yiari_handle_search_results');
 
 function yiari_handle_live_search(): void {
     check_ajax_referer('yiari_live_search', 'nonce');
@@ -312,6 +330,21 @@ function yiari_handle_load_more_publications(): void {
         'html' => implode('', $items),
         'nextPage' => $page + 1,
         'hasMore' => $page < (int) $query->max_num_pages,
+    ]);
+}
+
+function yiari_handle_search_results(): void {
+    check_ajax_referer('yiari_search_results', 'nonce');
+
+    $state = yiari_get_search_request_state($_POST);
+    $results = yiari_get_search_results($state);
+
+    wp_send_json_success([
+        'html' => $results['html'],
+        'total' => $results['total'],
+        'page' => $results['page'],
+        'totalPages' => $results['totalPages'],
+        'perPage' => $results['perPage'],
     ]);
 }
 

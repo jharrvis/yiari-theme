@@ -147,6 +147,311 @@ function yiari_render_publication_card(int $post_id, string $variant = 'book'): 
     return trim((string) ob_get_clean());
 }
 
+function yiari_get_search_content_type_definitions(): array {
+    return [
+        'blog' => [
+            'label' => __('Blog', 'yiari'),
+            'post_type' => 'post',
+            'publication_terms' => [],
+        ],
+        'siaran-pers' => [
+            'label' => __('Siaran Pers', 'yiari'),
+            'post_type' => 'publikasi',
+            'publication_terms' => [251],
+        ],
+        'penelitian' => [
+            'label' => __('Penelitian', 'yiari'),
+            'post_type' => 'publikasi',
+            'publication_terms' => [231],
+        ],
+        'laporan' => [
+            'label' => __('Laporan', 'yiari'),
+            'post_type' => 'publikasi',
+            'publication_terms' => [229],
+        ],
+        'buletin' => [
+            'label' => __('Buletin', 'yiari'),
+            'post_type' => 'publikasi',
+            'publication_terms' => [230],
+        ],
+        'buku' => [
+            'label' => __('Buku', 'yiari'),
+            'post_type' => 'publikasi',
+            'publication_terms' => [1146],
+        ],
+        'materi-edukasi' => [
+            'label' => __('Materi Edukasi', 'yiari'),
+            'post_type' => 'publikasi',
+            'publication_terms' => [1147],
+        ],
+    ];
+}
+
+function yiari_get_search_filter_groups(): array {
+    $is_english = yiari_post_is_english();
+    $location_parent = $is_english ? 1074 : 11;
+    $program_parent = $is_english ? 1044 : 12;
+
+    $content_types = [];
+    foreach (yiari_get_search_content_type_definitions() as $slug => $definition) {
+        $content_types[] = [
+            'value' => $slug,
+            'label' => $definition['label'],
+        ];
+    }
+
+    $build_terms = static function (int $parent_id): array {
+        $terms = get_terms([
+            'taxonomy' => 'category',
+            'hide_empty' => false,
+            'parent' => $parent_id,
+            'orderby' => 'name',
+            'order' => 'ASC',
+        ]);
+
+        if (is_wp_error($terms) || empty($terms)) {
+            return [];
+        }
+
+        return array_values(array_map(static function (WP_Term $term): array {
+            return [
+                'value' => (int) $term->term_id,
+                'label' => $term->name,
+            ];
+        }, $terms));
+    };
+
+    return [
+        [
+            'key' => 'contentTypes',
+            'label' => __('Jenis Konten', 'yiari'),
+            'options' => $content_types,
+        ],
+        [
+            'key' => 'locations',
+            'label' => __('Lokasi', 'yiari'),
+            'options' => $build_terms($location_parent),
+        ],
+        [
+            'key' => 'programs',
+            'label' => __('Program', 'yiari'),
+            'options' => $build_terms($program_parent),
+        ],
+    ];
+}
+
+function yiari_get_search_request_state(array $source = []): array {
+    $source = $source ?: $_GET;
+
+    $parse_array = static function ($value): array {
+        if (is_array($value)) {
+            $items = $value;
+        } else {
+            $items = explode(',', (string) $value);
+        }
+
+        return array_values(array_filter(array_map(static function ($item): string {
+            return sanitize_text_field(wp_unslash((string) $item));
+        }, $items), static fn($item): bool => $item !== ''));
+    };
+
+    return [
+        'query' => sanitize_text_field(wp_unslash((string) ($source['s'] ?? ''))),
+        'page' => max(1, (int) ($source['search_page'] ?? $source['page'] ?? 1)),
+        'contentTypes' => $parse_array($source['types'] ?? []),
+        'locations' => array_values(array_filter(array_map('intval', $parse_array($source['locations'] ?? [])))),
+        'programs' => array_values(array_filter(array_map('intval', $parse_array($source['programs'] ?? [])))),
+    ];
+}
+
+function yiari_get_search_publication_label(int $post_id): string {
+    $terms = get_the_terms($post_id, 'kategori-publikasi');
+    if (empty($terms) || is_wp_error($terms)) {
+        return __('Publikasi', 'yiari');
+    }
+
+    $definitions = yiari_get_search_content_type_definitions();
+    foreach ($definitions as $definition) {
+        if (($definition['post_type'] ?? '') !== 'publikasi' || empty($definition['publication_terms'])) {
+            continue;
+        }
+
+        foreach ($terms as $term) {
+            foreach ($definition['publication_terms'] as $term_id) {
+                if ((int) $term->term_id === (int) $term_id || in_array((int) $term_id, array_map('intval', get_ancestors((int) $term->term_id, 'kategori-publikasi')), true)) {
+                    return (string) $definition['label'];
+                }
+            }
+        }
+    }
+
+    return __('Publikasi', 'yiari');
+}
+
+function yiari_render_search_result_card(int $post_id): string {
+    $title = get_the_title($post_id);
+    $permalink = get_permalink($post_id) ?: '#';
+    $image = get_the_post_thumbnail_url($post_id, 'card-thumb') ?: (get_template_directory_uri() . '/assets/img/hero-section.jpg');
+    $excerpt = has_excerpt($post_id)
+        ? get_the_excerpt($post_id)
+        : wp_trim_words(wp_strip_all_tags((string) get_post_field('post_content', $post_id)), 20, '…');
+    $author = get_the_author_meta('display_name', (int) get_post_field('post_author', $post_id));
+    $date = get_the_date('j F Y', $post_id);
+    ob_start();
+    ?>
+    <article class="search-page-card">
+      <a href="<?php echo esc_url($permalink); ?>" class="search-page-card-image-link" aria-label="<?php echo esc_attr($title); ?>">
+        <img src="<?php echo esc_url($image); ?>" alt="<?php echo esc_attr($title); ?>" class="search-page-card-image" />
+      </a>
+      <div class="search-page-card-body">
+        <h2 class="search-page-card-title">
+          <a href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($title); ?></a>
+        </h2>
+        <div class="search-page-card-meta">
+          <span><?php echo esc_html($date); ?></span>
+          <?php if ($author !== ''): ?>
+            <span class="search-page-card-meta-sep">&bull;</span>
+            <span><?php echo esc_html($author); ?></span>
+          <?php endif; ?>
+        </div>
+        <p class="search-page-card-text"><?php echo esc_html($excerpt); ?></p>
+        <a href="<?php echo esc_url($permalink); ?>" class="search-page-card-link"><?php esc_html_e('Lihat Selengkapnya', 'yiari'); ?> <i data-lucide="arrow-right" class="icon-sm"></i></a>
+      </div>
+    </article>
+    <?php
+
+    return trim((string) ob_get_clean());
+}
+
+function yiari_get_search_results(array $state): array {
+    $definitions = yiari_get_search_content_type_definitions();
+    $selected_types = array_values(array_filter(array_map('sanitize_key', $state['contentTypes'] ?? [])));
+    $selected_types = array_values(array_intersect($selected_types, array_keys($definitions)));
+    if (empty($selected_types)) {
+        $selected_types = array_keys($definitions);
+    }
+
+    $location_ids = array_values(array_filter(array_map('intval', $state['locations'] ?? [])));
+    $program_ids = array_values(array_filter(array_map('intval', $state['programs'] ?? [])));
+    $query_string = sanitize_text_field((string) ($state['query'] ?? ''));
+    $page = max(1, (int) ($state['page'] ?? 1));
+    $per_page = 9;
+
+    $build_category_tax_query = static function () use ($location_ids, $program_ids): array {
+        $tax_query = ['relation' => 'AND'];
+
+        if (!empty($location_ids)) {
+            $tax_query[] = [
+                'taxonomy' => 'category',
+                'field' => 'term_id',
+                'terms' => $location_ids,
+            ];
+        }
+
+        if (!empty($program_ids)) {
+            $tax_query[] = [
+                'taxonomy' => 'category',
+                'field' => 'term_id',
+                'terms' => $program_ids,
+            ];
+        }
+
+        return count($tax_query) > 1 ? $tax_query : [];
+    };
+
+    $post_ids = [];
+    if (in_array('blog', $selected_types, true)) {
+        $query_args = [
+            'post_type' => 'post',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'ignore_sticky_posts' => true,
+            'fields' => 'ids',
+            'suppress_filters' => false,
+        ];
+
+        if ($query_string !== '') {
+            $query_args['s'] = $query_string;
+        }
+
+        $category_tax_query = $build_category_tax_query();
+        if (!empty($category_tax_query)) {
+            $query_args['tax_query'] = $category_tax_query;
+        }
+
+        $post_ids = array_merge($post_ids, get_posts($query_args));
+    }
+
+    $publication_terms = [];
+    foreach ($selected_types as $type) {
+        foreach (($definitions[$type]['publication_terms'] ?? []) as $term_id) {
+            $publication_terms[] = (int) $term_id;
+        }
+    }
+    $publication_terms = array_values(array_unique(array_filter($publication_terms)));
+
+    if (!empty($publication_terms)) {
+        $query_args = [
+            'post_type' => 'publikasi',
+            'post_status' => 'publish',
+            'posts_per_page' => -1,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'ignore_sticky_posts' => true,
+            'fields' => 'ids',
+            'suppress_filters' => false,
+        ];
+
+        if ($query_string !== '') {
+            $query_args['s'] = $query_string;
+        }
+
+        $tax_query = ['relation' => 'AND'];
+        $tax_query[] = [
+            'taxonomy' => 'kategori-publikasi',
+            'field' => 'term_id',
+            'terms' => $publication_terms,
+            'include_children' => true,
+        ];
+
+        if (is_object_in_taxonomy('publikasi', 'category')) {
+            $category_tax_query = $build_category_tax_query();
+            if (!empty($category_tax_query)) {
+                foreach (array_slice($category_tax_query, 1) as $clause) {
+                    $tax_query[] = $clause;
+                }
+            }
+        }
+
+        $query_args['tax_query'] = $tax_query;
+        $post_ids = array_merge($post_ids, get_posts($query_args));
+    }
+
+    $post_ids = array_values(array_unique(array_map('intval', $post_ids)));
+
+    usort($post_ids, static function (int $left, int $right): int {
+        return strcmp(get_post_field('post_date_gmt', $right), get_post_field('post_date_gmt', $left));
+    });
+
+    $total = count($post_ids);
+    $total_pages = max(1, (int) ceil($total / $per_page));
+    $page = min($page, $total_pages);
+    $page_ids = array_slice($post_ids, ($page - 1) * $per_page, $per_page);
+
+    $html_items = array_map('yiari_render_search_result_card', $page_ids);
+
+    return [
+        'html' => implode('', $html_items),
+        'items' => $page_ids,
+        'total' => $total,
+        'page' => $page,
+        'perPage' => $per_page,
+        'totalPages' => $total_pages,
+    ];
+}
+
 function yiari_section_label(string $text, bool $circle = false): void {
     $class = $circle ? 'section-label section-label-circle' : 'section-label';
     printf('<span class="%s">%s</span>', esc_attr($class), esc_html($text));
