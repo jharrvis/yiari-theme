@@ -14,6 +14,7 @@
 <?php wp_body_open(); ?>
 <?php $current_language = yiari_get_current_language_item(); ?>
 <?php $donation_page_url = yiari_get_page_url_by_template('templates/donasi.php', home_url('/donasi/')); ?>
+<?php $search_page_url = yiari_home_url(); ?>
 
 <nav class="navbar" id="navbar" :style="navbarStyle">
   <div class="nav-container">
@@ -65,10 +66,11 @@
 
   <div class="search-panel" id="searchPanel" x-ref="searchPanel" :class="{ open: searchOpen }">
     <div class="container search-panel-shell">
-      <div class="search-panel-content">
+      <form class="search-panel-content" action="<?php echo esc_url($search_page_url); ?>" method="get">
         <i data-lucide="search" class="icon-search-panel"></i>
         <input
           type="text"
+          name="s"
           :placeholder="searchStrings.searchPlaceholder"
           class="search-input"
           id="searchInput"
@@ -77,7 +79,7 @@
           @input="handleSearchInput()"
         />
         <button class="close-search-btn" id="closeSearch" type="button" data-search-toggle @click="toggleSearch()">✕</button>
-      </div>
+      </form>
 
       <div class="search-results" x-show="searchOpen" x-transition.opacity.duration.150ms>
         <div class="search-results-status" x-show="!searchQuery.trim()" x-text="searchStrings.idle"></div>
@@ -125,19 +127,20 @@
   </div>
 
   <div class="mobile-menu-divider mobile-search-block">
-    <div class="mobile-search-row">
+    <form class="mobile-search-row" action="<?php echo esc_url($search_page_url); ?>" method="get">
       <input
         type="text"
+        name="s"
         :placeholder="searchStrings.searchPlaceholder"
         class="mobile-search-input"
         x-model="searchQuery"
         @input="handleSearchInput()"
       />
-      <button class="mobile-search-submit" type="button" @click.prevent="toggleSearch()">
+      <button class="mobile-search-submit" type="submit">
         <span><?php echo esc_html__('Cari', 'yiari'); ?></span>
         <i data-lucide="arrow-right" class="icon-sm"></i>
       </button>
-    </div>
+    </form>
 
     <div class="mobile-search-results" x-show="searchQuery.trim().length || searchLoading || searchResults.length" x-transition.opacity.duration.150ms>
       <div class="search-results-status" x-show="searchQuery.trim().length > 0 && searchQuery.trim().length < minSearchChars" x-text="minCharsMessage"></div>
