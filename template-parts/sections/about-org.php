@@ -9,8 +9,9 @@ if (empty($org_groups)) {
         ['group_name' => __('Pengawas Yayasan', 'yiari'), 'members' => [['photo' => null, 'name' => 'Veronika Hutting', 'role' => __('Ketua Pengawas', 'yiari')], ['photo' => null, 'name' => 'Mesayu Yulia', 'role' => __('Pengawas', 'yiari')], ['photo' => null, 'name' => 'Drymer Heidi', 'role' => __('Pengawas', 'yiari')]]],
     ];
 }
+$default_open_panel = !empty($org_groups) ? min(1, count($org_groups) - 1) : -1;
 ?>
-<section class="about-org-section" id="struktur-organisasi" x-data="{ openPanel: 0 }">
+<section class="about-org-section" id="struktur-organisasi" x-data="{ openPanel: <?php echo (int) $default_open_panel; ?> }">
   <div class="container">
     <div class="stats-layout about-org-header">
       <div class="stats-intro"><?php yiari_section_label($label, true); ?><h2 class="section-heading"><?php echo esc_html($title); ?></h2></div>
@@ -38,6 +39,7 @@ if (empty($org_groups)) {
                 <?php
                 $name = trim((string) ($member['name'] ?? ''));
                 $role = trim((string) ($member['role'] ?? ''));
+                $photo = is_array($member['photo'] ?? null) ? $member['photo'] : null;
                 $initials = '';
                 if ($name !== '') {
                     $parts = preg_split('/\s+/', $name) ?: [];
@@ -48,10 +50,18 @@ if (empty($org_groups)) {
                 ?>
                 <article class="about-org-member">
                   <div class="about-org-member-top">
-                    <h3 class="about-org-name"><?php echo esc_html($name); ?></h3>
-                    <span class="about-org-initials"><?php echo esc_html(strtoupper($initials)); ?></span>
+                    <div class="about-org-media <?php echo !empty($photo['url']) ? 'has-photo' : 'no-photo'; ?>">
+                      <div class="about-org-media-frame">
+                        <?php if (!empty($photo['url'])): ?>
+                          <?php yiari_img($photo, 'medium_large', 'about-org-photo', $name); ?>
+                        <?php else: ?>
+                          <span class="about-org-initials"><?php echo esc_html(strtoupper($initials)); ?></span>
+                        <?php endif; ?>
+                      </div>
+                    </div>
                   </div>
                   <div class="about-org-member-bottom">
+                    <h3 class="about-org-name"><?php echo esc_html($name); ?></h3>
                     <p class="about-org-role"><?php echo esc_html($role); ?></p>
                   </div>
                 </article>
